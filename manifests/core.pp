@@ -20,19 +20,19 @@ class wordpress::core (
     }
     $_owner = $_wp_configs['owner'] ? {
       String  => $_wp_configs['owner'],
-      default => "${wordpress::params::default_wpowner}",
+      default => $::wordpress::params::default_wpowner,
     }
     $_locale = $_wp_configs['locale'] ? {
       Pattern['^\w\w_\w\w$'] => $_wp_configs['locale'],
-      default                => "${wordpress::params::default_locale}",
+      default                => $::wordpress::params::default_locale,
     }
     $_dbprefix = $_wp_configs['dbprefix'] ? {
       Pattern['^\w*$'] => $_wp_configs['dbprefix'],
-      default          => "${wordpress::params::default_dbprefix}",
+      default          => $::wordpress::params::default_dbprefix,
     }
     $_wpselfupdate = $_wp_configs['wpselfupdate'] ? {
       Enum['disabled','enabled'] => $_wp_configs['wpselfupdate'],
-      default => "${wordpress::params::default_wpselfupdate}",
+      default => $::wordpress::params::default_wpselfupdate,
     }
 
     $_wp_root = $_wp_configs['wproot']
@@ -54,17 +54,17 @@ class wordpress::core (
           'en_US': {
             exec { "${_wp_servername} > Download core":
               command => "${wpcli_bin} core download",
-              cwd     => "${_wp_root}",
+              cwd     => $_wp_root,
               creates => "${_wp_root}/wp-admin",
-              user    => "${_owner}",
+              user    => $_owner,
             }
           }
           default: {
             exec { "${_wp_servername} > Download core":
               command => "${wpcli_bin} core download --locale=${_locale}",
-              cwd     => "${_wp_root}",
+              cwd     => $_wp_root,
               creates => "${_wp_root}/wp-admin",
-              user    => "${_owner}",
+              user    => $_owner,
             }
           }
         }
@@ -74,9 +74,9 @@ class wordpress::core (
 
         exec { "${_wp_servername} > Configure core":
           command => "${wpcli_bin} core config --dbhost=${_db_host} --dbname=${_db_name} --dbuser=${_db_user} --dbpass=${_db_passwd} --dbprefix=${_dbprefix} --skip-check --force",
-          cwd     => "${_wp_root}",
+          cwd     => $_wp_root,
           creates => "${_wp_root}/wp-config.php",
-          user    => "${_owner}",
+          user    => $_owner,
           notify  => Exec['update external fact wordpress'],
         }
         ->
@@ -112,8 +112,8 @@ class wordpress::core (
         # it creates all tables and data structure for the instannce ${_wp_servername}
         exec { "${_wp_servername} > Create core tables":
           command     => "${wpcli_bin} core install --url=${_wp_servername} --title=\"${_wp_title}\" --admin_user=${_wp_admin} --admin_password=${_wp_passwd} --admin_email=${_wp_mail} --skip-email",
-          cwd         => "${_wp_root}",
-          user        => "${_owner}",
+          cwd         => $_wp_root,
+          user        => $_owner,
           subscribe   => [
             Exec["${_wp_servername} > Configure core"],
             File_line["${_wp_servername} > set DB_NAME to ${_db_name}"],
@@ -175,8 +175,8 @@ class wordpress::core (
         $_date = strftime('%Y-%m-%d')
 
         $_wp_core_update_status = $facts['wordpress']["${_wp_servername}"]['core']['update']
-        if "${_wp_core_update_status}" != 'none' {
-          file {"${wordpress::params::wordpress_archives}":
+        if $_wp_core_update_status != 'none' {
+          file { $::wordpress::params::wordpress_archives :
             ensure => 'directory',
             mode   => '0700',
             owner  => 0,
@@ -185,13 +185,13 @@ class wordpress::core (
           ->
           exec { "${_wp_servername} > Export database before upgrade" :
             command => "${wpcli_bin} --allow-root --path=${_wp_root} db export",
-            cwd     => "${wordpress::params::wordpress_archives}",
+            cwd     => $::wordpress::params::wordpress_archives,
             creates => "${wordpress::params::wordpress_archives}/${_wp_servername}_${_date}.tar.gz",
           }
           ->
           exec { "${_wp_servername} > Archive files before upgrade" :
             command => "tar -cvf ${wordpress::params::wordpress_archives}/${_wp_servername}_${_date}.tar.gz .",
-            cwd     => "${_wp_root}",
+            cwd     => $_wp_root,
             creates => "${wordpress::params::wordpress_archives}/${_wp_servername}_${_date}.tar.gz",
           }
 
@@ -199,21 +199,21 @@ class wordpress::core (
             'en_US': {
               exec { "${_wp_servername} > Upgrade core wordpress" :
                 command => "${wpcli_bin} --allow-root --path=${_wp_root} core update",
-                user    => "${_owner}",
+                user    => $_owner,
                 require => Exec["${_wp_servername} > Archive files before upgrade"],
               }
             }
             default: {
               exec { "${_wp_servername} > Upgrade core wordpress" :
                 command => "${wpcli_bin} --allow-root --path=${_wp_root} core update --locale=${_locale}",
-                user    => "${_owner}",
+                user    => $_owner,
                 require => Exec["${_wp_servername} > Archive files before upgrade"],
               }
             }
           }
           exec { "${_wp_servername} > Upgrade database structure" :
             command => "${wpcli_bin} --allow-root --path=${_wp_root} core update-db",
-            user    => "${_owner}",
+            user    => $_owner,
             require => Exec["${_wp_servername} > Upgrade core wordpress"],
             notify  => Exec['update external fact wordpress'],
           }
@@ -221,10 +221,10 @@ class wordpress::core (
         }
 
         $_wp_language_update_status =  $facts['wordpress']["${_wp_servername}"]['language']['update']
-        if "${_wp_language_update_status}" != 'none' {
+        if $_wp_language_update_status != 'none' {
           exec { "${_wp_servername} > Update language" :
             command => "${wpcli_bin} --allow-root --path=${_wp_root} language core update",
-            user    => "${_owner}",
+            user    => $_owner,
             require => Exec["${_wp_servername} > Update core wordpress"],
             notify  => Exec['update external fact wordpress'],
           }

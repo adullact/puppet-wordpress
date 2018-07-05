@@ -1,4 +1,3 @@
---no-only_variable_string-check
 --no-documentation-check
 --no-arrow_on_right_operand_line-check
 --no-140chars-check

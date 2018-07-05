@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file.
 
+## Release 1.0.2
+
+**Features**
+
+**Bugfixes**
+
+  * #11 remove lint setting `no-only_variable_string-check`
+
+**Known Issues**
+
+  * #1 Fix attribute ensure set to latest from scratch with resources management.
+  * #5 Permit to modify hour of update for external_fact.
+
 ## Release 1.0.1
 
 **Features**

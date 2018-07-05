@@ -1,0 +1,136 @@
+#!/opt/puppetlabs/puppet/bin/ruby
+
+# This ruby script is planed to be executer about one time a day with cron.
+# And the yaml output redirected to a file in facter.d directory to produce an external fact.
+# This setup is like this because a fact in a standard way is updated during each run.
+# And we do not need update of the infirmation so often.
+
+require 'open3'
+require 'yaml'
+
+wordpress = {}
+
+wproot = {}
+<% @_wproot.each do |key, value| -%>
+wproot['<%= key %>'] = '<%= value %>'
+<% end -%>
+
+for site in wproot.keys
+
+  wordpress["#{site}"] = {}
+  path = wproot["#{site}"]
+
+  # for #site get information about core wp version
+  wordpress["#{site}"]['core'] = {}
+
+  Open3.popen3('wp','--allow-root',"--path=#{path}",'core','version') do |stdin, stdout, stderr, wait_thr|
+    if wait_thr.value.success?
+      while line = stdout.gets
+        version = line.chomp
+
+        if version =~ /^[\d\.]+$/
+          wordpress["#{site}"]['core']['version'] = version
+        else
+          wordpress["#{site}"]['core']['version'] = 'unexpected value #{version}'
+        end
+  
+      end
+    else
+      wordpress["#{site}"]['core']['version'] = stderr.gets
+    end
+  
+  end
+  # end of core wp version process
+
+  # for #site get information about core wp update
+  Open3.popen3('wp','--allow-root',"--path=#{path}",'core','check-update') do |stdin, stdout, stderr, wait_thr|
+    if wait_thr.value.success?
+      while line = stdout.gets
+        update = line.chomp
+
+        if update =~ /^Success: WordPress is at the latest version/
+          wordpress["#{site}"]['core']['update'] = 'none'
+        else
+          wordpress["#{site}"]['core']['update'] = '#{update}'
+        end
+  
+      end
+    else
+      wordpress["#{site}"]['core']['update'] = stderr.gets
+    end
+  
+  end
+  # end of core wp update process
+
+  # for #site get information about language
+  wordpress["#{site}"]['language'] = {}
+
+  Open3.popen3('wp','--allow-root','--format=csv',"--path=#{path}",'--fields=language,status,update','--status=active','language','core','list') do |stdin, stdout, stderr, wait_thr|
+    if wait_thr.value.success?
+      while line = stdout.gets
+        langcode, langstatus, langupdate = line.match(/^([\w_]+),([\w]+),([\w]+)/).captures
+
+        lang_hash = {}
+        if langcode != 'language'
+          lang_hash['code'] = langcode
+          lang_hash['update'] = langupdate
+          wordpress["#{site}"]['language'] = lang_hash
+        end
+  
+      end
+    else
+      wordpress["#{site}"]['language'] = stderr.gets
+    end
+  
+  end
+  # end of language process
+
+  # for #site get information about plugins
+  wordpress["#{site}"]['plugin'] = {}
+  Open3.popen3('wp','--allow-root','--format=csv',"--path=#{path}",'plugin','list') do |stdin, stdout, stderr, wait_thr|
+    if wait_thr.value.success?
+      while line = stdout.gets
+        pluginname, pluginstatus, pluginupdate, pluginversion = line.match(/^([\w\d-]+),([\w\d]+),([\w\d]+),([\w\d\.]+)/).captures
+
+        plugin_hash = {}
+        if pluginname != 'name'
+          plugin_hash['status'] = pluginstatus
+          plugin_hash['update'] = pluginupdate
+          plugin_hash['version'] = pluginversion
+          wordpress["#{site}"]['plugin']["#{pluginname}"] = plugin_hash
+        end
+      end
+    else
+      wordpress["#{site}"]['plugin']["#{pluginname}"] = stderr.gets
+    end
+
+  end
+  # end of plugins process
+
+  # for #site get information about themes
+  wordpress["#{site}"]['theme'] = {}
+  Open3.popen3('wp','--allow-root','--format=csv',"--path=#{path}",'theme','list') do |stdin, stdout, stderr, wait_thr|
+    if wait_thr.value.success?
+      while line = stdout.gets
+        themename, themestatus, themeupdate, themeversion = line.match(/^([\w\d-]+),([\w\d]+),([\w\d]+),([\w\d\.]+)/).captures
+
+        theme_hash = {}
+        if themename != 'name'
+          theme_hash['status'] = themestatus
+          theme_hash['update'] = themeupdate
+          theme_hash['version'] = themeversion
+          wordpress["#{site}"]['theme']["#{themename}"] = theme_hash
+        end
+      end
+    else
+      wordpress["#{site}"]['theme']["#{themename}"] = stderr.gets
+    end
+
+  end
+  # end of themes process
+ 
+end
+
+
+wordpress = { 'wordpress' => wordpress }
+puts wordpress.to_yaml

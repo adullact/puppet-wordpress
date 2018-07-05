@@ -23,7 +23,7 @@
       ]
     },
     {
-      "operatingsystem": "RedHat",
+      "operatingsystem": "CentOS",
       "operatingsystemrelease": [
         "7.0"
       ]

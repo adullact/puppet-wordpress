@@ -8,6 +8,7 @@ All notable changes to this project will be documented in this file.
 
 **Bugfixes**
 
-  * #2 fix license
+  * #2 Fix license.
+  * #3 Add informations in chapter `Limitations` in README.
 
 **Known Issues**

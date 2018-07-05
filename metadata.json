@@ -1,10 +1,12 @@
 {
   "name": "adullact-wordpress",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "author": "adullact",
   "summary": "Install and configure wordpress with wpcli tool.",
   "license": "AGPL-3.0",
   "source": "https://gitlab.adullact.net/adullact/puppet-wordpress/tree/master",
+  "project_page": "https://gitlab.adullact.net/adullact/puppet-wordpress",
+  "issues_url": "https://gitlab.adullact.net/adullact/puppet-wordpress/issues",
   "dependencies": [
     {
       "name": "puppetlabs-stdlib",

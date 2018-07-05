@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file.
 
+## Release 1.1.0
+
+**Features**
+
+**Bugfixes**
+
+  * #7 Add missing keywords in metadata.json.
+
+**Known Issues**
+
+  * #1 Fix attribute ensure set to latest from scratch with resources management.
+  * #5 Permit to modify hour of update for external_fact.
+
 ## Release 1.0.0
 
 **Features**

@@ -8,7 +8,8 @@ All notable changes to this project will be documented in this file.
 
 **Bugfixes**
 
-  * #11 remove lint setting `no-only_variable_string-check`
+  * #11 Remove lint setting `no-only_variable_string-check`.
+  * #12 Write WP-CLI instead of wpcli in project description.
 
 **Known Issues**
 

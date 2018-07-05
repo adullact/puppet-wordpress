@@ -76,3 +76,12 @@ extra_gemfiles.each do |gemfile|
   end
 end
 # vim: syntax=ruby
+
+# Added at 2018-07-05 11:16:26 +0200 by fcombernous:
+gem "beaker-rspec", "~> 6.2"
+
+# Added at 2018-07-05 11:23:13 +0200 by fcombernous:
+gem "beaker-puppet_install_helper", "~> 0.9.4"
+
+# Added at 2018-07-05 11:23:35 +0200 by fcombernous:
+gem "beaker-module_install_helper", "~> 0.1.7"

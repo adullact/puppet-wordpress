@@ -11,9 +11,9 @@ class wordpress::external_fact (
 
   #used by template('/wordpress/external_fact_wordpress.rb.erb')
   $_wproot = $settings.reduce( {} ) |$memo, $value| {
-    if "${value[1]['ensure']}" != 'absent' {
+    if $value[1]['ensure'] != 'absent' {
       $mykey = $value[0]
-      $mypath = "${value[1]['wproot']}"
+      $mypath = $value[1]['wproot']
       merge($memo,{ $mykey => $mypath })
     } else {
       $memo
@@ -34,6 +34,6 @@ class wordpress::external_fact (
     environment => 'PATH=/usr/local/sbin:/usr/local/bin:/opt/puppetlabs/bin:/usr/sbin:/usr/bin:/sbin:/bin',
     user        => 'root',
     hour        => '2',
-    minute      => "${_minute}",
+    minute      => $_minute,
   }
 }

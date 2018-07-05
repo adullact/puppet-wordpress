@@ -15,7 +15,7 @@ class wordpress::resource (
     # use some defaults if not provided
     $_owner = $_wp_configs['owner'] ? {
       String  => $_wp_configs['owner'],
-      default => "${wordpress::params::default_wpowner}",
+      default => $::wordpress::params::default_wpowner,
     }
     $_wp_resources = $_wp_configs['wpresources'] ? {
       Hash => $_wp_configs['wpresources'],
@@ -29,7 +29,7 @@ class wordpress::resource (
 
         $_wp_resource_ensure = $_wp_resource_settings['ensure'] ? {
           Enum['present','absent','latest'] => $_wp_resource_settings['ensure'],
-          default => "${wordpress::params::default_wpresource_ensure}",
+          default => $::wordpress::params::default_wpresource_ensure,
         }
 
         $_wp_resource_name = $_wp_resource_settings['name']
@@ -39,7 +39,7 @@ class wordpress::resource (
             exec { "${_wp_servername} > Install ${_wp_resource_type} ${_wp_resource_name}":
               command => "${wpcli_bin} --allow-root --path=${_wp_root} ${_wp_resource_type} install ${_wp_resource_name}",
               unless  => "${wpcli_bin} --allow-root --path=${_wp_root} ${_wp_resource_type} is-installed ${_wp_resource_name}",
-              user    => "${_owner}",
+              user    => $_owner,
               notify  => Exec['update external fact wordpress'],
             }
             ->
@@ -49,7 +49,7 @@ class wordpress::resource (
                 "${wpcli_bin} --allow-root --path=${_wp_root} ${_wp_resource_type} is-installed ${_wp_resource_name}",
                 "${wpcli_bin} --allow-root --format=csv --path=${_wp_root} --fields=name,status theme list | grep -qP '^${_wp_resource_name},inactive'",
                 ] ,
-              user    => "${_owner}",
+              user    => $_owner,
               notify  => Exec['update external fact wordpress'],
             }
 
@@ -58,16 +58,16 @@ class wordpress::resource (
             exec { "${_wp_servername} > Uninstall ${_wp_resource_type} ${_wp_resource_name}":
               command => "${wpcli_bin} --allow-root --path=${_wp_root} ${_wp_resource_type} uninstall ${_wp_resource_name}",
               onlyif  => "${wpcli_bin} --allow-root --path=${_wp_root} ${_wp_resource_type} is-installed ${_wp_resource_name}",
-              user    => "${_owner}",
+              user    => $_owner,
               notify  => Exec['update external fact wordpress'],
             }
           }
           'latest': {
             $_wp_resource_update_status = $facts['wordpress']["${_wp_servername}"]["${_wp_resource_type}"]["${_wp_resource_name}"]['update']
-            if "${_wp_resource_update_status}" == 'available' {
+            if $_wp_resource_update_status == 'available' {
               exec { "${_wp_servername} > Update ${_wp_resource_type} ${_wp_resource_name}":
                 command => "${wpcli_bin} --allow-root --path=${_wp_root} ${_wp_resource_type} update ${_wp_resource_name}",
-                user    => "${_owner}",
+                user    => $_owner,
                 notify  => Exec['update external fact wordpress'],
               }
             }

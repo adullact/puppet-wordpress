@@ -19,13 +19,13 @@ class wordpress::cli (
 
       archive { 'wpcli_bin' :
         ensure => present,
-        path   => "${wpcli_bin}",
-        source => "${wpcli_url}",
+        path   => $wpcli_bin,
+        source => $wpcli_url,
         user   => 0,
         group  => 0,
       }
       ->
-      file { "${wpcli_bin}" :
+      file { $wpcli_bin :
         ensure => file,
         owner  => 0,
         group  => 0,
@@ -34,7 +34,7 @@ class wordpress::cli (
 
     }
     'absent': {
-      file {"${wpcli_bin}":
+      file { $wpcli_bin :
         ensure => absent,
       }
     }

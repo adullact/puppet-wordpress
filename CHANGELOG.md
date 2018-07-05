@@ -2,13 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
-## Release 1.1.0
+## Release 1.0.1
 
 **Features**
 
 **Bugfixes**
 
   * #7 Add missing keywords in metadata.json.
+  * #8 Fix version in metadata.json.
 
 **Known Issues**
 

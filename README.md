@@ -182,7 +182,12 @@ Details in `REFERENCE.md`.
 
 ## Limitations
 
-In the Limitations section, list any incompatibilities, known issues, or other warnings.
+This module is tested with following OS :
+  * Ubuntu 16.04
+  * Debian 8
+  * CentOS 7
+
+Known bugs are listed in `CHANGELOG.md` file.
 
 ## Development
 
@@ -190,7 +195,7 @@ Home at URL https://gitlab.adullact.net/adullact/puppet-wordpress
 
 Issues and MR are wellcome.
 
-## Release Notes/Contributors/Etc.
+## Release Notes/Contributors/License.
 
 Details in `CHANGELOG.md`.
 

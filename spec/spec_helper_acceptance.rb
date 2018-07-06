@@ -49,6 +49,8 @@ RSpec.configure do |c|
     include '::mysql::server'
     
     accounts::user { 'wp' : }
+    accounts::user { 'wp2' : }
+    accounts::user { 'wp3' : }
     
     class { 'apache':
       default_vhost => false,
@@ -74,6 +76,42 @@ RSpec.configure do |c|
       },
       require => Accounts::User['wp'],
     }
+    apache::vhost {'wp2.foo.org':
+      servername => 'wp2.foo.org',
+      ip => '127.0.0.1',
+      port => 80,
+      docroot => '/var/www/wp2.foo.org',
+      docroot_owner => 'wp2',
+      docroot_group => 'wp2',
+      docroot_mode => '0750',
+      itk => {
+        user => 'wp2',
+        group => 'wp2',
+      },
+      directories => {
+        path           => '/var/www/wp2.foo.org', 
+        allow_override => 'All' 
+      },
+      require => Accounts::User['wp2'],
+    }
+    apache::vhost {'wp3.foo.org':
+      servername => 'wp3.foo.org',
+      ip => '127.0.0.1',
+      port => 80,
+      docroot => '/var/www/wp3.foo.org',
+      docroot_owner => 'wp3',
+      docroot_group => 'wp3',
+      docroot_mode => '0750',
+      itk => {
+        user => 'wp3',
+        group => 'wp3',
+      },
+      directories => {
+        path           => '/var/www/wp3.foo.org', 
+        allow_override => 'All' 
+      },
+      require => Accounts::User['wp3'],
+    }
     
     class {'::mysql::bindings':
       java_enable   => false,
@@ -89,6 +127,19 @@ RSpec.configure do |c|
       host     => 'localhost',
       grant    => ['ALL'],
     }
+    mysql::db { 'wordpress2':
+      user     => 'wp2userdb',
+      password => 'kiki',
+      host     => 'localhost',
+      grant    => ['ALL'],
+    }
+    mysql::db { 'wordpress3':
+      user     => 'wp3userdb',
+      password => 'kiki',
+      host     => 'localhost',
+      grant    => ['ALL'],
+    }
+
     EOS
 
     apply_manifest_on(agents, pp, catch_failures: true)

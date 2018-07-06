@@ -9,6 +9,7 @@ All notable changes to this project will be documented in this file.
 **Bugfixes**
 
   * #9 Add acceptence tests about ressources.
+  * #10 Add acceptence tests about management of several instances.
 
 **Known Issues**
 

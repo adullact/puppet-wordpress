@@ -1,6 +1,6 @@
 {
   "name": "adullact-wordpress",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "author": "adullact",
   "summary": "Install and configure WordPress with WP-CLI tool.",
   "license": "AGPL-3.0",

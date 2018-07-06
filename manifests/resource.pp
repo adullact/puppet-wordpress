@@ -47,7 +47,7 @@ class wordpress::resource (
               command => "${wpcli_bin} --allow-root --path=${_wp_root} ${_wp_resource_type} activate ${_wp_resource_name}",
               onlyif  => [
                 "${wpcli_bin} --allow-root --path=${_wp_root} ${_wp_resource_type} is-installed ${_wp_resource_name}",
-                "${wpcli_bin} --allow-root --format=csv --path=${_wp_root} --fields=name,status theme list | grep -qP '^${_wp_resource_name},inactive'",
+                "${wpcli_bin} --allow-root --format=csv --path=${_wp_root} --fields=name,status ${_wp_resource_type} list | grep -qP '^${_wp_resource_name},inactive'",
                 ] ,
               user    => $_owner,
               notify  => Exec['update external fact wordpress'],

@@ -170,33 +170,24 @@ describe 'wordpress class' do
       its(:stdout) { should match /.*hola this wordpress instance is installed by puppet.*/ }
     end
 
-    describe file("#{$wp_root}/wp-content/plugins/akismet") do
-      it { should be_directory }
-      it { should be_owned_by 'wp' }
-      it { should be_grouped_into 'wp' }
-      it { should be_mode 755 }
+    describe command("/usr/local/bin/wp --allow-root --format=csv --path=#{$wp_root} --fields=name,status plugin list") do
+      its(:stdout) { should match /.*akismet,active.*/ }
     end
 
-    describe file("#{$wp_root}/wp-content/plugins/wp-piwik") do
-      it { should be_directory }
-      it { should be_owned_by 'wp' }
-      it { should be_grouped_into 'wp' }
-      it { should be_mode 755 }
+    describe command("/usr/local/bin/wp --allow-root --format=csv --path=#{$wp_root} --fields=name,status plugin list") do
+      its(:stdout) { should match /.*wp-piwik,active.*/ }
     end
 
-    describe file("#{$wp_root}/wp-content/plugins/hello.php") do
-      it { should_not exist }
+    describe command("/usr/local/bin/wp --allow-root --format=csv --path=#{$wp_root} --fields=name,status plugin list") do
+      its(:stdout) { should_not match /.*hello,.*/ }
     end
 
-    describe file("#{$wp_root}/wp-content/themes/twentyseventeen") do
-      it { should be_directory }
-      it { should be_owned_by 'wp' }
-      it { should be_grouped_into 'wp' }
-      it { should be_mode 755 }
+    describe command("/usr/local/bin/wp --allow-root --format=csv --path=#{$wp_root} --fields=name,status theme list") do
+      its(:stdout) { should match /.*twentyseventeen,active.*/ }
     end
 
-    describe file("#{$wp_root}/wp-content/themes/twentysixteen") do
-      it { should_not exist }
+    describe command("/usr/local/bin/wp --allow-root --format=csv --path=#{$wp_root} --fields=name,status theme list") do
+      its(:stdout) { should_not match /.*twentysixteen,active.*/ }
     end
   end
 

@@ -14,20 +14,19 @@
 
 ## Description
 
+This module downloads the WP-CLI tool and then uses it to download and configure a WordPress instances.
 
-This module download the wpcli tool. And then use it to download and configure wordpress instances.
-
-This module does not manage a multisite installation but it can create several wordpress installations.
+This module does not manage a multisite installation but it can create several WordPress installations.
 And each installation can be managed separately.
 
 ## Setup
 
 ### What wordpress affects
 
-As the name of module can explain, it affect wordpress installation and configuration.
+As the name of module can explain, it affects WordPress installation and configuration.
 
 This modules does not manage :
- * system account, owner of wordpress files.
+ * system account, owner of WordPress files.
  * nginx or apache vhost
  * mariadb or mysql database and user
  * php install
@@ -49,12 +48,14 @@ class { 'wordpress' :
 
 ## Usage
 
+### Typical installation
+
 The following code :
-  * download and install WP-CLI.
-  * download and install core WordPress in the last available version.
+  * downloads and installs WP-CLI.
+  * downloads and installs core WordPress in the last available version.
   * creates tables in an all ready existing database `wp_mywpname`.
-  * configure core WordPress
-  * set the title of the instance.
+  * configures core WordPress
+  * sets the title of the instance.
   * WP-CLI is ran as `wp` user. Files are owned by already existing user `wp`. 
 
 ```
@@ -70,20 +71,22 @@ class { 'wordpress' :
       wpadminuser   => 'mywp_adminuser',
       wpadminpasswd => 'othersecret',
       wpadminemail  => 'foo@mydomain.com',
-      wptitle       => 'the title is to deploy wordpress with puppet',
+      wptitle       => 'the title is to deploy WordPress with puppet',
     }
   }
 }
 ```
 
+### Typical installation + self update
+
 The following code :
-  * download and install WP-CLI.
-  * download and install core WordPress in the last available version.
+  * downloads and installs WP-CLI.
+  * downloads and installs core WordPress in the last available version.
   * creates tables in an all ready existing database `wp_mywpname`.
-  * configure core WordPress
-  * set the title of the instance.
+  * configures core WordPress
+  * sets the title of the instance.
   * WP-CLI is ran as `wp` user. Files are owned by already existing user `wp`. 
-  * enable wordpress internal self update process.
+  * enables WordPress internal self update process.
 
 ```
 class { 'wordpress' :
@@ -98,7 +101,7 @@ class { 'wordpress' :
       wpadminuser   => 'mywp_adminuser',
       wpadminpasswd => 'othersecret',
       wpadminemail  => 'foo@mydomain.com',
-      wptitle       => 'the title is to deploy wordpress with puppet',
+      wptitle       => 'the title is to deploy WordPress with puppet',
       wpselfupdate  => 'enabled',
     }
   }
@@ -106,14 +109,14 @@ class { 'wordpress' :
 ```
 
 The following code :
-  * download and install WP-CLI.
-  * download and install core WordPress in the last available version.
+  * downloads and installs WP-CLI.
+  * downloads and installs core WordPress in the last available version.
   * creates tables in an all ready existing database `wp_mywpname`.
-  * configure core WordPress
-  * set the title of the instance.
+  * configures core WordPress
+  * sets the title of the instance.
   * WP-CLI is ran as `wp` user. Files are owned by already existing user `wp`. 
-  * enable wordpress internal self update process.
-  * configure puppet to make wordpress core and language update to latest available version at about 3 AM.
+  * enables WordPress internal self update process.
+  * configures puppet to make WordPress core and language update to latest available version at about 3 AM.
 
 If an update occured, you will find in `/var/wordpress_archives` :
  * dump of database that was there before the update.
@@ -133,21 +136,23 @@ class { 'wordpress' :
       wpadminuser   => 'mywp_adminuser',
       wpadminpasswd => 'othersecret',
       wpadminemail  => 'foo@mydomain.com',
-      wptitle       => 'the title is to deploy wordpress with puppet',
+      wptitle       => 'the title is to deploy WordPress with puppet',
     }
   }
 }
 ```
 
+### Typical installation + add themes + add plugins + locale
+
 The following code :
-  * download and install WP-CLI.
-  * download and install core WordPress in the last available version and in french.
+  * downloads and installs WP-CLI.
+  * downloads and installs core WordPress in the last available version and in french.
   * creates tables in an all ready existing database `wp_mywpname`.
-  * configure core WordPress
-  * set the title of the instance.
+  * configures core WordPress
+  * sets the title of the instance.
   * WP-CLI is ran as `wp` user. Files are owned by already existing user `wp`. 
-  * enable wordpress internal self update process.
-  * manage more than defaults themes and plugins provided with core.
+  * enables WordPress internal self update process.
+  * manages more than defaults themes and plugins provided with core.
 
 ```
 class { 'wordpress' :
@@ -163,7 +168,7 @@ class { 'wordpress' :
       wpadminuser   => 'mywp_adminuser',
       wpadminpasswd => 'othersecret',
       wpadminemail  => 'foo@mydomain.com',
-      wptitle       => 'the title is to deploy wordpress with puppet',
+      wptitle       => 'the title is to deploy WordPress with puppet',
       wpresources   => {
         plugin => [
           { name => 'plugin1', 'ensure' => 'present' },

@@ -9,6 +9,7 @@ All notable changes to this project will be documented in this file.
 **Bugfixes**
 
   * #16 Set `default_locale` to `en_US`.
+  * #17 In README add subtitles for different examples of usage.
 
 **Known Issues**
 

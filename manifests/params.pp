@@ -2,9 +2,6 @@
 #
 class wordpress::params {
 
-  $php_libs_4wordpress = []
-  $apache_mods_4wordpress = ['php','rewrite',]
-
   $default_wpcli_ensure = 'present'
   $default_wpcli_url = 'https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar'
   $default_wpcli_bin = '/usr/local/bin/wp'
@@ -13,6 +10,8 @@ class wordpress::params {
   $default_locale = 'en_US'
   $_rand = fqdn_rand(9999)
   $default_dbprefix = "wp${_rand}_"
+
+  $default_hour_fact_update = 7
 
   $default_wpselfupdate = 'disabled'
   $default_wpresource_ensure = 'present'

@@ -45,7 +45,11 @@ describe 'wordpress class' do
       apply_manifest(pp, :catch_failures => true)
       apply_manifest(pp, :catch_changes  => true)
     end
-  
+
+    describe file('/var/spool/cron/crontabs/root') do
+      it { should contain("7 * * * /usr/local/sbin/external_fact_wordpress.rb > /opt/puppetlabs/facter/facts.d/wordpress.yaml") }
+    end
+
     describe file($wpcli_bin) do
       it { should be_file }
       it { should be_owned_by 'root' }
@@ -73,6 +77,36 @@ describe 'wordpress class' do
 
     describe command("wp --allow-root --format=csv --path=#{$wp_root} --fields=language,status --status=active language core list") do
       its(:stdout) { should match /.*en_US,active.*/ }
+    end
+  end
+
+  context 'with parameters about one wordpress with custon hour of external fact update' do
+    it 'applies idempotently' do
+      pp = <<-EOS
+      class { 'wordpress': 
+        hour_fact_update => 3,
+        settings => {
+          'wordpress.foo.org' => {
+            owner         => 'wp',
+            dbhost        => '127.0.0.1',
+            dbname        => 'wordpress',
+            dbuser        => 'wpuserdb',
+            dbpasswd      => 'kiki',
+            wproot        => '/var/www/wordpress.foo.org',
+            wptitle       => 'hola this wordpress instance is installed by puppet',
+            wpadminuser   => 'wpadmin',
+            wpadminpasswd => 'lolo',
+            wpadminemail  => 'bar@foo.org',
+          },
+        }
+      }
+      EOS
+      apply_manifest(pp, :catch_failures => true)
+      apply_manifest(pp, :catch_changes  => true)
+    end
+
+    describe file('/var/spool/cron/crontabs/root') do
+      it { should contain("3 * * * /usr/local/sbin/external_fact_wordpress.rb > /opt/puppetlabs/facter/facts.d/wordpress.yaml") }
     end
   end
 
@@ -240,6 +274,10 @@ describe 'wordpress class' do
       it { should be_owned_by 'wp3' }
       it { should be_grouped_into 'wp3' }
       it { should be_mode 644 }
+    end
+
+    describe command("wp --allow-root --format=csv --path=#{$wp3_root} --fields=language,status --status=active language core list") do
+      its(:stdout) { should match /.*en_US,active.*/ }
     end
   end
 

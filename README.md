@@ -35,7 +35,7 @@ They have to be created before for instance by `puppetlabs-mysql`, `puppetlabs-a
 
 ### Setup Requirements
 
-This `wordpress` module depends on `puppetlabs-stdlib` and `puppet-archive`.
+This `wordpress` module use `cron` service and depends on `puppetlabs-stdlib` and `puppet-archive`
 
 ### Beginning with wordpress
 

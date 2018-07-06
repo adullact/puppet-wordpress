@@ -8,13 +8,13 @@ All notable changes to this project will be documented in this file.
 
 **Bugfixes**
 
+  * #5 Permit to modify hour of update for external_fact.
   * #16 Set `default_locale` to `en_US`.
   * #17 In README add subtitles for different examples of usage.
 
 **Known Issues**
 
   * #1 Fix attribute ensure set to latest from scratch with resources management.
-  * #5 Permit to modify hour of update for external_fact.
   * #15 Fix plugins are installed but not activated.
 
 ## Release 1.0.3

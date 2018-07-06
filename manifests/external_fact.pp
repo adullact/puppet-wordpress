@@ -3,7 +3,10 @@
 #@param settings
 #  Describes all availables settings in this module for all wordpress instances on this node. Defaults to empty hash.
 #
+#@param hour_fact_update
+#  Gives the approximate hour (between 1 and 23) when external fact is update (some random is added).
 class wordpress::external_fact (
+  Integer[1,23] $hour_fact_update,
   Wordpress::Settings $settings = {},
 ) {
 
@@ -33,7 +36,7 @@ class wordpress::external_fact (
     command     => '/usr/local/sbin/external_fact_wordpress.rb > /opt/puppetlabs/facter/facts.d/wordpress.yaml &> /dev/null',
     environment => 'PATH=/usr/local/sbin:/usr/local/bin:/opt/puppetlabs/bin:/usr/sbin:/usr/bin:/sbin:/bin',
     user        => 'root',
-    hour        => '2',
+    hour        => $hour_fact_update,
     minute      => $_minute,
   }
 }

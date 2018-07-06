@@ -10,11 +10,14 @@ All notable changes to this project will be documented in this file.
 
   * #9 Add acceptence tests about ressources.
   * #10 Add acceptence tests about management of several instances.
+  * #13 Update README section Beginning with wordpress.
 
 **Known Issues**
 
   * #1 Fix attribute ensure set to latest from scratch with resources management.
   * #5 Permit to modify hour of update for external_fact.
+  * #15 Fix plugins are installed but not activated.
+  * #16 Set `default_locale` to `en_US`.
 
 ## Release 1.0.2
 

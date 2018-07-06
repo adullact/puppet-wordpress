@@ -30,6 +30,7 @@ This modules does not manage :
  * system account, owner of wordpress files.
  * nginx or apache vhost
  * mariadb or mysql database and user
+ * php install
 
 They have to be created before for instance by `puppetlabs-mysql`, `puppetlabs-apache` and `puppetlabs-account`.
 
@@ -39,25 +40,22 @@ This `wordpress` module depends on `puppetlabs-stdlib` and `puppet-archive`.
 
 ### Beginning with wordpress
 
-The very basic steps needed for a user to get the module up and running. This can include setup steps, if necessary, or it can be an example of the most basic use of the module.
-
-## Usage
-
-Include three to five examples of the most important or common tasks a user can accomplish with your module. Show users how to accomplish more complex tasks that involve different types, classes, and functions working in tandem.
-
-The follwoing code simple download and install `wpcli` :
+The very basic step :
 
 ```
 class { 'wordpress' :
 }
 ```
 
+## Usage
+
 The following code :
-  * download and install `wpcli`.
-  * creates tables in a remote hosted database `wp_mywpname`.
-  * install and configure core wordpress in the last available version.
+  * download and install WP-CLI.
+  * download and install core WordPress in the last available version.
+  * creates tables in an all ready existing database `wp_mywpname`.
+  * configure core WordPress
   * set the title of the instance.
-  * `wpcli` is ran as `wp` user. wordpress files are owned by already existing user `wp`. 
+  * WP-CLI is ran as `wp` user. Files are owned by already existing user `wp`. 
 
 ```
 class { 'wordpress' :
@@ -79,12 +77,13 @@ class { 'wordpress' :
 ```
 
 The following code :
-  * download and install `wpcli`.
-  * creates tables in a remote hosted database `wp_mywpname`.
-  * install and configure core wordpress in the last available version.
+  * download and install WP-CLI.
+  * download and install core WordPress in the last available version.
+  * creates tables in an all ready existing database `wp_mywpname`.
+  * configure core WordPress
   * set the title of the instance.
-  * `wpcli` is ran as `wp` user. wordpress files are owned by already existing user `wp`. 
-  * configure wordpress to update itself to last version available.
+  * WP-CLI is ran as `wp` user. Files are owned by already existing user `wp`. 
+  * enable wordpress internal self update process.
 
 ```
 class { 'wordpress' :
@@ -107,12 +106,14 @@ class { 'wordpress' :
 ```
 
 The following code :
-  * download and install `wpcli`.
-  * creates tables in a remote hosted database `wp_mywpname`.
-  * install and configure core wordpress in the last available version.
+  * download and install WP-CLI.
+  * download and install core WordPress in the last available version.
+  * creates tables in an all ready existing database `wp_mywpname`.
+  * configure core WordPress
   * set the title of the instance.
-  * `wpcli` is ran as `wp` user. wordpress files are owned by already existing user `wp`. 
-  * configure puppet to make wordpress core and language update to last available version at about 3 AM.
+  * WP-CLI is ran as `wp` user. Files are owned by already existing user `wp`. 
+  * enable wordpress internal self update process.
+  * configure puppet to make wordpress core and language update to latest available version at about 3 AM.
 
 If an update occured, you will find in `/var/wordpress_archives` :
  * dump of database that was there before the update.
@@ -137,12 +138,15 @@ class { 'wordpress' :
   }
 }
 ```
+
 The following code :
-  * download and install `wpcli`.
-  * creates tables in a remote hosted database `wp_mywpname`.
-  * install and configure core wordpress in the last available version with french language.
+  * download and install WP-CLI.
+  * download and install core WordPress in the last available version and in french.
+  * creates tables in an all ready existing database `wp_mywpname`.
+  * configure core WordPress
   * set the title of the instance.
-  * `wpcli` is ran as `wp` user. wordpress files are owned by already existing user `wp`. 
+  * WP-CLI is ran as `wp` user. Files are owned by already existing user `wp`. 
+  * enable wordpress internal self update process.
   * manage more than defaults themes and plugins provided with core.
 
 ```

@@ -69,6 +69,14 @@ The PATH where the wpcli tools is deployed. Defaults to '/usr/local/bin/wp'.
 
 Default value: $wordpress::params::default_wpcli_bin
 
+##### `hour_fact_update`
+
+Data type: `Integer[1,23]`
+
+Gives the approximate hour (between 1 and 23) when external fact is update (some random is added). Defaults to 7.
+
+Default value: $wordpress::params::default_hour_fact_update
+
 ### wordpress::cli
 
 Install wpcli tool.
@@ -134,6 +142,12 @@ Data type: `Wordpress::Settings`
 Describes all availables settings in this module for all wordpress instances on this node. Defaults to empty hash.
 
 Default value: {}
+
+##### `hour_fact_update`
+
+Data type: `Integer[1,23]`
+
+Gives the approximate hour (between 1 and 23) when external fact is update (some random is added).
 
 ### wordpress::params
 

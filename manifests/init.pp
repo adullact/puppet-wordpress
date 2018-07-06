@@ -25,11 +25,14 @@
 #  http URL where to download the wpcli tool. Default to 'https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar'.
 #@param wpcli_bin
 #  The PATH where the wpcli tools is deployed. Defaults to '/usr/local/bin/wp'.
+#@param hour_fact_update
+#  Gives the approximate hour (between 1 and 23) when external fact is update (some random is added). Defaults to 7.
 #
 class wordpress (
   Hash $settings = {},
   Pattern['^http'] $wpcli_url = $wordpress::params::default_wpcli_url,
   Pattern['^/'] $wpcli_bin = $wordpress::params::default_wpcli_bin,
+  Integer[1,23] $hour_fact_update = $wordpress::params::default_hour_fact_update,
 ) inherits wordpress::params {
 
   Exec {
@@ -57,9 +60,10 @@ class wordpress (
     wpcli_bin => $wpcli_bin,
   }
 
-  # manage external_fact ll_wordpress
+  # manage external_fact wordpress
   class { 'wordpress::external_fact' :
-    settings => $settings,
+    settings         => $settings,
+    hour_fact_update => $hour_fact_update,
   }
   ->
   exec { 'update external fact wordpress':

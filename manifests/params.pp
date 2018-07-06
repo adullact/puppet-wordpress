@@ -10,7 +10,7 @@ class wordpress::params {
   $default_wpcli_bin = '/usr/local/bin/wp'
 
   $default_owner = 'www-data'
-  $default_locale = 'fr_FR'
+  $default_locale = 'en_US'
   $_rand = fqdn_rand(9999)
   $default_dbprefix = "wp${_rand}_"
 

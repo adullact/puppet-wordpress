@@ -70,6 +70,10 @@ describe 'wordpress class' do
     describe command('curl -L http://localhost') do
       its(:stdout) { should match /.*hola this wordpress instance is installed by puppet.*/ }
     end
+
+    describe command("wp --allow-root --format=csv --path=#{$wp_root} --fields=language,status --status=active language core list") do
+      its(:stdout) { should match /.*en_US,active.*/ }
+    end
   end
 
   context 'with parameter about one wordpress with customized plugins and themes' do
@@ -169,6 +173,7 @@ describe 'wordpress class' do
         settings => {
           'wp2.foo.org' => {
             owner         => 'wp2',
+            locale        => 'fr_FR',
             dbhost        => '127.0.0.1',
             dbname        => 'wordpress2',
             dbuser        => 'wp2userdb',
@@ -217,6 +222,10 @@ describe 'wordpress class' do
       it { should be_owned_by 'wp2' }
       it { should be_grouped_into 'wp2' }
       it { should be_mode 644 }
+    end
+
+    describe command("wp --allow-root --format=csv --path=#{$wp2_root} --fields=language,status --status=active language core list") do
+      its(:stdout) { should match /.*fr_FR,active.*/ }
     end
 
     describe file($wp3_root) do

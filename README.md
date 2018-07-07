@@ -77,7 +77,7 @@ class { 'wordpress' :
 }
 ```
 
-### Typical installation + self update
+### Typical installation + self update by WordPress
 
 The following code :
   * downloads and installs WP-CLI.
@@ -108,6 +108,8 @@ class { 'wordpress' :
 }
 ```
 
+### Typical installation + update by Puppet
+
 The following code :
   * downloads and installs WP-CLI.
   * downloads and installs core WordPress in the last available version.
@@ -115,7 +117,7 @@ The following code :
   * configures core WordPress
   * sets the title of the instance.
   * WP-CLI is ran as `wp` user. Files are owned by already existing user `wp`. 
-  * enables WordPress internal self update process.
+  * disables WordPress internal self update process.
   * configures puppet to make WordPress core and language update to latest available version at about 3 AM.
 
 If an update occured, you will find in `/var/wordpress_archives` :

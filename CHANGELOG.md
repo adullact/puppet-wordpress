@@ -9,6 +9,7 @@ All notable changes to this project will be documented in this file.
 **Bugfixes**
 
   * #19 Fix README in usage with update by Puppet.
+  * #21 Update metadata for release 1.1.1.
 
 **Known Issues**
 

@@ -53,7 +53,7 @@ class { 'wordpress' :
 The following code :
   * downloads and installs WP-CLI.
   * downloads and installs core WordPress in the last available version.
-  * creates tables in an all ready existing database `wp_mywpname`.
+  * creates tables in an already existing database `wp_mywpname`.
   * configures core WordPress
   * sets the title of the instance.
   * WP-CLI is ran as `wp` user. Files are owned by already existing user `wp`. 
@@ -82,11 +82,11 @@ class { 'wordpress' :
 The following code :
   * downloads and installs WP-CLI.
   * downloads and installs core WordPress in the last available version.
-  * creates tables in an all ready existing database `wp_mywpname`.
+  * creates tables in an already existing database `wp_mywpname`.
   * configures core WordPress
   * sets the title of the instance.
   * WP-CLI is ran as `wp` user. Files are owned by already existing user `wp`. 
-  * enables WordPress internal self update process.
+  * enables WordPress internal self update process (disabled by default).
 
 ```
 class { 'wordpress' :
@@ -113,14 +113,15 @@ class { 'wordpress' :
 The following code :
   * downloads and installs WP-CLI.
   * downloads and installs core WordPress in the last available version.
-  * creates tables in an all ready existing database `wp_mywpname`.
+  * creates tables in an already existing database `wp_mywpname`.
   * configures core WordPress
   * sets the title of the instance.
   * WP-CLI is ran as `wp` user. Files are owned by already existing user `wp`. 
   * disables WordPress internal self update process.
-  * configures puppet to make WordPress core and language update to latest available version at about 3 AM.
+  * configures puppet to make WordPress core and language update to latest available version.
 
-If an update occured, you will find in `/var/wordpress_archives` :
+If an update occured (checked one time each day), you will 
+find in `/var/wordpress_archives` :
  * dump of database that was there before the update.
  * archive of files that were there before the update.
 
@@ -149,11 +150,10 @@ class { 'wordpress' :
 The following code :
   * downloads and installs WP-CLI.
   * downloads and installs core WordPress in the last available version and in french.
-  * creates tables in an all ready existing database `wp_mywpname`.
+  * creates tables in an already existing database `wp_mywpname`.
   * configures core WordPress
   * sets the title of the instance.
   * WP-CLI is ran as `wp` user. Files are owned by already existing user `wp`. 
-  * enables WordPress internal self update process.
   * manages more than defaults themes and plugins provided with core.
 
 ```
@@ -186,6 +186,67 @@ class { 'wordpress' :
 }
 ```
 
+### Several installations
+
+The following code makes two installations on same Puppet node with dedicated settings :
+  * only WordPress in `wp2.foo.org` in updated by Puppet, the other is not updated at all.
+  * the two WordPress instances use the same database server.
+  * the list of used plugins and themes configure are differents in each intance.
+
+```
+class { 'wordpress': 
+  settings => {
+    'wp2.foo.org' => {
+      ensure        => 'latest',
+      owner         => 'wp2',
+      locale        => 'fr_FR',
+      dbhost        => 'XX.XX.XX.XX',
+      dbname        => 'wordpress2',
+      dbuser        => 'wp2userdb',
+      dbpasswd      => 'secret_a',
+      wproot        => '/var/www/wp2.foo.org',
+      wptitle       => 'hola this wp2 instance is installed by puppet',
+      wpadminuser   => 'wpadmin',
+      wpadminpasswd => 'secret_b',
+      wpadminemail  => 'bar@foo.org',
+      wpresources   => {
+        plugin => [
+          { name => 'plugin_a', 'ensure' => 'present' },
+          { name => 'plugin_b', 'ensure' => 'absent' },
+        ],
+        theme => [
+          { name => 'themenew_a', 'ensure' => 'present' },
+          { name => 'themeold_a', 'ensure' => 'absent' },
+        ]
+      }
+    },
+    'wp3.foo.org' => {
+      owner         => 'wp3',
+      dbhost        => 'XX.XX.XX.XX',
+      dbname        => 'wordpress3',
+      dbuser        => 'wp3userdb',
+      dbpasswd      => 'secret_c',
+      wproot        => '/var/www/wp3.foo.org',
+      wptitle       => 'hola this wp3 instance is installed by puppet',
+      wpadminuser   => 'wpadmin',
+      wpadminpasswd => 'secret_d',
+      wpadminemail  => 'bar@foo.org',
+      wpresources   => {
+        plugin => [
+          { name => 'plugin_a', 'ensure' => 'present' },
+          { name => 'plugin_b', 'ensure' => 'absent' },
+          { name => 'plugin_c', 'ensure' => 'absent' },
+          { name => 'plugin_d', 'ensure' => 'absent' },
+        ],
+        theme => [
+          { name => 'themenew_b', 'ensure' => 'present' },
+          { name => 'themeold_a', 'ensure' => 'absent' },
+        ]
+      }
+    },
+  }
+}
+```
 
 ## Reference
 
@@ -193,7 +254,7 @@ Details in `REFERENCE.md`.
 
 ## Limitations
 
-This module is tested with following OS :
+This module is tested with following OSes :
   * Ubuntu 16.04
   * Debian 8
   * CentOS 7
@@ -205,6 +266,8 @@ Known bugs are listed in `CHANGELOG.md` file.
 Home at URL https://gitlab.adullact.net/adullact/puppet-wordpress
 
 Issues and MR are wellcome.
+
+Mirrored at URL https://github.com/adullact/puppet-wordpress
 
 ## Release Notes/Contributors/License.
 

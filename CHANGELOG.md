@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file.
 
+## Release 1.1.3
+
+**Features**
+
+**Bugfixes**
+
+  * #23 Add details about settings parameter.
+
+**Known Issues**
+
+  * #1 Fix resources attribute ensure set to latest from scratch.
+
 ## Release 1.1.2
 
 **Features**

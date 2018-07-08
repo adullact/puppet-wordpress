@@ -180,9 +180,9 @@ class { 'wordpress' :
           { name => 'themenew', 'ensure' => 'present' },
           { name => 'themeold', 'ensure' => 'absent' },
         ]
-      }
-    }
-  }
+      },
+    },
+  },
 }
 ```
 
@@ -211,14 +211,14 @@ class { 'wordpress':
       wpadminemail  => 'bar@foo.org',
       wpresources   => {
         plugin => [
-          { name => 'plugin_a', 'ensure' => 'present' },
+          { name => 'plugin_a', },
           { name => 'plugin_b', 'ensure' => 'absent' },
         ],
         theme => [
-          { name => 'themenew_a', 'ensure' => 'present' },
+          { name => 'themenew_a', },
           { name => 'themeold_a', 'ensure' => 'absent' },
         ]
-      }
+      },
     },
     'wp3.foo.org' => {
       owner         => 'wp3',
@@ -233,18 +233,18 @@ class { 'wordpress':
       wpadminemail  => 'bar@foo.org',
       wpresources   => {
         plugin => [
-          { name => 'plugin_a', 'ensure' => 'present' },
-          { name => 'plugin_b', 'ensure' => 'absent' },
-          { name => 'plugin_c', 'ensure' => 'absent' },
+          { name => 'plugin_a', },
+          { name => 'plugin_b', },
+          { name => 'plugin_c', },
           { name => 'plugin_d', 'ensure' => 'absent' },
         ],
         theme => [
-          { name => 'themenew_b', 'ensure' => 'present' },
+          { name => 'themenew_b', },
           { name => 'themeold_a', 'ensure' => 'absent' },
         ]
-      }
+      },
     },
-  }
+  },
 }
 ```
 

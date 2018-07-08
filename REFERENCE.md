@@ -20,25 +20,70 @@ Install wpcli tool, use it to download wordpress core, create tables in database
 
 #### Examples
 
-##### Configure one wordpress instance for URL wordpress.foo.org with remote mariadb database inside an already configurer vhosts root '/var/www/wordpress.foo.org'.
+##### 
 
 ```puppet
-class { 'wordpress':
-  settings => {
-    'wordpress.foo.org' => {
-      owner         => 'wp',
-      dbhost        => 'XX.XX.XX.XX',
-      dbname        => 'wordpress',
-      dbuser        => 'wpuserdb',
-      dbpasswd      => 'kiki',
-      wproot        => '/var/www/wordpress.foo.org',
-      wptitle       => 'hola this wordpress instance is installed by puppet',
-      wpadminuser   => 'wpadmin',
-      wpadminpasswd => 'lolo',
-      wpadminemail  => 'bar@foo.org',
+Configure one wordpress instance for URL wordpress.foo.org with remote mariadb database inside an already configurer vhosts root '/var/www/wordpress.foo.org'.
+
+  class { 'wordpress':
+    settings => {
+      'wordpress.foo.org' => {
+        owner         => 'wp',
+        dbhost        => 'XX.XX.XX.XX',
+        dbname        => 'wordpress',
+        dbuser        => 'wpuserdb',
+        dbpasswd      => 'kiki',
+        wproot        => '/var/www/wordpress.foo.org',
+        wptitle       => 'hola this wordpress instance is installed by puppet',
+        wpadminuser   => 'wpadmin',
+        wpadminpasswd => 'lolo',
+        wpadminemail  => 'bar@foo.org',
+      }
     }
   }
-}
+
+Bellow the datatype of `$settings`. Parameters without a default value are mandatory unless otherwise stated.
+
+  Hash[
+    String,                  # URL of the WordPress instance
+    Hash[
+      Enum[
+        'ensure',            # Possible values : present, absent, lastest (defaults present).
+        'wproot',            # Path where is located root of WordPress instance.
+        'owner',             # User that own files of WordPress instance.
+        'locale',            # Language used by WordPress instance (defaults en_US).
+        'dbhost',            # Address of the database server (must be MySQL or MariaDB).
+        'dbname',            # Name of the database where tables of WordPress instance are stored.
+        'dbuser',            # User of the database used by wordpress to connect to the database server.
+        'dbpasswd',          # Password of the user of the database.
+        'dbprefix',          # Set table prefix (defaults wp<random_number_with_4_digits>).
+        'wpselfupdate',      # Possible values : disabled , enabled (defaults disabled).
+        'wptitle',           # Init title of the WordPress instance.
+        'wpadminuser',       # Name of admin account of the WordPress instance.
+        'wpadminpasswd',     # Password of the admin account of the WordPress instance.
+        'wpadminemail',      # email address of the admin account.
+        'wpresources',       # Settings for plugins and themes (not mandatory).
+      ],
+      Variant[
+        String,
+        Hash[
+          Enum[
+            'plugin',
+            'theme',
+          ],
+          Array[
+            Hash[
+              Enum[
+                'name',      # Name of the plugin or theme
+                'ensure',    # Possible values : present, absent, latest (defaults present).
+              ],
+              String
+              ]
+            ]
+          ]
+        ]
+      ]
+    ]
 ```
 
 #### Parameters
@@ -57,7 +102,7 @@ Default value: {}
 
 Data type: `Pattern['^http']`
 
-http URL where to download the wpcli tool. Default to 'https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar'.
+Gives the address from which to download the WP-CLI tool. Defaults to 'https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar'.
 
 Default value: $wordpress::params::default_wpcli_url
 
@@ -65,7 +110,7 @@ Default value: $wordpress::params::default_wpcli_url
 
 Data type: `Pattern['^/']`
 
-The PATH where the wpcli tools is deployed. Defaults to '/usr/local/bin/wp'.
+Gives the path where the WP-CLI tools is deployed. Defaults to '/usr/local/bin/wp'.
 
 Default value: $wordpress::params::default_wpcli_bin
 
@@ -73,7 +118,7 @@ Default value: $wordpress::params::default_wpcli_bin
 
 Data type: `Integer[1,23]`
 
-Gives the approximate hour (between 1 and 23) when external fact is update (some random is added). Defaults to 7.
+Gives the time (hour between 1 and 23) at which the update of external fact is done (use cron). Defaults to 7.
 
 Default value: $wordpress::params::default_hour_fact_update
 

@@ -8,6 +8,7 @@ All notable changes to this project will be documented in this file.
 
 **Bugfixes**
 
+  * #20 Remove flag --allow-root when possible with WP-CLI.
   * #23 Add details about settings parameter.
   * #24 Modify default owner for CentOS.
 

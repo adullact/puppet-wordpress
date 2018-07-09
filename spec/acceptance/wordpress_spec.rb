@@ -4,6 +4,13 @@ $wpcli_bin = '/usr/local/bin/wp'
 $wp_root = '/var/www/wordpress.foo.org'
 $wp2_root = '/var/www/wp2.foo.org'
 $wp3_root = '/var/www/wp3.foo.org'
+if fact('osfamily') == 'Debian'
+  $crontabs_path='/var/spool/cron/crontabs'
+elsif fact('osfamily') == 'RedHat'
+  $crontabs_path='/var/spool/cron/'
+else
+  $crontabs_path='/unsupported_OS'
+end
 
 describe 'wordpress class' do
 
@@ -46,7 +53,7 @@ describe 'wordpress class' do
       apply_manifest(pp, :catch_changes  => true)
     end
 
-    describe file('/var/spool/cron/crontabs/root') do
+    describe file("#{$crontabs_path}/root") do
       it { should contain("7 * * * /usr/local/sbin/external_fact_wordpress.rb > /opt/puppetlabs/facter/facts.d/wordpress.yaml") }
     end
 
@@ -105,7 +112,7 @@ describe 'wordpress class' do
       apply_manifest(pp, :catch_changes  => true)
     end
 
-    describe file('/var/spool/cron/crontabs/root') do
+    describe file("#{$crontabs_path}/root") do
       it { should contain("3 * * * /usr/local/sbin/external_fact_wordpress.rb > /opt/puppetlabs/facter/facts.d/wordpress.yaml") }
     end
   end

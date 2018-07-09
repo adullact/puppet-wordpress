@@ -9,6 +9,7 @@ All notable changes to this project will be documented in this file.
 **Bugfixes**
 
   * #23 Add details about settings parameter.
+  * #24 Modify default owner for CentOS.
 
 **Known Issues**
 

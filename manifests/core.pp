@@ -176,6 +176,8 @@ class wordpress::core (
 
         $_wp_core_update_status = $facts['wordpress']["${_wp_servername}"]['core']['update']
         if $_wp_core_update_status != 'none' {
+
+          # Export and Archive is done as root because of mode 0700 for directory $wordpress_archives 
           file { $::wordpress::params::wordpress_archives :
             ensure => 'directory',
             mode   => '0700',
@@ -198,21 +200,21 @@ class wordpress::core (
           case $_locale {
             'en_US': {
               exec { "${_wp_servername} > Upgrade core wordpress" :
-                command => "${wpcli_bin} --allow-root --path=${_wp_root} core update",
+                command => "${wpcli_bin} --path=${_wp_root} core update",
                 user    => $_owner,
                 require => Exec["${_wp_servername} > Archive files before upgrade"],
               }
             }
             default: {
               exec { "${_wp_servername} > Upgrade core wordpress" :
-                command => "${wpcli_bin} --allow-root --path=${_wp_root} core update --locale=${_locale}",
+                command => "${wpcli_bin} --path=${_wp_root} core update --locale=${_locale}",
                 user    => $_owner,
                 require => Exec["${_wp_servername} > Archive files before upgrade"],
               }
             }
           }
           exec { "${_wp_servername} > Upgrade database structure" :
-            command => "${wpcli_bin} --allow-root --path=${_wp_root} core update-db",
+            command => "${wpcli_bin} --path=${_wp_root} core update-db",
             user    => $_owner,
             require => Exec["${_wp_servername} > Upgrade core wordpress"],
             notify  => Exec['update external fact wordpress'],
@@ -223,7 +225,7 @@ class wordpress::core (
         $_wp_language_update_status =  $facts['wordpress']["${_wp_servername}"]['language']['update']
         if $_wp_language_update_status != 'none' {
           exec { "${_wp_servername} > Update language" :
-            command => "${wpcli_bin} --allow-root --path=${_wp_root} language core update",
+            command => "${wpcli_bin} --path=${_wp_root} language core update",
             user    => $_owner,
             require => Exec["${_wp_servername} > Update core wordpress"],
             notify  => Exec['update external fact wordpress'],

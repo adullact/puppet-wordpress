@@ -12,6 +12,13 @@
 * [`wordpress::params`](#wordpressparams): set defaults values for some variables and parameters.
 * [`wordpress::resource`](#wordpressresource): download and manage resources aka plugins and themes.
 
+**Defined types**
+
+* [`wordpress::resource::activate`](#wordpressresourceactivate): Activates an already installed resource aka plugin or theme.
+* [`wordpress::resource::install`](#wordpressresourceinstall): Downloads and installs a resource aka plugin or theme.
+* [`wordpress::resource::uninstall`](#wordpressresourceuninstall): Uninstall an already installed resource aka plugin or theme.
+* [`wordpress::resource::update`](#wordpressresourceupdate): Updates an already installed resource aka plugin or theme.
+
 ## Classes
 
 ### wordpress
@@ -45,7 +52,7 @@ Configure one wordpress instance for URL wordpress.foo.org with remote mariadb d
 Bellow the datatype of `$settings`. Parameters without a default value are mandatory unless otherwise stated.
 
   Hash[
-    String,                  # URL of the WordPress instance
+    String,                  # The URI of the WordPress instance (like : www.foo.org).
     Hash[
       Enum[
         'ensure',            # Possible values : present, absent, lastest (defaults present).
@@ -219,4 +226,182 @@ Default value: {}
 Data type: `Pattern['^/']`
 
 The PATH where the wpcli tools is deployed. Defaults to '/usr/local/bin/wp'.
+
+## Defined types
+
+### wordpress::resource::activate
+
+Activates an already installed resource aka plugin or theme.
+
+#### Parameters
+
+The following parameters are available in the `wordpress::resource::activate` defined type.
+
+##### `wp_servername`
+
+Data type: `String`
+
+The URI of the WordPress instance (like : www.foo.org).
+
+##### `wp_resource_type`
+
+Data type: `String`
+
+The type of resource aka plugin or theme.
+
+##### `wp_resource_name`
+
+Data type: `String`
+
+The name of the resource. You can find the name in column `slug` in output of `wp plugin search <search>`.
+
+##### `wp_root`
+
+Data type: `String`
+
+The root path of the WordPress instance.
+
+##### `wpcli_bin`
+
+Data type: `String`
+
+The path of the WP-CLI tool.
+
+##### `owner`
+
+Data type: `String`
+
+The OS account, owner of files of the WordPress instance.
+
+### wordpress::resource::install
+
+Downloads and installs a resource aka plugin or theme.
+
+#### Parameters
+
+The following parameters are available in the `wordpress::resource::install` defined type.
+
+##### `wp_servername`
+
+Data type: `String`
+
+The URI of the WordPress instance (like : www.foo.org).
+
+##### `wp_resource_type`
+
+Data type: `String`
+
+The type of resource aka plugin or theme.
+
+##### `wp_resource_name`
+
+Data type: `String`
+
+The name of the resource. You can find the name in column `slug` in output of `wp plugin search <search>`.
+
+##### `wp_root`
+
+Data type: `String`
+
+The root path of the WordPress instance.
+
+##### `wpcli_bin`
+
+Data type: `String`
+
+The path of the WP-CLI tool.
+
+##### `owner`
+
+Data type: `String`
+
+The OS account, owner of files of the WordPress instance.
+
+### wordpress::resource::uninstall
+
+Uninstall an already installed resource aka plugin or theme.
+
+#### Parameters
+
+The following parameters are available in the `wordpress::resource::uninstall` defined type.
+
+##### `wp_servername`
+
+Data type: `String`
+
+The URI of the WordPress instance (like : www.foo.org).
+
+##### `wp_resource_type`
+
+Data type: `String`
+
+The type of resource aka plugin or theme.
+
+##### `wp_resource_name`
+
+Data type: `String`
+
+The name of the resource. You can find the name in column `slug` in output of `wp plugin search <search>`.
+
+##### `wp_root`
+
+Data type: `String`
+
+The root path of the WordPress instance.
+
+##### `wpcli_bin`
+
+Data type: `String`
+
+The path of the WP-CLI tool.
+
+##### `owner`
+
+Data type: `String`
+
+The OS account, owner of files of the WordPress instance.
+
+### wordpress::resource::update
+
+Updates an already installed resource aka plugin or theme.
+
+#### Parameters
+
+The following parameters are available in the `wordpress::resource::update` defined type.
+
+##### `wp_servername`
+
+Data type: `String`
+
+The URI of the WordPress instance (like : www.foo.org).
+
+##### `wp_resource_type`
+
+Data type: `String`
+
+The type of resource aka plugin or theme.
+
+##### `wp_resource_name`
+
+Data type: `String`
+
+The name of the resource. You can find the name in column `slug` in output of `wp plugin search <search>`.
+
+##### `wp_root`
+
+Data type: `String`
+
+The root path of the WordPress instance.
+
+##### `wpcli_bin`
+
+Data type: `String`
+
+The path of the WP-CLI tool.
+
+##### `owner`
+
+Data type: `String`
+
+The OS account, owner of files of the WordPress instance.
 

@@ -177,7 +177,7 @@ class { 'wordpress' :
           { name => 'plugin2', 'ensure' => 'absent' },
         ],
         theme => [
-          { name => 'themenew', 'ensure' => 'present' },
+          { name => 'themenew', 'ensure' => 'latest' },
           { name => 'themeold', 'ensure' => 'absent' },
         ]
       },
@@ -211,7 +211,7 @@ class { 'wordpress':
       wpadminemail  => 'bar@foo.org',
       wpresources   => {
         plugin => [
-          { name => 'plugin_a', },
+          { name => 'plugin_a', 'ensure' => 'latest' },
           { name => 'plugin_b', 'ensure' => 'absent' },
         ],
         theme => [
@@ -265,7 +265,7 @@ Known bugs are listed in `CHANGELOG.md` file.
 
 Home at URL https://gitlab.adullact.net/adullact/puppet-wordpress
 
-Issues and MR are wellcome.
+Issues and MR are welcome.
 
 Mirrored at URL https://github.com/adullact/puppet-wordpress
 

@@ -29,7 +29,7 @@ describe 'wordpress class' do
     end
   end
 
-  context 'with parameters about one wordpress with default plugins and themes' do
+  context 'with parameters about one wordpress with defaults plugins and themes' do
     it 'applies idempotently' do
       pp = <<-EOS
       class { 'wordpress': 
@@ -87,7 +87,7 @@ describe 'wordpress class' do
     end
   end
 
-  context 'with parameters about one wordpress with custon hour of external fact update' do
+  context 'with parameters about one wordpress instance with custon hour of external fact update' do
     it 'applies idempotently' do
       pp = <<-EOS
       class { 'wordpress': 
@@ -117,7 +117,7 @@ describe 'wordpress class' do
     end
   end
 
-  context 'with parameter about one wordpress with customized plugins and themes' do
+  context 'with parameter about one wordpress with customs plugins and themes' do
     it 'applies idempotently' do
       pp = <<-EOS
       class { 'wordpress': 
@@ -135,7 +135,7 @@ describe 'wordpress class' do
             wpadminemail  => 'bar@foo.org',
             wpresources   => {
               plugin => [
-                {name => 'akismet', ensure => 'present'},
+                {name => 'akismet', ensure => 'latest'},
                 {name => 'wp-piwik', ensure => 'present'},
                 {name => 'hello', ensure => 'absent'},
               ],
@@ -196,9 +196,13 @@ describe 'wordpress class' do
     describe command("/usr/local/bin/wp --allow-root --format=csv --path=#{$wp_root} --fields=name,status theme list") do
       its(:stdout) { should_not match /.*twentysixteen,active.*/ }
     end
+
+    describe file("#{$crontabs_path}/root") do
+      it { should contain("7 * * * /usr/local/sbin/external_fact_wordpress.rb > /opt/puppetlabs/facter/facts.d/wordpress.yaml") }
+    end
   end
 
-  context 'with parameters about two wordpress instances with default plugins and themes' do
+  context 'with parameters about two wordpress instances with customs locales' do
     it 'applies idempotently' do
       pp = <<-EOS
       class { 'wordpress': 
@@ -215,6 +219,13 @@ describe 'wordpress class' do
             wpadminuser   => 'wpadmin',
             wpadminpasswd => 'lolo',
             wpadminemail  => 'bar@foo.org',
+            wpresources   => {
+              plugin => [
+                {name => 'akismet', ensure => 'latest'},
+                {name => 'wp-piwik', ensure => 'present'},
+                {name => 'hello', ensure => 'absent'},
+              ],
+            },
           },
           'wp3.foo.org' => {
             owner         => 'wp3',
@@ -259,6 +270,15 @@ describe 'wordpress class' do
     describe command("wp --allow-root --format=csv --path=#{$wp2_root} --fields=language,status --status=active language core list") do
       its(:stdout) { should match /.*fr_FR,active.*/ }
     end
+    describe command("/usr/local/bin/wp --allow-root --format=csv --path=#{$wp2_root} --fields=name,status plugin list") do
+      its(:stdout) { should match /.*akismet,active.*/ }
+    end
+    describe command("/usr/local/bin/wp --allow-root --format=csv --path=#{$wp2_root} --fields=name,status plugin list") do
+      its(:stdout) { should match /.*wp-piwik,active.*/ }
+    end
+    describe command("/usr/local/bin/wp --allow-root --format=csv --path=#{$wp2_root} --fields=name,status plugin list") do
+      its(:stdout) { should_not match /.*hello,.*/ }
+    end
 
     describe file($wp3_root) do
       it { should be_directory }
@@ -279,7 +299,7 @@ describe 'wordpress class' do
     end
   end
 
-  context 'with buggy parameter' do
+  context 'with a buggy parameter' do
     it 'is expected to get error message' do
       pp = <<-EOS
       class { 'wordpress': 

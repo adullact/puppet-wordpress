@@ -24,7 +24,7 @@
 #  Bellow the datatype of `$settings`. Parameters without a default value are mandatory unless otherwise stated.
 #
 #    Hash[
-#      String,                  # URL of the WordPress instance
+#      String,                  # The URI of the WordPress instance (like : www.foo.org).
 #      Hash[
 #        Enum[
 #          'ensure',            # Possible values : present, absent, lastest (defaults present).

@@ -1,7 +1,7 @@
-#@summary deploy files to forge an external fact named 'wordpress'
+#@summary Deploy files to forge an external fact named 'wordpress'
 #
 #@param settings
-#  Describes all availables settings in this module for all wordpress instances on this node. Defaults to empty hash.
+#  Describes all availables settings in this module for all WordPress instances on this node. Defaults to empty hash.
 #
 #@param hour_fact_update
 #  Gives the approximate hour (between 1 and 23) when external fact is update (some random is added).

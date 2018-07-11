@@ -1,7 +1,7 @@
-#@summary use wpcli to download wordpress core, create tables in database and configure wordpress. 
+#@summary Use WP-CLI to download last version of WordPress core, create tables in database and configure WordPress. 
 #
 #@param wpcli_bin 
-#  The PATH where the wpcli tools is deployed.
+#  The PATH where the WP-CLI tools is deployed.
 #
 #@param settings
 #  Describes all availables settings in this module for all wordpress instances on this node. Defaults to empty hash.

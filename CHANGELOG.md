@@ -8,7 +8,8 @@ All notable changes to this project will be documented in this file.
 
 **Bugfixes**
 
-  * #1 Fix resources attribute ensure set to latest from scratch.
+  * #1  Fix resources attribute ensure set to latest from scratch.
+  * #27 Fix typo in puppet strings.
 
 **Known Issues**
 

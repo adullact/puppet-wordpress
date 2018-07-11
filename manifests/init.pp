@@ -1,8 +1,8 @@
 #@summary
-#  Install wpcli tool, use it to download wordpress core, create tables in database, configure wordpress and manage plugins and themes.
+#  Install WP-CLI tool, use it to download wordpress core, create tables in database, configure WordPress and manage plugins and themes.
 #
 #@example 
-#  Configure one wordpress instance for URL wordpress.foo.org with remote mariadb database inside an already configurer vhosts root '/var/www/wordpress.foo.org'.
+#  Configure one WordPress instance for URL wordpress.foo.org by using already existing database server and database account and web server with vhost root '/var/www/wordpress.foo.org'.
 #
 #    class { 'wordpress': 
 #      settings => {

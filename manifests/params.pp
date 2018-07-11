@@ -1,4 +1,4 @@
-#@summary set defaults values for some variables and parameters.
+#@summary Sets defaults values for some variables and parameters.
 #
 class wordpress::params {
 

@@ -5,11 +5,11 @@
 
 **Classes**
 
-* [`wordpress`](#wordpress): Install wpcli tool, use it to download wordpress core, create tables in database, configure wordpress and manage plugins and themes.
-* [`wordpress::cli`](#wordpresscli): Install wpcli tool.
-* [`wordpress::core`](#wordpresscore): use wpcli to download wordpress core, create tables in database and configure wordpress.
-* [`wordpress::external_fact`](#wordpressexternal_fact): deploy files to forge an external fact named 'wordpress'
-* [`wordpress::params`](#wordpressparams): set defaults values for some variables and parameters.
+* [`wordpress`](#wordpress): Install WP-CLI tool, use it to download wordpress core, create tables in database, configure WordPress and manage plugins and themes.
+* [`wordpress::cli`](#wordpresscli): Install lastest WP-CLI tool.
+* [`wordpress::core`](#wordpresscore): Use WP-CLI to download last version of WordPress core, create tables in database and configure WordPress.
+* [`wordpress::external_fact`](#wordpressexternal_fact): Deploy files to forge an external fact named 'wordpress'
+* [`wordpress::params`](#wordpressparams): Sets defaults values for some variables and parameters.
 * [`wordpress::resource`](#wordpressresource): download and manage resources aka plugins and themes.
 
 **Defined types**
@@ -23,14 +23,14 @@
 
 ### wordpress
 
-Install wpcli tool, use it to download wordpress core, create tables in database, configure wordpress and manage plugins and themes.
+Install WP-CLI tool, use it to download wordpress core, create tables in database, configure WordPress and manage plugins and themes.
 
 #### Examples
 
 ##### 
 
 ```puppet
-Configure one wordpress instance for URL wordpress.foo.org with remote mariadb database inside an already configurer vhosts root '/var/www/wordpress.foo.org'.
+Configure one WordPress instance for URL wordpress.foo.org by using already existing database server and database account and web server with vhost root '/var/www/wordpress.foo.org'.
 
   class { 'wordpress':
     settings => {
@@ -131,7 +131,7 @@ Default value: $wordpress::params::default_hour_fact_update
 
 ### wordpress::cli
 
-Install wpcli tool.
+Install lastest WP-CLI tool.
 
 #### Parameters
 
@@ -159,7 +159,7 @@ Default value: $wordpress::params::default_wpcli_ensure
 
 ### wordpress::core
 
-use wpcli to download wordpress core, create tables in database and configure wordpress.
+Use WP-CLI to download last version of WordPress core, create tables in database and configure WordPress.
 
 #### Parameters
 
@@ -169,7 +169,7 @@ The following parameters are available in the `wordpress::core` class.
 
 Data type: `Pattern['^/']`
 
-The PATH where the wpcli tools is deployed.
+The PATH where the WP-CLI tools is deployed.
 
 ##### `settings`
 
@@ -181,7 +181,7 @@ Default value: {}
 
 ### wordpress::external_fact
 
-deploy files to forge an external fact named 'wordpress'
+Deploy files to forge an external fact named 'wordpress'
 
 #### Parameters
 
@@ -191,7 +191,7 @@ The following parameters are available in the `wordpress::external_fact` class.
 
 Data type: `Wordpress::Settings`
 
-Describes all availables settings in this module for all wordpress instances on this node. Defaults to empty hash.
+Describes all availables settings in this module for all WordPress instances on this node. Defaults to empty hash.
 
 Default value: {}
 
@@ -203,7 +203,7 @@ Gives the approximate hour (between 1 and 23) when external fact is update (some
 
 ### wordpress::params
 
-set defaults values for some variables and parameters.
+Sets defaults values for some variables and parameters.
 
 ### wordpress::resource
 

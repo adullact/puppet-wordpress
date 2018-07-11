@@ -1,5 +1,5 @@
 #@summary
-#  Install wpcli tool.
+#  Install lastest WP-CLI tool.
 #
 #@param wpcli_url
 #  http URL where to download the wpcli tool.

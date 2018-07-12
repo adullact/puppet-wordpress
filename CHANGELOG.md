@@ -11,6 +11,7 @@ All notable changes to this project will be documented in this file.
   * #1  Fix resources attribute ensure set to latest from scratch.
   * #27 Fix typo in puppet strings.
   * #28 Fix WordPress core attribute ensure set to latest from scratch.
+  * #30 Fix missing assume yes answer in `spec_helper_acceptance.rb`.
 
 **Known Issues**
 

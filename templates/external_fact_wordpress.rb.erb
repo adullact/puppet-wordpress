@@ -31,7 +31,7 @@ for site in wproot.keys
         if version =~ /^[\d\.]+$/
           wordpress["#{site}"]['core']['version'] = version
         else
-          wordpress["#{site}"]['core']['version'] = 'unexpected value #{version}'
+          wordpress["#{site}"]['core']['version'] = "unexpected value #{version}"
         end
   
       end
@@ -51,7 +51,7 @@ for site in wproot.keys
         if update =~ /^Success: WordPress is at the latest version/
           wordpress["#{site}"]['core']['update'] = 'none'
         else
-          wordpress["#{site}"]['core']['update'] = '#{update}'
+          wordpress["#{site}"]['core']['update'] = "#{update}"
         end
   
       end

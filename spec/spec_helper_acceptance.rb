@@ -24,7 +24,7 @@ RSpec.configure do |c|
 
       if host[:platform] =~ %r{debian-8-amd64}
         on(host, 'apt-get update', acceptable_exit_codes: [0]).stdout
-        on(host, 'apt install php5-cli php5-mysql', acceptable_exit_codes: [0]).stdout
+        on(host, 'apt install php5-cli php5-mysql --yes', acceptable_exit_codes: [0]).stdout
         # workaround the apache moduel try to install the following debs and fail.
         on(host, 'apt install libapache2-mod-php5 apache2-mpm-itk --yes', acceptable_exit_codes: [0]).stdout
         # curl is used in tests to access at a wordpress newly installed

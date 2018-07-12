@@ -10,6 +10,7 @@ All notable changes to this project will be documented in this file.
 
   * #1  Fix resources attribute ensure set to latest from scratch.
   * #27 Fix typo in puppet strings.
+  * #28 Fix WordPress core attribute ensure set to latest from scratch.
 
 **Known Issues**
 

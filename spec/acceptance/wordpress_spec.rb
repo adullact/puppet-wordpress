@@ -4,6 +4,7 @@ $wpcli_bin = '/usr/local/bin/wp'
 $wp_root = '/var/www/wordpress.foo.org'
 $wp2_root = '/var/www/wp2.foo.org'
 $wp3_root = '/var/www/wp3.foo.org'
+$wparchives = '/var/wordpress_archives'
 if fact('osfamily') == 'Debian'
   $crontabs_path='/var/spool/cron/crontabs'
 elsif fact('osfamily') == 'RedHat'
@@ -208,6 +209,7 @@ describe 'wordpress class' do
       class { 'wordpress': 
         settings => {
           'wp2.foo.org' => {
+            ensure        => 'latest',
             owner         => 'wp2',
             locale        => 'fr_FR',
             dbhost        => '127.0.0.1',
@@ -278,6 +280,19 @@ describe 'wordpress class' do
     end
     describe command("/usr/local/bin/wp --allow-root --format=csv --path=#{$wp2_root} --fields=name,status plugin list") do
       its(:stdout) { should_not match /.*hello,.*/ }
+    end
+
+    describe file($wparchives) do
+      it { should be_directory }
+      it { should be_owned_by 'root' }
+      it { should be_grouped_into 'root' }
+      it { should be_mode 700 }
+    end
+    describe command("ls #{$wparchives}") do
+      its(:stdout) { should match /.*wordpress2.*sql.*/ }
+    end
+    describe command("ls #{$wparchives}") do
+      its(:stdout) { should match /.*wp2\.foo\.org.*\.tar\.gz.*/ }
     end
 
     describe file($wp3_root) do

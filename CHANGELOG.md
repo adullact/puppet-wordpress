@@ -14,6 +14,7 @@ All notable changes to this project will be documented in this file.
   * #29 Fix external fact variable extrapolation.
   * #30 Fix missing assume yes answer in `spec_helper_acceptance.rb`.
   * #31 Add note about private aspect in puppet string.
+  * #32 Fix color in wp core check-update can mess up the data in the fact.
 
 **Known Issues**
 

@@ -6,6 +6,7 @@
 #@param settings
 #  Describes all availables settings in this module for all wordpress instances on this node. Defaults to empty hash.
 #
+#@note This class should be considered as private.
 class wordpress::core (
   Pattern['^/'] $wpcli_bin,
   Wordpress::Settings $settings = {},
@@ -47,108 +48,23 @@ class wordpress::core (
 
     case $_ensure {
       'present': {
-
-        # download wordpress is path defined as wordpress root for the instance ${_wp_servername}
-
-        case $_locale {
-          'en_US': {
-            exec { "${_wp_servername} > Download core":
-              command => "${wpcli_bin} core download",
-              cwd     => $_wp_root,
-              creates => "${_wp_root}/wp-admin",
-              user    => $_owner,
-            }
-          }
-          default: {
-            exec { "${_wp_servername} > Download core":
-              command => "${wpcli_bin} core download --locale=${_locale}",
-              cwd     => $_wp_root,
-              creates => "${_wp_root}/wp-admin",
-              user    => $_owner,
-            }
-          }
+        wordpress::core::install { $_wp_servername :
+          wp_servername => $_wp_servername,
+          wp_root       => $_wp_root,
+          owner         => $_owner,
+          locale        => $_locale,
+          db_host       => $_db_host,
+          db_name       => $_db_name,
+          db_user       => $_db_user,
+          db_passwd     => $_db_passwd,
+          dbprefix      => $_dbprefix,
+          wp_title      => $_wp_title,
+          wp_admin      => $_wp_admin,
+          wp_passwd     => $_wp_passwd,
+          wp_mail       => $_wp_mail,
+          wpselfupdate  => $_wpselfupdate,
+          wpcli_bin     => $wpcli_bin,
         }
-
-        # creates the first wp-config.php of the new wordpress installation
-        # and then ensure the content stay well configured for the instance ${_wp_servername}
-
-        exec { "${_wp_servername} > Configure core":
-          command => "${wpcli_bin} core config --dbhost=${_db_host} --dbname=${_db_name} --dbuser=${_db_user} --dbpass=${_db_passwd} --dbprefix=${_dbprefix} --skip-check --force",
-          cwd     => $_wp_root,
-          creates => "${_wp_root}/wp-config.php",
-          user    => $_owner,
-          notify  => Exec['update external fact wordpress'],
-        }
-        ->
-        file_line {"${_wp_servername} > set DB_NAME to ${_db_name}":
-          ensure => present,
-          path   => "${_wp_root}/wp-config.php",
-          line   => "define( 'DB_NAME', '${_db_name}' );",
-          match  => '^define\( \'DB_NAME\',',
-        }
-        ->
-        file_line {"${_wp_servername} > set DB_USER to ${_db_user}":
-          ensure => present,
-          path   => "${_wp_root}/wp-config.php",
-          line   => "define( 'DB_USER', '${_db_user}' );",
-          match  => '^define\( \'DB_USER\',',
-        }
-        ->
-        file_line {"${_wp_servername} > set DB_PASSWORD":
-          ensure => present,
-          path   => "${_wp_root}/wp-config.php",
-          line   => "define( 'DB_PASSWORD', '${_db_passwd}' );",
-          match  => '^define\( \'DB_PASSWORD\',',
-        }
-        ->
-        file_line {"${_wp_servername} > set DB_HOST to ${_db_host}":
-          ensure => present,
-          path   => "${_wp_root}/wp-config.php",
-          line   => "define( 'DB_HOST', '${_db_host}' );",
-          match  => '^define\( \'DB_HOST\',',
-        }
-        ->
-        # the database, granted user and credentials must be already created by other process
-        # it creates all tables and data structure for the instannce ${_wp_servername}
-        exec { "${_wp_servername} > Create core tables":
-          command     => "${wpcli_bin} core install --url=${_wp_servername} --title=\"${_wp_title}\" --admin_user=${_wp_admin} --admin_password=${_wp_passwd} --admin_email=${_wp_mail} --skip-email",
-          cwd         => $_wp_root,
-          user        => $_owner,
-          subscribe   => [
-            Exec["${_wp_servername} > Configure core"],
-            File_line["${_wp_servername} > set DB_NAME to ${_db_name}"],
-            File_line["${_wp_servername} > set DB_USER to ${_db_user}"],
-            File_line["${_wp_servername} > set DB_PASSWORD"],
-            File_line["${_wp_servername} > set DB_HOST to ${_db_host}"],
-          ],
-          refreshonly => true,
-          notify      => Exec['update external fact wordpress'],
-        }
-
-        case $_wpselfupdate {
-          'enabled': {
-            file_line { "${_wp_servername} > set AUTOMATIC_UPDATER_DISABLED to false":
-              ensure  => present,
-              path    => "${_wp_root}/wp-config.php",
-              line    => "define( 'AUTOMATIC_UPDATER_DISABLED', 'false' );",
-              match   => '^define\( \'AUTOMATIC_UPDATER_DISABLED\',',
-              require => Exec["${_wp_servername} > Configure core"],
-            }
-          }
-          'disabled': {
-            file_line { "${_wp_servername} > set AUTOMATIC_UPDATER_DISABLED to true":
-              ensure  => present,
-              path    => "${_wp_root}/wp-config.php",
-              line    => "define( 'AUTOMATIC_UPDATER_DISABLED', 'true' );",
-              match   => '^define\( \'AUTOMATIC_UPDATER_DISABLED\',',
-              require => Exec["${_wp_servername} > Configure core"],
-            }
-          }
-          default: {
-            fail("unexpected value wpselfupdate parameter must be <disabled|enabled>, got '${_wpselfupdate}'")
-          }
-        }
-
       }
       'absent': {
 
@@ -165,70 +81,56 @@ class wordpress::core (
         }
       }
       'latest': {
-
-        # four steps :
-        # 1. make a backup
-        # 2. upgrade core wp
-        # 3. upgrade database
-        # 4. upgrade language
-
-        $_date = strftime('%Y-%m-%d')
-
-        $_wp_core_update_status = $facts['wordpress']["${_wp_servername}"]['core']['update']
-        if $_wp_core_update_status != 'none' {
-
-          # Export and Archive is done as root because of mode 0700 for directory $wordpress_archives 
-          file { $::wordpress::params::wordpress_archives :
-            ensure => 'directory',
-            mode   => '0700',
-            owner  => 0,
-            group  => 0,
-          }
-          ->
-          exec { "${_wp_servername} > Export database before upgrade" :
-            command => "${wpcli_bin} --allow-root --path=${_wp_root} db export",
-            cwd     => $::wordpress::params::wordpress_archives,
-            creates => "${wordpress::params::wordpress_archives}/${_wp_servername}_${_date}.tar.gz",
-          }
-          ->
-          exec { "${_wp_servername} > Archive files before upgrade" :
-            command => "tar -cvf ${wordpress::params::wordpress_archives}/${_wp_servername}_${_date}.tar.gz .",
-            cwd     => $_wp_root,
-            creates => "${wordpress::params::wordpress_archives}/${_wp_servername}_${_date}.tar.gz",
-          }
-
-          case $_locale {
-            'en_US': {
-              exec { "${_wp_servername} > Upgrade core wordpress" :
-                command => "${wpcli_bin} --path=${_wp_root} core update",
-                user    => $_owner,
-                require => Exec["${_wp_servername} > Archive files before upgrade"],
-              }
-            }
-            default: {
-              exec { "${_wp_servername} > Upgrade core wordpress" :
-                command => "${wpcli_bin} --path=${_wp_root} core update --locale=${_locale}",
-                user    => $_owner,
-                require => Exec["${_wp_servername} > Archive files before upgrade"],
-              }
-            }
-          }
-          exec { "${_wp_servername} > Upgrade database structure" :
-            command => "${wpcli_bin} --path=${_wp_root} core update-db",
-            user    => $_owner,
-            require => Exec["${_wp_servername} > Upgrade core wordpress"],
-            notify  => Exec['update external fact wordpress'],
-          }
-
+        file { $::wordpress::params::wordpress_archives :
+          ensure => 'directory',
+          mode   => '0700',
+          owner  => 0,
+          group  => 0,
         }
 
-        $_wp_language_update_status =  $facts['wordpress']["${_wp_servername}"]['language']['update']
-        if $_wp_language_update_status != 'none' {
-          exec { "${_wp_servername} > Update language" :
-            command => "${wpcli_bin} --path=${_wp_root} language core update",
-            user    => $_owner,
-            require => Exec["${_wp_servername} > Update core wordpress"],
-            notify  => Exec['update external fact wordpress'],
+        if $::facts['wordpress'] and
+        has_key($::facts['wordpress'], $_wp_servername) and
+        has_key($::facts['wordpress']["${_wp_servername}"], 'core') and
+        has_key($::facts['wordpress']["${_wp_servername}"]['core'], 'update') {
+          $_wp_core_update_status = $::facts['wordpress']["${_wp_servername}"]['core']['update']
+          if $_wp_core_update_status != 'none' {
+            wordpress::core::update { $_wp_servername :
+              wp_servername => $_wp_servername,
+              wp_root       => $_wp_root,
+              owner         => $_owner,
+              locale        => $_locale,
+              wpselfupdate  => $_wpselfupdate,
+              wpcli_bin     => $wpcli_bin,
+              require       => File[$::wordpress::params::wordpress_archives],
+            }
+          }
+        } else {
+          wordpress::core::install { $_wp_servername :
+            wp_servername => $_wp_servername,
+            wp_root       => $_wp_root,
+            owner         => $_owner,
+            locale        => $_locale,
+            db_host       => $_db_host,
+            db_name       => $_db_name,
+            db_user       => $_db_user,
+            db_passwd     => $_db_passwd,
+            dbprefix      => $_dbprefix,
+            wp_title      => $_wp_title,
+            wp_admin      => $_wp_admin,
+            wp_passwd     => $_wp_passwd,
+            wp_mail       => $_wp_mail,
+            wpselfupdate  => $_wpselfupdate,
+            wpcli_bin     => $wpcli_bin,
+          }
+          ->
+          wordpress::core::update { $_wp_servername :
+            wp_servername => $_wp_servername,
+            wp_root       => $_wp_root,
+            owner         => $_owner,
+            locale        => $_locale,
+            wpselfupdate  => $_wpselfupdate,
+            wpcli_bin     => $wpcli_bin,
+            require       => File[$::wordpress::params::wordpress_archives],
           }
         }
       }

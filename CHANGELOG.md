@@ -13,6 +13,7 @@ All notable changes to this project will be documented in this file.
   * #28 Fix WordPress core attribute ensure set to latest from scratch.
   * #29 Fix external fact variable extrapolation.
   * #30 Fix missing assume yes answer in `spec_helper_acceptance.rb`.
+  * #31 Add note about private aspect in puppet string.
 
 **Known Issues**
 

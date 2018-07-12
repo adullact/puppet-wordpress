@@ -13,6 +13,7 @@
 #@param owner
 #  The OS account, owner of files of the WordPress instance.
 #
+#@note This defined type should be considered as private.
 define wordpress::resource::install (
   String $wp_servername,
   String $wp_resource_type,

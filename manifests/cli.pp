@@ -8,6 +8,7 @@
 #@param ensure
 #  The desirated state about wpcli tools. Valid values are 'present', 'absent'. Defaults to 'present'.
 #
+#@note This class should be considered as private.
 class wordpress::cli (
   Pattern['^http'] $wpcli_url,
   Pattern['^/'] $wpcli_bin,

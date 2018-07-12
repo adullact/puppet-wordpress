@@ -135,6 +135,8 @@ Default value: $wordpress::params::default_hour_fact_update
 
 Install lastest WP-CLI tool.
 
+* **Note** This class should be considered as private.
+
 #### Parameters
 
 The following parameters are available in the `wordpress::cli` class.
@@ -187,6 +189,8 @@ Default value: {}
 
 Deploy files to forge an external fact named 'wordpress'
 
+* **Note** This class should be considered as private.
+
 #### Parameters
 
 The following parameters are available in the `wordpress::external_fact` class.
@@ -212,6 +216,8 @@ Sets defaults values for some variables and parameters.
 ### wordpress::resource
 
 download and manage resources aka plugins and themes.
+
+* **Note** This class should be considered as private.
 
 #### Parameters
 
@@ -383,6 +389,8 @@ The path of the WP-CLI tool.
 
 Activates an already installed resource aka plugin or theme.
 
+* **Note** This defined type should be considered as private.
+
 #### Parameters
 
 The following parameters are available in the `wordpress::resource::activate` defined type.
@@ -426,6 +434,8 @@ The OS account, owner of files of the WordPress instance.
 ### wordpress::resource::install
 
 Downloads and installs a resource aka plugin or theme.
+
+* **Note** This defined type should be considered as private.
 
 #### Parameters
 
@@ -471,6 +481,8 @@ The OS account, owner of files of the WordPress instance.
 
 Uninstall an already installed resource aka plugin or theme.
 
+* **Note** This defined type should be considered as private.
+
 #### Parameters
 
 The following parameters are available in the `wordpress::resource::uninstall` defined type.
@@ -514,6 +526,8 @@ The OS account, owner of files of the WordPress instance.
 ### wordpress::resource::update
 
 Updates an already installed resource aka plugin or theme.
+
+* **Note** This defined type should be considered as private.
 
 #### Parameters
 

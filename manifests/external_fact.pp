@@ -5,6 +5,8 @@
 #
 #@param hour_fact_update
 #  Gives the approximate hour (between 1 and 23) when external fact is update (some random is added).
+#
+#@note This class should be considered as private.
 class wordpress::external_fact (
   Integer[1,23] $hour_fact_update,
   Wordpress::Settings $settings = {},

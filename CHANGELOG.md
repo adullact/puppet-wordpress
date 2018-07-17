@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file.
 
+## Release 1.3.0
+
+**Features**
+
+**Bugfixes**
+
+  * #34 Use nokogiri provided by pdk for tests
+
+**Known Issues**
+
+
 ## Release 1.2.0
 
 **Features**

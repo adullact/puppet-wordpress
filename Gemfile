@@ -85,3 +85,6 @@ gem "beaker-puppet_install_helper", "~> 0.9.4"
 
 # Added at 2018-07-05 11:23:35 +0200 by fcombernous:
 gem "beaker-module_install_helper", "~> 0.1.7"
+
+# Added at 2018-07-17 21:20:43 +0200 by fcombernous:
+gem "nokogiri", "= 1.8.2"

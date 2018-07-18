@@ -26,7 +26,7 @@ class wordpress::params {
 
   $default_wpselfupdate = 'disabled'
   $default_wpresource_ensure = 'present'
-  $wordpress_archives = '/var/wordpress_archives'
+  $default_wparchives_path = '/var/wordpress_archives'
 
 
 }

@@ -4,7 +4,7 @@ $wpcli_bin = '/usr/local/bin/wp'
 $wp_root = '/var/www/wordpress.foo.org'
 $wp2_root = '/var/www/wp2.foo.org'
 $wp3_root = '/var/www/wp3.foo.org'
-$wparchives = '/var/wordpress_archives'
+$wparchives = '/var/mywp_archives'
 if fact('osfamily') == 'Debian'
   $crontabs_path='/var/spool/cron/crontabs'
 elsif fact('osfamily') == 'RedHat'
@@ -203,11 +203,12 @@ describe 'wordpress class' do
     end
   end
 
-  context 'with parameters about two wordpress instances with customs locales' do
+  context 'with parameters about two wordpress instances with customs locales and archives path' do
     it 'applies idempotently' do
       pp = <<-EOS
       class { 'wordpress': 
-        settings => {
+        wparchives_path => '/var/mywp_archives',
+        settings        => {
           'wp2.foo.org' => {
             ensure        => 'latest',
             owner         => 'wp2',

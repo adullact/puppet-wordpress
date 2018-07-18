@@ -107,6 +107,14 @@ Describes all availables settings in this module for all wordpress instances on 
 
 Default value: {}
 
+##### `wparchives_path`
+
+Data type: `Pattern['^/']`
+
+Gives the path where are stored archives done before update managed by puppet (not by WordPress itself with `wpselfupdate`). Defaults to /var/wordpress_archives.
+
+Default value: $wordpress::params::default_wparchives_path
+
 ##### `wpcli_url`
 
 Data type: `Pattern['^http']`
@@ -176,6 +184,12 @@ The following parameters are available in the `wordpress::core` class.
 Data type: `Pattern['^/']`
 
 The PATH where the WP-CLI tools is deployed.
+
+##### `wparchives_path`
+
+Data type: `Pattern['^/']`
+
+Gives the path where are stored archives done before update managed by puppet (not by WordPress itself with `wpselfupdate`). Defaults to /var/wordpress_archives.
 
 ##### `settings`
 
@@ -384,6 +398,12 @@ Possible values : disabled , enabled (defaults disabled).
 Data type: `String`
 
 The path of the WP-CLI tool.
+
+##### `wparchives_path`
+
+Data type: `String`
+
+Gives the path where are stored archives done before update managed by puppet (not by WordPress itself with `wpselfupdate`). Defaults to /var/wordpress_archives.
 
 ### wordpress::resource::activate
 

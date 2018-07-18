@@ -8,6 +8,7 @@ All notable changes to this project will be documented in this file.
 
 **Bugfixes**
 
+  * #33 Be able to use parameter to define archives path.
   * #34 Use nokogiri provided by pdk for tests.
   * #35 Update README description.
 

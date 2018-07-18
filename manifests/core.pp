@@ -3,12 +3,16 @@
 #@param wpcli_bin 
 #  The PATH where the WP-CLI tools is deployed.
 #
+#@param wparchives_path
+#  Gives the path where are stored archives done before update managed by puppet (not by WordPress itself with `wpselfupdate`). Defaults to /var/wordpress_archives.
+#
 #@param settings
 #  Describes all availables settings in this module for all wordpress instances on this node. Defaults to empty hash.
 #
 #@note This class should be considered as private.
 class wordpress::core (
   Pattern['^/'] $wpcli_bin,
+  Pattern['^/'] $wparchives_path,
   Wordpress::Settings $settings = {},
 ) {
 
@@ -81,7 +85,7 @@ class wordpress::core (
         }
       }
       'latest': {
-        file { $::wordpress::params::wordpress_archives :
+        file { $wparchives_path :
           ensure => 'directory',
           mode   => '0700',
           owner  => 0,
@@ -95,13 +99,14 @@ class wordpress::core (
           $_wp_core_update_status = $::facts['wordpress']["${_wp_servername}"]['core']['update']
           if $_wp_core_update_status != 'none' {
             wordpress::core::update { $_wp_servername :
-              wp_servername => $_wp_servername,
-              wp_root       => $_wp_root,
-              owner         => $_owner,
-              locale        => $_locale,
-              wpselfupdate  => $_wpselfupdate,
-              wpcli_bin     => $wpcli_bin,
-              require       => File[$::wordpress::params::wordpress_archives],
+              wp_servername   => $_wp_servername,
+              wp_root         => $_wp_root,
+              owner           => $_owner,
+              locale          => $_locale,
+              wpselfupdate    => $_wpselfupdate,
+              wpcli_bin       => $wpcli_bin,
+              wparchives_path => $wparchives_path,
+              require         => File[$wparchives_path],
             }
           }
         } else {
@@ -124,13 +129,14 @@ class wordpress::core (
           }
           ->
           wordpress::core::update { $_wp_servername :
-            wp_servername => $_wp_servername,
-            wp_root       => $_wp_root,
-            owner         => $_owner,
-            locale        => $_locale,
-            wpselfupdate  => $_wpselfupdate,
-            wpcli_bin     => $wpcli_bin,
-            require       => File[$::wordpress::params::wordpress_archives],
+            wp_servername   => $_wp_servername,
+            wp_root         => $_wp_root,
+            owner           => $_owner,
+            locale          => $_locale,
+            wpselfupdate    => $_wpselfupdate,
+            wpcli_bin       => $wpcli_bin,
+            wparchives_path => $wparchives_path,
+            require         => File[$wparchives_path],
           }
         }
       }

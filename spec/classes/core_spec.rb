@@ -4,6 +4,7 @@ describe 'wordpress::core' do
   let :default_params do
     {
       wpcli_bin: '/bin/wpcli',
+      wparchives_path: '/var/archives',
     }
   end
 

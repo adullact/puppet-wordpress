@@ -67,15 +67,22 @@
 #
 #@param settings
 #  Describes all availables settings in this module for all wordpress instances on this node. Defaults to empty hash.
+#
+#@param wparchives_path
+#  Gives the path where are stored archives done before update managed by puppet (not by WordPress itself with `wpselfupdate`). Defaults to /var/wordpress_archives.
+#
 #@param wpcli_url
 #  Gives the address from which to download the WP-CLI tool. Defaults to 'https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar'.
+#
 #@param wpcli_bin
 #  Gives the path where the WP-CLI tools is deployed. Defaults to '/usr/local/bin/wp'.
+#
 #@param hour_fact_update
 #  Gives the time (hour between 1 and 23) at which the update of external fact is done (use cron). Defaults to 7.
 #
 class wordpress (
   Hash $settings = {},
+  Pattern['^/'] $wparchives_path = $wordpress::params::default_wparchives_path,
   Pattern['^http'] $wpcli_url = $wordpress::params::default_wpcli_url,
   Pattern['^/'] $wpcli_bin = $wordpress::params::default_wpcli_bin,
   Integer[1,23] $hour_fact_update = $wordpress::params::default_hour_fact_update,
@@ -96,8 +103,9 @@ class wordpress (
   # * set condifguration settings
   # * connect to db server and create tables
   class { 'wordpress::core' :
-    settings  => $settings,
-    wpcli_bin => $wpcli_bin,
+    settings        => $settings,
+    wpcli_bin       => $wpcli_bin,
+    wparchives_path => $wparchives_path,
   }
   ->
   # then manage others resources like plugins and themes

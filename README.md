@@ -14,10 +14,10 @@
 
 ## Description
 
-This module downloads the WP-CLI tool and then uses it to download and configure a WordPress instances.
+This module downloads the WP-CLI tool and then uses it to download and configure WordPress instances.
 
-This module does not manage a multisite installation but it can create several WordPress installations.
-And each installation can be managed separately.
+This module does not manage a multisite installation but it can create one or several WordPress instances on same puppet node.
+Each instance, on the same node, has dedicated settings and can be managed separately.
 
 ## Setup
 

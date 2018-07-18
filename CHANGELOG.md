@@ -8,7 +8,8 @@ All notable changes to this project will be documented in this file.
 
 **Bugfixes**
 
-  * #34 Use nokogiri provided by pdk for tests
+  * #34 Use nokogiri provided by pdk for tests.
+  * #35 Update README description.
 
 **Known Issues**
 

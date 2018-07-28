@@ -69,6 +69,25 @@ class wordpress::core (
           wpselfupdate  => $_wpselfupdate,
           wpcli_bin     => $wpcli_bin,
         }
+
+        wordpress::core::config { $_wp_servername :
+          wp_servername => $_wp_servername,
+          wp_root       => $_wp_root,
+          owner         => $_owner,
+          locale        => $_locale,
+          db_host       => $_db_host,
+          db_name       => $_db_name,
+          db_user       => $_db_user,
+          db_passwd     => $_db_passwd,
+          dbprefix      => $_dbprefix,
+          wp_title      => $_wp_title,
+          wp_admin      => $_wp_admin,
+          wp_passwd     => $_wp_passwd,
+          wp_mail       => $_wp_mail,
+          wpselfupdate  => $_wpselfupdate,
+          wpcli_bin     => $wpcli_bin,
+        }
+
       }
       'absent': {
 
@@ -111,6 +130,24 @@ class wordpress::core (
           }
         } else {
           wordpress::core::install { $_wp_servername :
+            wp_servername => $_wp_servername,
+            wp_root       => $_wp_root,
+            owner         => $_owner,
+            locale        => $_locale,
+            db_host       => $_db_host,
+            db_name       => $_db_name,
+            db_user       => $_db_user,
+            db_passwd     => $_db_passwd,
+            dbprefix      => $_dbprefix,
+            wp_title      => $_wp_title,
+            wp_admin      => $_wp_admin,
+            wp_passwd     => $_wp_passwd,
+            wp_mail       => $_wp_mail,
+            wpselfupdate  => $_wpselfupdate,
+            wpcli_bin     => $wpcli_bin,
+          }
+
+          wordpress::core::config { $_wp_servername :
             wp_servername => $_wp_servername,
             wp_root       => $_wp_root,
             owner         => $_owner,

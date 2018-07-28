@@ -48,7 +48,7 @@ define wordpress::core::install (
   String $wpselfupdate,
   String $wpcli_bin,
 ) {
-  # download wordpress is path defined as wordpress root for the instance ${_wp_servername}
+  # download wordpress in path defined as wordpress root for the instance $wp_servername
 
   case $locale {
     'en_US': {
@@ -70,82 +70,26 @@ define wordpress::core::install (
   }
 
   # creates the first wp-config.php of the new wordpress installation
-  # and then ensure the content stay well configured for the instance ${wp_servername}
 
-  exec { "${wp_servername} > Configure core":
-    command => "${wpcli_bin} core config --dbhost=${db_host} --dbname=${db_name} --dbuser=${db_user} --dbpass=${db_passwd} --dbprefix=${dbprefix} --skip-check --force",
+  exec { "${wp_servername} > Create wp-config.php":
+    command => "${wpcli_bin} config create --dbhost=${db_host} --dbname=${db_name} --dbuser=${db_user} --dbpass=${db_passwd} --dbprefix=${dbprefix} --skip-check --force",
     cwd     => $wp_root,
     creates => "${wp_root}/wp-config.php",
     user    => $owner,
     notify  => Exec['update external fact wordpress'],
   }
-  ->
-  file_line {"${wp_servername} > set DB_NAME to ${db_name}":
-    ensure => present,
-    path   => "${wp_root}/wp-config.php",
-    line   => "define( 'DB_NAME', '${db_name}' );",
-    match  => '^define\( \'DB_NAME\',',
-  }
-  ->
-  file_line {"${wp_servername} > set DB_USER to ${db_user}":
-    ensure => present,
-    path   => "${wp_root}/wp-config.php",
-    line   => "define( 'DB_USER', '${db_user}' );",
-    match  => '^define\( \'DB_USER\',',
-  }
-  ->
-  file_line {"${wp_servername} > set DB_PASSWORD":
-    ensure => present,
-    path   => "${wp_root}/wp-config.php",
-    line   => "define( 'DB_PASSWORD', '${db_passwd}' );",
-    match  => '^define\( \'DB_PASSWORD\',',
-  }
-  ->
-  file_line {"${wp_servername} > set DB_HOST to ${db_host}":
-    ensure => present,
-    path   => "${wp_root}/wp-config.php",
-    line   => "define( 'DB_HOST', '${db_host}' );",
-    match  => '^define\( \'DB_HOST\',',
-  }
-  ->
+
   # the database, granted user and credentials must be already created by other process
-  # it creates all tables and data structure for the instannce ${wp_servername}
+  # Here it creates all tables and data structure for the instannce ${wp_servername}
   exec { "${wp_servername} > Create core tables":
     command     => "${wpcli_bin} core install --url=${wp_servername} --title=\"${wp_title}\" --admin_user=${wp_admin} --admin_password=${wp_passwd} --admin_email=${wp_mail} --skip-email",
     cwd         => $wp_root,
     user        => $owner,
     subscribe   => [
-      Exec["${wp_servername} > Configure core"],
-      File_line["${wp_servername} > set DB_NAME to ${db_name}"],
-      File_line["${wp_servername} > set DB_USER to ${db_user}"],
-      File_line["${wp_servername} > set DB_PASSWORD"],
-      File_line["${wp_servername} > set DB_HOST to ${db_host}"],
+      Exec["${wp_servername} > Create wp-config.php"],
     ],
     refreshonly => true,
     notify      => Exec['update external fact wordpress'],
   }
 
-  case $wpselfupdate {
-    'enabled': {
-      file_line { "${wp_servername} > set AUTOMATIC_UPDATER_DISABLED to false":
-        ensure  => present,
-        path    => "${wp_root}/wp-config.php",
-        line    => "define( 'AUTOMATIC_UPDATER_DISABLED', 'false' );",
-        match   => '^define\( \'AUTOMATIC_UPDATER_DISABLED\',',
-        require => Exec["${wp_servername} > Configure core"],
-      }
-    }
-    'disabled': {
-      file_line { "${wp_servername} > set AUTOMATIC_UPDATER_DISABLED to true":
-        ensure  => present,
-        path    => "${wp_root}/wp-config.php",
-        line    => "define( 'AUTOMATIC_UPDATER_DISABLED', 'true' );",
-        match   => '^define\( \'AUTOMATIC_UPDATER_DISABLED\',',
-        require => Exec["${wp_servername} > Configure core"],
-      }
-    }
-    default: {
-      fail("unexpected value wpselfupdate parameter must be <disabled|enabled>, got '${wpselfupdate}'")
-    }
-  }
 }

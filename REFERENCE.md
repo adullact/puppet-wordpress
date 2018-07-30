@@ -14,6 +14,7 @@
 
 **Defined types**
 
+* [`wordpress::core::config`](#wordpresscoreconfig): configure WordPress instance.
 * [`wordpress::core::install`](#wordpresscoreinstall): Downloads and installs WordPress core and language.
 * [`wordpress::core::update`](#wordpresscoreupdate): Backup and update WordPress core and language.
 * [`wordpress::resource::activate`](#wordpressresourceactivate): Activates an already installed resource aka plugin or theme.
@@ -252,6 +253,106 @@ Data type: `Pattern['^/']`
 The PATH where the wpcli tools is deployed. Defaults to '/usr/local/bin/wp'.
 
 ## Defined types
+
+### wordpress::core::config
+
+configure WordPress instance.
+
+* **Note** This defined type should be considered as private.
+
+#### Parameters
+
+The following parameters are available in the `wordpress::core::config` defined type.
+
+##### `wp_servername`
+
+Data type: `String`
+
+The URI of the WordPress instance (like : www.foo.org).
+
+##### `wp_root`
+
+Data type: `String`
+
+The root path of the WordPress instance.
+
+##### `owner`
+
+Data type: `String`
+
+The OS account, owner of files of the WordPress instance.
+
+##### `locale`
+
+Data type: `String`
+
+Language used by WordPress instance (defaults en_US).
+
+##### `db_host`
+
+Data type: `String`
+
+Address of the database server (must be MySQL or MariaDB).
+
+##### `db_name`
+
+Data type: `String`
+
+Name of the database where tables of WordPress instance are stored.
+
+##### `db_user`
+
+Data type: `String`
+
+User of the database used by wordpress to connect to the database server.
+
+##### `db_passwd`
+
+Data type: `String`
+
+Password of the user of the database.
+
+##### `dbprefix`
+
+Data type: `String`
+
+Set table prefix (defaults wp<random_number_with_4_digits>).
+
+##### `wp_title`
+
+Data type: `String`
+
+Init title of the WordPress instance.
+
+##### `wp_admin`
+
+Data type: `String`
+
+Name of admin account of the WordPress instance.
+
+##### `wp_passwd`
+
+Data type: `String`
+
+Password of the admin account of the WordPress instance.
+
+##### `wp_mail`
+
+Data type: `String`
+
+Email address of the admin account.
+
+##### `wpselfupdate`
+
+Data type: `String`
+
+Possible values : disabled , enabled (defaults disabled).
+
+##### `wpcli_bin`
+
+Data type: `String`
+
+The path of the WP-CLI tool.
 
 ### wordpress::core::install
 

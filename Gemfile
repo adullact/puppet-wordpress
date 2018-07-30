@@ -33,6 +33,10 @@ group :development do
   gem "puppet-module-posix-dev-r#{minor_version}",     require: false, platforms: [:ruby]
   gem "puppet-module-win-default-r#{minor_version}",   require: false, platforms: [:mswin, :mingw, :x64_mingw]
   gem "puppet-module-win-dev-r#{minor_version}",       require: false, platforms: [:mswin, :mingw, :x64_mingw]
+  gem "beaker-rspec", '~> 6.2',                        require: false
+  gem "beaker-puppet_install_helper", '~> 0.9.4',      require: false
+  gem "beaker-module_install_helper", '~> 0.1.7',      require: false
+  gem "nokogiri", '= 1.8.2',                           require: false
 end
 
 puppet_version = ENV['PUPPET_GEM_VERSION']
@@ -76,15 +80,3 @@ extra_gemfiles.each do |gemfile|
   end
 end
 # vim: syntax=ruby
-
-# Added at 2018-07-05 11:16:26 +0200 by fcombernous:
-gem "beaker-rspec", "~> 6.2"
-
-# Added at 2018-07-05 11:23:13 +0200 by fcombernous:
-gem "beaker-puppet_install_helper", "~> 0.9.4"
-
-# Added at 2018-07-05 11:23:35 +0200 by fcombernous:
-gem "beaker-module_install_helper", "~> 0.1.7"
-
-# Added at 2018-07-17 21:20:43 +0200 by fcombernous:
-gem "nokogiri", "= 1.8.2"

@@ -1,2 +1,14 @@
 .rubocop.yml:
   selected_profile: off
+
+Gemfile:
+  required:
+    ':development':
+      - gem: 'beaker-rspec'
+        version: '~> 6.2'
+      - gem: 'beaker-puppet_install_helper'
+        version: '~> 0.9.4'
+      - gem: 'beaker-module_install_helper'
+        version: '~> 0.1.7'
+      - gem: 'nokogiri'
+        version: '= 1.8.2'

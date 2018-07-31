@@ -49,6 +49,7 @@ define wordpress::core::update (
   ->
   exec { "${wp_servername} > Archive files before upgrade" :
     command => "tar -cvf ${wparchives_path}/${wp_servername}_${_date}.tar.gz .",
+    path    => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin',
     cwd     => $wp_root,
     creates => "${wparchives_path}/${wp_servername}_${_date}.tar.gz",
   }

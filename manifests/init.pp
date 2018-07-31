@@ -119,11 +119,5 @@ class wordpress (
     settings         => $settings,
     hour_fact_update => $hour_fact_update,
   }
-  ->
-  exec { 'update external fact wordpress':
-    command     => '/usr/local/sbin/external_fact_wordpress.rb > /opt/puppetlabs/facter/facts.d/wordpress.yaml',
-    user        => 'root',
-    refreshonly => true,
-  }
 
 }

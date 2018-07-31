@@ -33,9 +33,9 @@ group :development do
   gem "puppet-module-posix-dev-r#{minor_version}",     require: false, platforms: [:ruby]
   gem "puppet-module-win-default-r#{minor_version}",   require: false, platforms: [:mswin, :mingw, :x64_mingw]
   gem "puppet-module-win-dev-r#{minor_version}",       require: false, platforms: [:mswin, :mingw, :x64_mingw]
-  gem "beaker-rspec", '~> 6.2',                        require: false
-  gem "beaker-puppet_install_helper", '~> 0.9.4',      require: false
-  gem "beaker-module_install_helper", '~> 0.1.7',      require: false
+  gem "beaker-rspec",                                  require: false
+  gem "beaker-puppet_install_helper",                  require: false
+  gem "beaker-module_install_helper",                  require: false
   gem "nokogiri", '= 1.8.2',                           require: false
 end
 

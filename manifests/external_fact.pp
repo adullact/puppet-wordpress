@@ -13,6 +13,8 @@ class wordpress::external_fact (
 ) {
 
   $_minute = fqdn_rand(59)
+  $_fact_script_path = '/usr/local/sbin/external_fact_wordpress.rb'
+  $_fact_output_yaml = '/opt/puppetlabs/facter/facts.d/wordpress.yaml'
 
   #used by template('/wordpress/external_fact_wordpress.rb.erb')
   $_wproot = $settings.reduce( {} ) |$memo, $value| {
@@ -25,7 +27,7 @@ class wordpress::external_fact (
     }
   }
 
-  file {'/usr/local/sbin/external_fact_wordpress.rb':
+  file { $_fact_script_path :
     ensure  => 'file',
     content => template('wordpress/external_fact_wordpress.rb.erb'),
     owner   => 0,
@@ -34,11 +36,18 @@ class wordpress::external_fact (
     notify  => Exec['update external fact wordpress'],
   }
   ->
+  exec { 'update external fact wordpress':
+    command     => "${_fact_script_path} > ${_fact_output_yaml}",
+    user        => 'root',
+    refreshonly => true,
+  }
+
   cron { 'external_fact workpress update':
-    command     => '/usr/local/sbin/external_fact_wordpress.rb > /opt/puppetlabs/facter/facts.d/wordpress.yaml &> /dev/null',
+    command     => "${_fact_script_path} > ${_fact_output_yaml} &> /dev/null",
     environment => 'PATH=/usr/local/sbin:/usr/local/bin:/opt/puppetlabs/bin:/usr/sbin:/usr/bin:/sbin:/bin',
     user        => 'root',
     hour        => $hour_fact_update,
     minute      => $_minute,
   }
+
 }

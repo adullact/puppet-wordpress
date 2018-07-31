@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file.
 
+## Release 1.3.1
+
+**Features**
+
+**Bugfixes**
+
+  * #25 Command wp core config is deprecated.
+  * #38 Update module compatiblility with pdk 1.6.1.
+  * #41 Exec with tar commande to make archive files before upgrade need path.
+  * #40 Add forgotten pdk new defined_type.
+
+**Known Issues**
+
+  * #36 Modifying settings of administrator modifies nothing.
+
 ## Release 1.3.0
 
 **Features**
@@ -13,7 +28,6 @@ All notable changes to this project will be documented in this file.
   * #35 Update README description.
 
 **Known Issues**
-
 
 ## Release 1.2.0
 

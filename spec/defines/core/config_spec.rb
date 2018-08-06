@@ -30,21 +30,21 @@ describe 'wordpress::core::config' do
   let(:title) { 'namevar' }
   let(:params) do
     {
-      'wp_servername': 'www.foo.org',
-      'wp_root': '/var/foo',
-      'owner': 'wfoo',
-      'locale': 'jp_JP',
-      'db_host': '10.1.1.1',
-      'db_name': 'wpdb',
-      'db_user': 'wpuser',
-      'db_passwd': 'secret',
-      'dbprefix': 'wp1234',
-      'wp_title': 'this is the title',
-      'wp_admin': 'myadmin',
-      'wp_passwd': 'mypassword',
-      'wp_mail': 'bar@foo.org',
-      'wpselfupdate': 'disabled',
-      'wpcli_bin': '/bin/wp',
+      wp_servername: 'www.foo.org',
+      wp_root: '/var/foo',
+      owner: 'wfoo',
+      locale: 'jp_JP',
+      db_host: '10.1.1.1',
+      db_name: 'wpdb',
+      db_user: 'wpuser',
+      db_passwd: 'secret',
+      dbprefix: 'wp1234',
+      wp_title: 'this is the title',
+      wp_admin: 'myadmin',
+      wp_passwd: 'mypassword',
+      wp_mail: 'bar@foo.org',
+      wpselfupdate: 'disabled',
+      wpcli_bin: '/bin/wp',
     }
   end
 

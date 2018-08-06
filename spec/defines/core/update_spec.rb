@@ -12,13 +12,13 @@ describe 'wordpress::core::update' do
   let(:title) { 'namevar' }
   let(:params) do
     {
-      'wp_servername': 'www.foo.org',
-      'wp_root': '/var/foo',
-      'owner': 'wfoo',
-      'locale': 'jp_JP',
-      'wpselfupdate': 'disabled',
-      'wpcli_bin': '/bin/wp',
-      'wparchives_path': '/var/fooarchives',
+      wp_servername: 'www.foo.org',
+      wp_root: '/var/foo',
+      owner: 'wfoo',
+      locale: 'jp_JP',
+      wpselfupdate: 'disabled',
+      wpcli_bin: '/bin/wp',
+      wparchives_path: '/var/fooarchives',
   }
   end
 

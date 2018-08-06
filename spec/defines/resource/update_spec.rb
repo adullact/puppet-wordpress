@@ -12,12 +12,12 @@ describe 'wordpress::resource::update' do
   let(:title) { 'namevar' }
   let(:params) do
     {
-      'wp_servername': 'www.foo.org',
-      'wp_resource_type': 'plugin',
-      'wp_resource_name': 'fooplugin',
-      'wp_root': '/var/foo',
-      'owner': 'wfoo',
-      'wpcli_bin': '/bin/wp',
+      wp_servername: 'www.foo.org',
+      wp_resource_type: 'plugin',
+      wp_resource_name: 'fooplugin',
+      wp_root: '/var/foo',
+      owner: 'wfoo',
+      wpcli_bin: '/bin/wp',
     }
   end
 

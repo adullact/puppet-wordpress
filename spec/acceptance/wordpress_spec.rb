@@ -118,7 +118,7 @@ describe 'wordpress class' do
     end
   end
 
-  context 'with parameter about one wordpress with customs plugins and themes' do
+  context 'with parameters about one wordpress with customs plugins and themes' do
     it 'applies idempotently' do
       pp = <<-EOS
       class { 'wordpress': 
@@ -200,6 +200,35 @@ describe 'wordpress class' do
 
     describe file("#{$crontabs_path}/root") do
       it { should contain("7 * * * /usr/local/sbin/external_fact_wordpress.rb > /opt/puppetlabs/facter/facts.d/wordpress.yaml") }
+    end
+  end
+
+  context 'with new title' do
+    it 'applies idempotently' do
+      pp = <<-EOS
+      class { 'wordpress': 
+        settings => {
+          'wordpress.foo.org' => {
+            owner         => 'wp',
+            dbhost        => '127.0.0.1',
+            dbname        => 'wordpress',
+            dbuser        => 'wpuserdb',
+            dbpasswd      => 'kiki',
+            wproot        => '/var/www/wordpress.foo.org',
+            wptitle       => 'hola this is modified',
+            wpadminuser   => 'wpadmin',
+            wpadminpasswd => 'lolo',
+            wpadminemail  => 'bar@foo.org',
+          }
+        }
+      }
+      EOS
+      apply_manifest(pp, :catch_failures => true)
+      apply_manifest(pp, :catch_changes  => true)
+    end
+
+    describe command('curl -L http://localhost') do
+      its(:stdout) { should match /.*hola this is modified.*/ }
     end
   end
 

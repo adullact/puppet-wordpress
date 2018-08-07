@@ -106,12 +106,30 @@ class wordpress (
     settings        => $settings,
     wpcli_bin       => $wpcli_bin,
     wparchives_path => $wparchives_path,
+    require         => [
+      Class[wordpress::cli],
+    ],
   }
-  ->
+
   # then manage others resources like plugins and themes
   class { 'wordpress::resource' :
     settings  => $settings,
     wpcli_bin => $wpcli_bin,
+    require   => [
+      Class[wordpress::cli],
+      Class[wordpress::core],
+    ],
+  }
+
+  # and finaly set options of sites
+  class { 'wordpress::site' :
+    settings  => $settings,
+    wpcli_bin => $wpcli_bin,
+    require   => [
+      Class[wordpress::cli],
+      Class[wordpress::core],
+      Class[wordpress::resource],
+    ],
   }
 
   # manage external_fact wordpress

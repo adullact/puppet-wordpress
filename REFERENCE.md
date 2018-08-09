@@ -11,9 +11,12 @@
 * [`wordpress::external_fact`](#wordpressexternal_fact): Deploy files to forge an external fact named 'wordpress'
 * [`wordpress::params`](#wordpressparams): Sets defaults values for some variables and parameters.
 * [`wordpress::resource`](#wordpressresource): download and manage resources aka plugins and themes.
+* [`wordpress::site`](#wordpresssite): Use WP-CLI to download last version of WordPress core, create tables in database and configure WordPress.
 
 **Defined types**
 
+* [`wordpress::config::admin`](#wordpressconfigadmin): Configure settings (name password and email) of one user in the desired state.
+* [`wordpress::config::option`](#wordpressconfigoption): Configure an option in the desired state
 * [`wordpress::core::config`](#wordpresscoreconfig): configure WordPress instance.
 * [`wordpress::core::install`](#wordpresscoreinstall): Downloads and installs WordPress core and language.
 * [`wordpress::core::update`](#wordpresscoreupdate): Backup and update WordPress core and language.
@@ -21,6 +24,10 @@
 * [`wordpress::resource::install`](#wordpressresourceinstall): Downloads and installs a resource aka plugin or theme.
 * [`wordpress::resource::uninstall`](#wordpressresourceuninstall): Uninstall an already installed resource aka plugin or theme.
 * [`wordpress::resource::update`](#wordpressresourceupdate): Updates an already installed resource aka plugin or theme.
+
+**Functions**
+
+* [`wordpress::password_hash`](#wordpresspassword_hash): Hash a string
 
 ## Classes
 
@@ -252,7 +259,158 @@ Data type: `Pattern['^/']`
 
 The PATH where the wpcli tools is deployed. Defaults to '/usr/local/bin/wp'.
 
+### wordpress::site
+
+Use WP-CLI to download last version of WordPress core, create tables in database and configure WordPress.
+
+* **Note** This class should be considered as private.
+
+#### Parameters
+
+The following parameters are available in the `wordpress::site` class.
+
+##### `wpcli_bin`
+
+Data type: `Pattern['^/']`
+
+The PATH where the WP-CLI tools is deployed.
+
+##### `settings`
+
+Data type: `Wordpress::Settings`
+
+Describes all availables settings in this module for all wordpress instances on this node. Defaults to empty hash.
+
+Default value: {}
+
+##### `install_secret_directory`
+
+Data type: `Pattern['^/']`
+
+
+
+Default value: $wordpress::params::default_install_secret_directory
+
 ## Defined types
+
+### wordpress::config::admin
+
+Configure settings (name password and email) of one user in the desired state.
+
+* **Note** This defined type should be considered as private.
+
+#### Parameters
+
+The following parameters are available in the `wordpress::config::admin` defined type.
+
+##### `wp_servername`
+
+Data type: `String`
+
+The URI of the WordPress instance (like : www.foo.org).
+
+##### `wp_root`
+
+Data type: `String`
+
+The root path of the WordPress instance.
+
+##### `owner`
+
+Data type: `String`
+
+The OS account, owner of files of the WordPress instance.
+
+##### `wp_user_login`
+
+The login of the user to be configured (if the login does not exist, a new user is created).
+
+##### `wp_user_passwd`
+
+The desired value of the user's password to be configured.
+
+##### `wp_user_email`
+
+The desired value of the user's email to be configured.
+
+##### `wpcli_bin`
+
+Data type: `String`
+
+The path of the WP-CLI tool.
+
+##### `wp_admin_login`
+
+Data type: `String`
+
+
+
+##### `wp_admin_passwd`
+
+Data type: `String`
+
+
+
+##### `wp_admin_email`
+
+Data type: `String`
+
+
+
+##### `wp_admin_passwd_hash`
+
+Data type: `String`
+
+
+
+Default value: wordpress::password_hash($wp_admin_passwd)
+
+### wordpress::config::option
+
+The name of the option to be configured.
+The desired value of the option to be configured.
+
+* **Note** This defined type should be considered as private.
+
+#### Parameters
+
+The following parameters are available in the `wordpress::config::option` defined type.
+
+##### `wp_servername`
+
+Data type: `String`
+
+The URI of the WordPress instance (like : www.foo.org).
+
+##### `wp_root`
+
+Data type: `String`
+
+The root path of the WordPress instance.
+
+##### `owner`
+
+Data type: `String`
+
+The OS account, owner of files of the WordPress instance.
+
+##### `wp_option_name`
+
+Data type: `String`
+
+
+
+##### `wp_option_value`
+
+Data type: `String`
+
+
+
+##### `wpcli_bin`
+
+Data type: `String`
+
+The path of the WP-CLI tool.
 
 ### wordpress::core::config
 
@@ -689,4 +847,24 @@ The path of the WP-CLI tool.
 Data type: `String`
 
 The OS account, owner of files of the WordPress instance.
+
+## Functions
+
+### wordpress::password_hash
+
+Type: Ruby 4.x API
+
+Hash a string
+
+#### `wordpress::password_hash(String $password)`
+
+The wordpress::password_hash function.
+
+Returns: `String` the password hash from the clear text password.
+
+##### `password`
+
+Data type: `String`
+
+Plain text password.
 

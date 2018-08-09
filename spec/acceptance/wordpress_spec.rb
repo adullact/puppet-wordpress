@@ -44,7 +44,7 @@ describe 'wordpress class' do
             wproot        => '/var/www/wordpress.foo.org',
             wptitle       => 'hola this wordpress instance is installed by puppet',
             wpadminuser   => 'wpadmin',
-            wpadminpasswd => 'lolo',
+            wpadminpasswd => 'secret',
             wpadminemail  => 'bar@foo.org',
           }
         }
@@ -79,8 +79,16 @@ describe 'wordpress class' do
       it { should be_mode 644 }
     end
 
-    describe command('curl -L http://localhost') do
+    describe command('curl -L http://wordpress.foo.org') do
       its(:stdout) { should match /.*hola this wordpress instance is installed by puppet.*/ }
+    end
+
+    describe command('curl -c /tmp/wp-step1.tmp -d "log=wpadmin" -d "pwd=secret" http://wordpress.foo.org/wp-login.php') do
+      its(:exit_status) { should eq 0 }
+    end
+
+    describe command('curl -b /tmp/wp-step1.tmp http://wordpress.foo.org/wp-admin/') do
+      its(:stdout) { should match /.*adminmenu.*/ }
     end
 
     describe command("wp --allow-root --format=csv --path=#{$wp_root} --fields=language,status --status=active language core list") do
@@ -103,7 +111,7 @@ describe 'wordpress class' do
             wproot        => '/var/www/wordpress.foo.org',
             wptitle       => 'hola this wordpress instance is installed by puppet',
             wpadminuser   => 'wpadmin',
-            wpadminpasswd => 'lolo',
+            wpadminpasswd => 'secret',
             wpadminemail  => 'bar@foo.org',
           },
         }
@@ -115,6 +123,43 @@ describe 'wordpress class' do
 
     describe file("#{$crontabs_path}/root") do
       it { should contain("3 * * * /usr/local/sbin/external_fact_wordpress.rb > /opt/puppetlabs/facter/facts.d/wordpress.yaml") }
+    end
+  end
+
+  context 'with parameters setting new password for admin user and new title for site ' do
+    it 'applies idempotently' do
+      pp = <<-EOS
+      class { 'wordpress': 
+        settings => {
+          'wordpress.foo.org' => {
+            owner         => 'wp',
+            dbhost        => '127.0.0.1',
+            dbname        => 'wordpress',
+            dbuser        => 'wpuserdb',
+            dbpasswd      => 'kiki',
+            wproot        => '/var/www/wordpress.foo.org',
+            wptitle       => 'hola this is modified',
+            wpadminuser   => 'wpadmin',
+            wpadminpasswd => 'newsecret',
+            wpadminemail  => 'bar@foo.org',
+          }
+        }
+      }
+      EOS
+      apply_manifest(pp, :catch_failures => true)
+      apply_manifest(pp, :catch_changes  => true)
+    end
+
+    describe command('curl -L http://wordpress.foo.org') do
+      its(:stdout) { should match /.*hola this is modified.*/ }
+    end
+
+    describe command('curl -c /tmp/wp-step2.tmp -d "log=wpadmin" -d "pwd=newsecret" http://wordpress.foo.org/wp-login.php') do
+      its(:exit_status) { should eq 0 }
+    end
+
+    describe command('curl -b /tmp/wp-step2.tmp http://wordpress.foo.org/wp-admin/') do
+      its(:stdout) { should match /.*adminmenu.*/ }
     end
   end
 
@@ -132,7 +177,7 @@ describe 'wordpress class' do
             wproot        => '/var/www/wordpress.foo.org',
             wptitle       => 'hola this wordpress instance is installed by puppet',
             wpadminuser   => 'wpadmin',
-            wpadminpasswd => 'lolo',
+            wpadminpasswd => 'secret',
             wpadminemail  => 'bar@foo.org',
             wpresources   => {
               plugin => [
@@ -200,35 +245,6 @@ describe 'wordpress class' do
 
     describe file("#{$crontabs_path}/root") do
       it { should contain("7 * * * /usr/local/sbin/external_fact_wordpress.rb > /opt/puppetlabs/facter/facts.d/wordpress.yaml") }
-    end
-  end
-
-  context 'with new title' do
-    it 'applies idempotently' do
-      pp = <<-EOS
-      class { 'wordpress': 
-        settings => {
-          'wordpress.foo.org' => {
-            owner         => 'wp',
-            dbhost        => '127.0.0.1',
-            dbname        => 'wordpress',
-            dbuser        => 'wpuserdb',
-            dbpasswd      => 'kiki',
-            wproot        => '/var/www/wordpress.foo.org',
-            wptitle       => 'hola this is modified',
-            wpadminuser   => 'wpadmin',
-            wpadminpasswd => 'lolo',
-            wpadminemail  => 'bar@foo.org',
-          }
-        }
-      }
-      EOS
-      apply_manifest(pp, :catch_failures => true)
-      apply_manifest(pp, :catch_changes  => true)
-    end
-
-    describe command('curl -L http://localhost') do
-      its(:stdout) { should match /.*hola this is modified.*/ }
     end
   end
 

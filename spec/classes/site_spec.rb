@@ -4,6 +4,7 @@ describe 'wordpress::site' do
   let :params do
     {
       wpcli_bin: '/bin/wpcli',
+      install_secret_directory: '/etc/foo',
     }
   end
 

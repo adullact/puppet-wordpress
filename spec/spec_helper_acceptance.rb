@@ -139,7 +139,13 @@ RSpec.configure do |c|
       host     => 'localhost',
       grant    => ['ALL'],
     }
-
+    file { '/etc/hosts' :
+      ensure  => file,
+      owner   => 0,
+      group   => 0,
+      mode    => '0644',
+      content => "127.0.0.1 localhost wordpress.foo.org\n",
+    }
     EOS
 
     apply_manifest_on(agents, pp, catch_failures: true)

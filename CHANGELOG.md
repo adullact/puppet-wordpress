@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file.
 
+## Release 1.3.2
+
+**Features**
+
+**Bugfixes**
+
+  * #36 Modifying settings of administrator modifies nothing.
+  * #42 Modifying value of title in data modifies nothing.
+  * #44 An already installed plugin but not yet activated is never activated.
+
+**Known Issues**
+
 ## Release 1.3.1
 
 **Features**

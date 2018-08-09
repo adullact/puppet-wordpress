@@ -2,10 +2,6 @@
 #
 #@param wpcli_bin 
 #  The PATH where the WP-CLI tools is deployed.
-#
-#@param wparchives_path
-#  Gives the path where are stored archives done before update managed by puppet (not by WordPress itself with `wpselfupdate`). Defaults to /var/wordpress_archives.
-#
 #@param settings
 #  Describes all availables settings in this module for all wordpress instances on this node. Defaults to empty hash.
 #
@@ -13,7 +9,15 @@
 class wordpress::site (
   Pattern['^/'] $wpcli_bin,
   Wordpress::Settings $settings = {},
+  Pattern['^/'] $install_secret_directory = $wordpress::params::default_install_secret_directory,
 ) {
+
+  file { $install_secret_directory :
+    ensure => directory,
+    owner  => 0,
+    group  => 0,
+    mode   => '0700',
+  }
 
   $settings.each | String $_wp_servername , Hash $_wp_configs | {
 
@@ -28,7 +32,7 @@ class wordpress::site (
     }
 
     if $_ensure == 'present' or $_ensure == 'latest' {
-      wordpress::config::option { "${_wp_servername} > set title" :
+      wordpress::config::option { "${_wp_servername} > change title" :
         wp_servername   => $_wp_servername,
         wp_root         => $_wp_configs['wproot'],
         owner           => $_owner,
@@ -36,6 +40,17 @@ class wordpress::site (
         wp_option_value => $_wp_configs['wptitle'],
         wpcli_bin       => $wpcli_bin,
       }
+
+      wordpress::config::admin { "${_wp_servername} > change administrator settings" :
+        wp_servername   => $_wp_servername,
+        wp_root         => $_wp_configs['wproot'],
+        owner           => $_owner,
+        wp_admin_login  => $_wp_configs['wpadminuser'],
+        wp_admin_passwd => $_wp_configs['wpadminpasswd'],
+        wp_admin_email  => $_wp_configs['wpadminemail'],
+        wpcli_bin       => $wpcli_bin,
+      }
+
     }
   }
 }

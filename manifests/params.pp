@@ -28,5 +28,6 @@ class wordpress::params {
   $default_wpresource_ensure = 'present'
   $default_wparchives_path = '/var/wordpress_archives'
 
+  $default_install_secret_directory = '/etc/wordpress'
 
 }

@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
+## Release 1.3.3
+
+**Features**
+
+**Bugfixes**
+
+  * #48 move to beaker 4
+ 
+**Known Issues**
+
 ## Release 1.3.2
 
 **Features**

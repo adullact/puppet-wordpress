@@ -4,6 +4,9 @@
 .travis.yml:
   delete: true
 
+.gitlab-ci.yml:
+  unmanaged: true
+
 Gemfile:
   required:
     ':development':

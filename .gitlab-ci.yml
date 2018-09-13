@@ -29,10 +29,8 @@ acceptance_with_puppet4_ubuntu:
     PUPPET_INSTALL_TYPE: 'agent'
     BEAKER_IS_PE: 'no'
     BEAKER_debug: 'true '
-    BEAKER_set: 'ubuntu-1604-x64'
   script:
-    - echo $BEAKER_set
-    - pdk bundle exec rake beaker
+    - pdk bundle exec rake beaker:ubuntu-1604-x64
   tags:
     - puppet-tests
   except:
@@ -45,10 +43,8 @@ acceptance_with_puppet4_debian:
     PUPPET_INSTALL_TYPE: 'agent'
     BEAKER_IS_PE: 'no'
     BEAKER_debug: 'true '
-    BEAKER_set: 'debian-82-x64'
   script:
-    - echo $BEAKER_set
-    - pdk bundle exec rake beaker
+    - pdk bundle exec rake beaker:debian-82-x64
   tags:
     - puppet-tests
   except:
@@ -61,10 +57,8 @@ acceptance_with_puppet4_centos:
     PUPPET_INSTALL_TYPE: 'agent'
     BEAKER_IS_PE: 'no'
     BEAKER_debug: 'true '
-    BEAKER_set: 'centos-72-x64'
   script:
-    - echo $BEAKER_set
-    - pdk bundle exec rake beaker
+    - pdk bundle exec rake beaker:centos-72-x64
   tags:
     - puppet-tests
   except:
@@ -77,10 +71,8 @@ acceptance_with_puppet5_ubuntu:
     PUPPET_INSTALL_TYPE: 'agent'
     BEAKER_IS_PE: 'no'
     BEAKER_debug: 'true '
-    BEAKER_set: 'ubuntu-1604-x64'
   script:
-    - echo $BEAKER_set
-    - pdk bundle exec rake beaker
+    - pdk bundle exec rake beaker:ubuntu-1604-x64
   tags:
     - puppet-tests
   except:
@@ -93,10 +85,8 @@ acceptance_with_puppet5_debian:
     PUPPET_INSTALL_TYPE: 'agent'
     BEAKER_IS_PE: 'no'
     BEAKER_debug: 'true '
-    BEAKER_set: 'debian-82-x64'
   script:
-    - echo $BEAKER_set
-    - pdk bundle exec rake beaker
+    - pdk bundle exec rake beaker:debian-82-x64
   tags:
     - puppet-tests
   except:
@@ -109,10 +99,8 @@ acceptance_with_puppet5_centos:
     PUPPET_INSTALL_TYPE: 'agent'
     BEAKER_IS_PE: 'no'
     BEAKER_debug: 'true '
-    BEAKER_set: 'centos-72-x64'
   script:
-    - echo $BEAKER_set
-    - pdk bundle exec rake beaker
+    - pdk bundle exec rake beaker:centos-72-x64
   tags:
     - puppet-tests
   except:

@@ -19,7 +19,7 @@ describe 'wordpress::core::update' do
       wpselfupdate: 'disabled',
       wpcli_bin: '/bin/wp',
       wparchives_path: '/var/fooarchives',
-  }
+    }
   end
 
   on_supported_os.each do |os, os_facts|

@@ -1,6 +1,6 @@
 require 'digest/sha1'
 # @summary
-#   Hash a string 
+#   Hash a string
 #
 Puppet::Functions.create_function(:'wordpress::password_hash') do
   # @param password

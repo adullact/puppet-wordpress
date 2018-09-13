@@ -10,8 +10,7 @@ install_module_dependencies_on(hosts)
 RSpec.configure do |c|
   # Configure all nodes in nodeset
   c.before :suite do
-
-    #we need :
+    # we need :
     # * a mariadb server with database and granted user
     # * an apache webserver
     # * a dedicated account
@@ -42,23 +41,22 @@ RSpec.configure do |c|
         on(host, 'apt install php7.0-cli php7.0-mysql --yes', acceptable_exit_codes: [0]).stdout
         # curl is used in tests to access at a wordpress newly installed
         on(host, 'apt install curl --yes', acceptable_exit_codes: [0]).stdout
-      else
       end
     end
 
     pp = <<-EOS
     include '::mysql::server'
-    
+
     accounts::user { 'wp' : }
     accounts::user { 'wp2' : }
     accounts::user { 'wp3' : }
-    
+
     class { 'apache':
       default_vhost => false,
       mpm_module    => 'itk',
       default_mods  => ['php','rewrite'],
     }
-    
+
     apache::vhost {'wordpress.foo.org':
       servername => 'wordpress.foo.org',
       ip => '127.0.0.1',
@@ -72,8 +70,8 @@ RSpec.configure do |c|
         group => 'wp',
       },
       directories => {
-        path           => '/var/www/wordpress.foo.org', 
-        allow_override => 'All' 
+        path           => '/var/www/wordpress.foo.org',
+        allow_override => 'All'
       },
       require => Accounts::User['wp'],
     }
@@ -90,8 +88,8 @@ RSpec.configure do |c|
         group => 'wp2',
       },
       directories => {
-        path           => '/var/www/wp2.foo.org', 
-        allow_override => 'All' 
+        path           => '/var/www/wp2.foo.org',
+        allow_override => 'All'
       },
       require => Accounts::User['wp2'],
     }
@@ -108,12 +106,12 @@ RSpec.configure do |c|
         group => 'wp3',
       },
       directories => {
-        path           => '/var/www/wp3.foo.org', 
-        allow_override => 'All' 
+        path           => '/var/www/wp3.foo.org',
+        allow_override => 'All'
       },
       require => Accounts::User['wp3'],
     }
-    
+
     class {'::mysql::bindings':
       java_enable   => false,
       perl_enable   => false,
@@ -121,7 +119,7 @@ RSpec.configure do |c|
       python_enable => false,
       ruby_enable   => false,
     }
-    
+
     mysql::db { 'wordpress':
       user     => 'wpuserdb',
       password => 'kiki',

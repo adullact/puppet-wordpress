@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file.
 
+## Release 1.3.4
+
+**Features**
+
+**Bugfixes**
+
+  * #50 Build module with pdk 1.7.0.
+  * #51 Enable rubocop.
+  * #52 Enable beaker debug.
+
+**Known Issues**
+
 ## Release 1.3.3
 
 **Features**

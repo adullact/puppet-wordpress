@@ -1,5 +1,7 @@
 .travis.yml:
   delete: true
+appveyor.yml:
+  delete: true
 
 .gitlab-ci.yml:
   unmanaged: true
@@ -9,6 +11,6 @@ Gemfile:
     ':development':
       - gem: 'beaker-rspec'
       - gem: 'beaker-puppet'
-      - gem: 'beaker-vagrant'
+      - gem: 'beaker-docker'
       - gem: 'beaker-puppet_install_helper'
       - gem: 'beaker-module_install_helper'

@@ -1,7 +1,8 @@
 require 'spec_helper_acceptance'
 
+myfqdn = 'localhost'
 wpcli_bin = '/usr/local/bin/wp'
-wp_root = '/var/www/wordpress.foo.org'
+wp_root = "/var/www/#{myfqdn}"
 wp2_root = '/var/www/wp2.foo.org'
 wp3_root = '/var/www/wp3.foo.org'
 wparchives = '/var/mywp_archives'
@@ -34,13 +35,13 @@ describe 'wordpress class' do
       pp = <<-EOS
       class { 'wordpress':
         settings => {
-          'wordpress.foo.org' => {
+          '#{myfqdn}' => {
             owner         => 'wp',
             dbhost        => '127.0.0.1',
             dbname        => 'wordpress',
             dbuser        => 'wpuserdb',
             dbpasswd      => 'kiki',
-            wproot        => '/var/www/wordpress.foo.org',
+            wproot        => '#{wp_root}',
             wptitle       => 'hola this wordpress instance is installed by puppet',
             wpadminuser   => 'wpadmin',
             wpadminpasswd => 'secret',
@@ -78,15 +79,15 @@ describe 'wordpress class' do
       it { is_expected.to be_mode 644 }
     end
 
-    describe command('curl -L http://wordpress.foo.org') do
+    describe command("curl -L http://#{myfqdn}") do
       its(:stdout) { is_expected.to match %r{.*hola this wordpress instance is installed by puppet.*} }
     end
 
-    describe command('curl -c /tmp/wp-step1.tmp -d "log=wpadmin" -d "pwd=secret" http://wordpress.foo.org/wp-login.php') do
+    describe command("curl -c /tmp/wp-step1.tmp -d 'log=wpadmin' -d 'pwd=secret' http://#{myfqdn}/wp-login.php") do
       its(:exit_status) { is_expected.to eq 0 }
     end
 
-    describe command('curl -b /tmp/wp-step1.tmp http://wordpress.foo.org/wp-admin/') do
+    describe command("curl -b /tmp/wp-step1.tmp http://#{myfqdn}/wp-admin/") do
       its(:stdout) { is_expected.to match %r{.*adminmenu.*} }
     end
 
@@ -101,13 +102,13 @@ describe 'wordpress class' do
       class { 'wordpress':
         hour_fact_update => 3,
         settings => {
-          'wordpress.foo.org' => {
+          '#{myfqdn}' => {
             owner         => 'wp',
             dbhost        => '127.0.0.1',
             dbname        => 'wordpress',
             dbuser        => 'wpuserdb',
             dbpasswd      => 'kiki',
-            wproot        => '/var/www/wordpress.foo.org',
+            wproot        => '#{wp_root}',
             wptitle       => 'hola this wordpress instance is installed by puppet',
             wpadminuser   => 'wpadmin',
             wpadminpasswd => 'secret',
@@ -130,13 +131,13 @@ describe 'wordpress class' do
       pp = <<-EOS
       class { 'wordpress':
         settings => {
-          'wordpress.foo.org' => {
+          '#{myfqdn}' => {
             owner         => 'wp',
             dbhost        => '127.0.0.1',
             dbname        => 'wordpress',
             dbuser        => 'wpuserdb',
             dbpasswd      => 'kiki',
-            wproot        => '/var/www/wordpress.foo.org',
+            wproot        => '#{wp_root}',
             wptitle       => 'hola this is modified',
             wpadminuser   => 'wpadmin',
             wpadminpasswd => 'newsecret',
@@ -149,15 +150,15 @@ describe 'wordpress class' do
       apply_manifest(pp, catch_changes: true)
     end
 
-    describe command('curl -L http://wordpress.foo.org') do
+    describe command("curl -L http://#{myfqdn}") do
       its(:stdout) { is_expected.to match %r{.*hola this is modified.*} }
     end
 
-    describe command('curl -c /tmp/wp-step2.tmp -d "log=wpadmin" -d "pwd=newsecret" http://wordpress.foo.org/wp-login.php') do
+    describe command("curl -c /tmp/wp-step2.tmp -d 'log=wpadmin' -d 'pwd=newsecret' http://#{myfqdn}/wp-login.php") do
       its(:exit_status) { is_expected.to eq 0 }
     end
 
-    describe command('curl -b /tmp/wp-step2.tmp http://wordpress.foo.org/wp-admin/') do
+    describe command("curl -b /tmp/wp-step2.tmp http://#{myfqdn}/wp-admin/") do
       its(:stdout) { is_expected.to match %r{.*adminmenu.*} }
     end
   end
@@ -167,13 +168,13 @@ describe 'wordpress class' do
       pp = <<-EOS
       class { 'wordpress':
         settings => {
-          'wordpress.foo.org' => {
+          '#{myfqdn}' => {
             owner         => 'wp',
             dbhost        => '127.0.0.1',
             dbname        => 'wordpress',
             dbuser        => 'wpuserdb',
             dbpasswd      => 'kiki',
-            wproot        => '/var/www/wordpress.foo.org',
+            wproot        => '#{wp_root}',
             wptitle       => 'hola this wordpress instance is installed by puppet',
             wpadminuser   => 'wpadmin',
             wpadminpasswd => 'secret',
@@ -364,13 +365,13 @@ describe 'wordpress class' do
       pp = <<-EOS
       class { 'wordpress':
         settings => {
-          'wordpress.foo.org' => {
+          '#{myfqdn}' => {
             buggy         => 'wp',
             dbhost        => '127.0.0.1',
             dbname        => 'wordpress',
             dbuser        => 'wpuserdb',
             dbpasswd      => 'kiki',
-            wproot        => '/var/www/wordpress.foo.org',
+            wproot        => '#{wp_root}',
             wptitle       => 'hola this wordpress instance is installed by puppet',
             wpadminuser   => 'wpadmin',
             wpadminpasswd => 'lolo',

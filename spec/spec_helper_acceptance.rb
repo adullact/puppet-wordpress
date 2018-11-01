@@ -23,30 +23,29 @@ RSpec.configure do |c|
       on host, puppet('module', 'install', 'puppet-archive')
 
       if host[:platform] =~ %r{debian-8-amd64}
+        # workaround the apache module try to install the following apache debs and fail.
+        # curl is used in tests to access at a wordpress newly installed
         on(host, 'apt-get update', acceptable_exit_codes: [0]).stdout
         on(host, 'apt install php5-cli php5-mysql --yes', acceptable_exit_codes: [0]).stdout
-        # workaround the apache moduel try to install the following debs and fail.
-        on(host, 'apt install libapache2-mod-php5 apache2-mpm-itk --yes', acceptable_exit_codes: [0]).stdout
-        # curl is used in tests to access at a wordpress newly installed
-        on(host, 'apt install curl --yes', acceptable_exit_codes: [0]).stdout
+        on(host, 'apt install curl libapache2-mod-php5 apache2-mpm-itk --yes', acceptable_exit_codes: [0]).stdout
       elsif host[:platform] =~ %r{el-7-x86_64}
         # apache mpm itk is provided by EPEL
+        # curl is used in tests to access at a wordpress newly installed
         on(host, 'yum install epel-release -y', acceptable_exit_codes: [0]).stdout
         on(host, 'yum makecache', acceptable_exit_codes: [0]).stdout
-        on(host, 'yum install php-cli.x86_64 php-mysql.x86_64 -y', acceptable_exit_codes: [0]).stdout
-        # curl is used in tests to access at a wordpress newly installed
-        on(host, 'yum install curl.x86_64 -y', acceptable_exit_codes: [0]).stdout
+        on(host, 'yum install curl.x86_64 php-cli.x86_64 php-mysql.x86_64 -y', acceptable_exit_codes: [0]).stdout
       elsif host[:platform] =~ %r{ubuntu-16.04-amd64}
         on(host, 'apt-get update', acceptable_exit_codes: [0]).stdout
-        on(host, 'apt install php7.0-cli php7.0-mysql --yes', acceptable_exit_codes: [0]).stdout
         # curl is used in tests to access at a wordpress newly installed
-        on(host, 'apt install curl --yes', acceptable_exit_codes: [0]).stdout
+        # cron package is not install on docker image
+        on(host, 'apt install cron curl php7.0-cli php7.0-mysql --yes', acceptable_exit_codes: [0]).stdout
       end
     end
 
     pp = <<-EOS
     include '::mysql::server'
 
+    $myfqdn = 'localhost'
     accounts::user { 'wp' : }
     accounts::user { 'wp2' : }
     accounts::user { 'wp3' : }
@@ -57,11 +56,11 @@ RSpec.configure do |c|
       default_mods  => ['php','rewrite'],
     }
 
-    apache::vhost {'wordpress.foo.org':
-      servername => 'wordpress.foo.org',
+    apache::vhost { $myfqdn :
+      servername => $myfqdn,
       ip => '127.0.0.1',
       port => 80,
-      docroot => '/var/www/wordpress.foo.org',
+      docroot => "/var/www/${myfqdn}",
       docroot_owner => 'wp',
       docroot_group => 'wp',
       docroot_mode => '0750',
@@ -70,7 +69,7 @@ RSpec.configure do |c|
         group => 'wp',
       },
       directories => {
-        path           => '/var/www/wordpress.foo.org',
+        path           => "/var/www/${myfqdn}",
         allow_override => 'All'
       },
       require => Accounts::User['wp'],
@@ -137,13 +136,6 @@ RSpec.configure do |c|
       password => 'kiki',
       host     => 'localhost',
       grant    => ['ALL'],
-    }
-    file { '/etc/hosts' :
-      ensure  => file,
-      owner   => 0,
-      group   => 0,
-      mode    => '0644',
-      content => "127.0.0.1 localhost wordpress.foo.org\n",
     }
     EOS
 

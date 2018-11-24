@@ -3,6 +3,7 @@ stages:
   - syntax
   - unit
   - acceptance
+  - release
 
 cache:
   paths:
@@ -174,3 +175,19 @@ acceptance with puppet6 centos7:
     - bundle exec rake beaker
   tags:
     - puppet-tests
+
+module release:
+  stage: release
+  variables:
+    RBENV_VERSION: '2.5.1'
+  script: 
+    - pdk build
+  tags:
+    - puppet-tests
+  only:
+    - master
+  artifacts:
+    paths:
+      - pkg/
+    expire_in: 6 weeks
+

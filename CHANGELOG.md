@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
+## Release 1.3.5
+
+**Features**
+
+  * #56 add puppet6 support
+
+**Bugfixes**
+
+**Known Issues**
+
 ## Release 1.3.4
 
 **Features**

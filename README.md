@@ -261,6 +261,10 @@ This module is tested with following OSes :
 
 Known bugs are listed in `CHANGELOG.md` file.
 
+This revision is the last one supporting puppet 4.7. 
+Next one will increase minimal version of puppet to 4.10, at least.
+Tests are done with last available release of puppet 4, 5 and 6.
+
 ## Development
 
 Home at URL https://gitlab.adullact.net/adullact/puppet-wordpress

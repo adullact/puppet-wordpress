@@ -29,6 +29,6 @@ define wordpress::resource::activate (
       "${wpcli_bin} --format=csv --path=${wp_root} --fields=name,status ${wp_resource_type} list | grep -qP '^${wp_resource_name},inactive'",
       ] ,
     user    => $owner,
-    notify  => Exec['update external fact wordpress'],
+    notify  => Exec['updates external fact wordpress'],
   }
 }

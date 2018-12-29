@@ -84,6 +84,6 @@ define wordpress::core::update (
     user        => $owner,
     subscribe   => Exec["${wp_servername} > Update database structure"],
     refreshonly => true,
-    notify      => Exec['update external fact wordpress'],
+    notify      => Exec['updates external fact wordpress'],
   }
 }

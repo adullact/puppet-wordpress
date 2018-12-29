@@ -100,7 +100,7 @@ class wordpress::core (
         exec { "${_wp_servername} > Erase wordpress":
           command => "rm -Rf ${_real_wproot}/*",
           onlyif  => "test -f ${_real_wproot}/wp-config.php",
-          notify  => Exec['update external fact wordpress'],
+          notify  => Exec['updates external fact wordpress'],
         }
       }
       'latest': {

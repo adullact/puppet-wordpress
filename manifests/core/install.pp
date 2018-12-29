@@ -76,7 +76,7 @@ define wordpress::core::install (
     cwd     => $wp_root,
     creates => "${wp_root}/wp-config.php",
     user    => $owner,
-    notify  => Exec['update external fact wordpress'],
+    notify  => Exec['updates external fact wordpress'],
   }
 
   # the database, granted user and credentials must be already created by other process
@@ -89,7 +89,7 @@ define wordpress::core::install (
       Exec["${wp_servername} > Create wp-config.php"],
     ],
     refreshonly => true,
-    notify      => Exec['update external fact wordpress'],
+    notify      => Exec['updates external fact wordpress'],
   }
 
 }

@@ -78,7 +78,7 @@
 #  Gives the path where the WP-CLI tools is deployed. Defaults to '/usr/local/bin/wp'.
 #
 #@param hour_fact_update
-#  Gives the time (hour between 1 and 23) at which the update of external fact is done (use cron). Defaults to 7.
+#  Gives the time (hour between 1 and 23) at which the update of external fact is done. Defaults to 7.
 #
 class wordpress (
   Hash $settings = {},

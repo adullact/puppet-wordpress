@@ -24,6 +24,7 @@ define wordpress::resource::update (
 ) {
   exec { "${wp_servername} > update ${wp_resource_type} ${wp_resource_name}":
     command => "${wpcli_bin} --path=${wp_root} ${wp_resource_type} update ${wp_resource_name}",
+    onlyif  => "${wpcli_bin} --format=csv --path=${wp_root} --update=available ${wp_resource_type} list | grep -qP '^${wp_resource_name},",
     user    => $owner,
     notify  => Exec['update external fact wordpress'],
   }

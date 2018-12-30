@@ -28,7 +28,7 @@ class wordpress::site (
     }
     $_owner = $_wp_configs['owner'] ? {
       String  => $_wp_configs['owner'],
-      default => $::wordpress::params::default_wpowner,
+      default => $wordpress::params::default_wpowner,
     }
 
     if $_ensure == 'present' or $_ensure == 'latest' {

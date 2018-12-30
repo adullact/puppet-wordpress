@@ -16,7 +16,7 @@ class wordpress::resource (
     # use some defaults if not provided
     $_owner = $_wp_configs['owner'] ? {
       String  => $_wp_configs['owner'],
-      default => $::wordpress::params::default_wpowner,
+      default => $wordpress::params::default_wpowner,
     }
     $_wp_resources = $_wp_configs['wpresources'] ? {
       Hash => $_wp_configs['wpresources'],
@@ -30,7 +30,7 @@ class wordpress::resource (
 
         $_wp_resource_ensure = $_wp_resource_settings['ensure'] ? {
           Enum['present','absent','latest'] => $_wp_resource_settings['ensure'],
-          default => $::wordpress::params::default_wpresource_ensure,
+          default => $wordpress::params::default_wpresource_ensure,
         }
 
         $_wp_resource_name = $_wp_resource_settings['name']
@@ -66,11 +66,11 @@ class wordpress::resource (
             }
           }
           'latest': {
-            if $::facts['wordpress'] and
-              has_key($::facts['wordpress'], $_wp_servername) and
-              has_key($::facts['wordpress']["${_wp_servername}"], $_wp_resource_type) and
-              has_key($::facts['wordpress']["${_wp_servername}"]["${_wp_resource_type}"], $_wp_resource_name) {
-              $_wp_resource_update_status = $::facts['wordpress']["${_wp_servername}"]["${_wp_resource_type}"]["${_wp_resource_name}"]['update']
+            if $facts['wordpress'] and
+              has_key($facts['wordpress'], $_wp_servername) and
+              has_key($facts['wordpress']["${_wp_servername}"], $_wp_resource_type) and
+              has_key($facts['wordpress']["${_wp_servername}"]["${_wp_resource_type}"], $_wp_resource_name) {
+              $_wp_resource_update_status = $facts['wordpress']["${_wp_servername}"]["${_wp_resource_type}"]["${_wp_resource_name}"]['update']
               if $_wp_resource_update_status == 'available' {
                 wordpress::resource::activate { "${_wp_servername} > ${_wp_resource_type} ${_wp_resource_name}":
                   wp_servername    => $_wp_servername,

@@ -25,19 +25,19 @@ class wordpress::core (
     }
     $_owner = $_wp_configs['owner'] ? {
       String  => $_wp_configs['owner'],
-      default => $::wordpress::params::default_wpowner,
+      default => $wordpress::params::default_wpowner,
     }
     $_locale = $_wp_configs['locale'] ? {
       Pattern['^\w\w_\w\w$'] => $_wp_configs['locale'],
-      default                => $::wordpress::params::default_locale,
+      default                => $wordpress::params::default_locale,
     }
     $_dbprefix = $_wp_configs['dbprefix'] ? {
       Pattern['^\w*$'] => $_wp_configs['dbprefix'],
-      default          => $::wordpress::params::default_dbprefix,
+      default          => $wordpress::params::default_dbprefix,
     }
     $_wpselfupdate = $_wp_configs['wpselfupdate'] ? {
       Enum['disabled','enabled'] => $_wp_configs['wpselfupdate'],
-      default => $::wordpress::params::default_wpselfupdate,
+      default => $wordpress::params::default_wpselfupdate,
     }
 
     $_wp_root = $_wp_configs['wproot']
@@ -111,11 +111,11 @@ class wordpress::core (
           group  => 0,
         }
 
-        if $::facts['wordpress'] and
-        has_key($::facts['wordpress'], $_wp_servername) and
-        has_key($::facts['wordpress']["${_wp_servername}"], 'core') and
-        has_key($::facts['wordpress']["${_wp_servername}"]['core'], 'update') {
-          $_wp_core_update_status = $::facts['wordpress']["${_wp_servername}"]['core']['update']
+        if $facts['wordpress'] and
+        has_key($facts['wordpress'], $_wp_servername) and
+        has_key($facts['wordpress']["${_wp_servername}"], 'core') and
+        has_key($facts['wordpress']["${_wp_servername}"]['core'], 'update') {
+          $_wp_core_update_status = $facts['wordpress']["${_wp_servername}"]['core']['update']
           if $_wp_core_update_status != 'none' {
             wordpress::core::update { $_wp_servername :
               wp_servername   => $_wp_servername,

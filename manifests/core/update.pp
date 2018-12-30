@@ -57,30 +57,33 @@ define wordpress::core::update (
   case $locale {
     'en_US': {
       exec { "${wp_servername} > Update core wordpress" :
-        command => "${wpcli_bin} --path=${wp_root} core update",
-        user    => $owner,
-        require => Exec["${wp_servername} > Archive files before upgrade"],
+        command     => "${wpcli_bin} --path=${wp_root} core update",
+        user        => $owner,
+        subscribe   => Exec["${wp_servername} > Archive files before upgrade"],
+        refreshonly =>  true,
       }
     }
     default: {
       exec { "${wp_servername} > Update core wordpress" :
-        command => "${wpcli_bin} --path=${wp_root} core update --locale=${locale}",
-        user    => $owner,
-        require => Exec["${wp_servername} > Archive files before upgrade"],
+        command     => "${wpcli_bin} --path=${wp_root} core update --locale=${locale}",
+        user        => $owner,
+        subscribe   => Exec["${wp_servername} > Archive files before upgrade"],
+        refreshonly => true,
       }
     }
   }
   exec { "${wp_servername} > Update database structure" :
-    command => "${wpcli_bin} --path=${wp_root} core update-db",
-    user    => $owner,
-    require => Exec["${wp_servername} > Update core wordpress"],
-    notify  => Exec['update external fact wordpress'],
+    command     => "${wpcli_bin} --path=${wp_root} core update-db",
+    user        => $owner,
+    subscribe   => Exec["${wp_servername} > Update core wordpress"],
+    refreshonly => true,
   }
 
   exec { "${wp_servername} > Update language" :
-    command => "${wpcli_bin} --path=${wp_root} language core update",
-    user    => $owner,
-    require => Exec["${wp_servername} > Update core wordpress"],
-    notify  => Exec['update external fact wordpress'],
+    command     => "${wpcli_bin} --path=${wp_root} language core update",
+    user        => $owner,
+    subscribe   => Exec["${wp_servername} > Update database structure"],
+    refreshonly => true,
+    notify      => Exec['update external fact wordpress'],
   }
 }

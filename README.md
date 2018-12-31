@@ -39,7 +39,7 @@ This `wordpress` module depends on `puppetlabs-stdlib` and `puppet-archive`
 
 ### Beginning with wordpress
 
-The very basic step :
+The following very basic step will install WP-CLI tool :
 
 ```
 class { 'wordpress' :
@@ -261,9 +261,9 @@ This module is tested with following OSes :
 
 Known bugs are listed in `CHANGELOG.md` file.
 
-This revision is the last one supporting puppet 4.7. 
-Next one will increase minimal version of puppet to 4.10, at least.
-Tests are done with last available release of puppet 4, 5 and 6.
+Even if module should work with Puppet4, Puppet 4 is end of life since 2019-01-01.
+So tests with Puppet 4 are removed.
+Acceptance tests are done with last available release 5 and 6.
 
 ## Development
 

@@ -2,6 +2,25 @@
 
 All notable changes to this project will be documented in this file.
 
+## Release 2.0.0
+
+**Features**
+
+  * #55 add debian9 support
+  * #57 use schedure resource instead of cron
+  * #63 README , details about basic usage
+  * #69 remove puppet4 acceptance tests
+
+**Bugfixes**
+
+  * #64 update a resource can be not idempotent
+  * #65 remove :: usage
+  * #66 core update can be done in an idempotent way
+  * #67 declare private types as private
+
+**Known Issues**
+
+
 ## Release 1.3.5
 
 **Features**

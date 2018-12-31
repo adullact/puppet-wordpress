@@ -26,6 +26,6 @@ define wordpress::resource::uninstall (
     command => "${wpcli_bin} --path=${wp_root} ${wp_resource_type} uninstall ${wp_resource_name}",
     onlyif  => "${wpcli_bin} --path=${wp_root} ${wp_resource_type} is-installed ${wp_resource_name}",
     user    => $owner,
-    notify  => Exec['update external fact wordpress'],
+    notify  => Exec['updates external fact wordpress'],
   }
 }

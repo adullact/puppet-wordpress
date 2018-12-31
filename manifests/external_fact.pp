@@ -12,7 +12,6 @@ class wordpress::external_fact (
   Wordpress::Settings $settings = {},
 ) {
 
-  $_minute = fqdn_rand(59)
   $_fact_script_path = '/usr/local/sbin/external_fact_wordpress.rb'
   $_fact_output_yaml = '/opt/puppetlabs/facter/facts.d/wordpress.yaml'
 
@@ -33,21 +32,24 @@ class wordpress::external_fact (
     owner   => 0,
     group   => 0,
     mode    => '0755',
-    notify  => Exec['update external fact wordpress'],
+    notify  => Exec['updates external fact wordpress'],
   }
-  ->
-  exec { 'update external fact wordpress':
+
+  exec { 'updates external fact wordpress':
     command     => "${_fact_script_path} > ${_fact_output_yaml}",
     user        => 'root',
     refreshonly => true,
   }
 
-  cron { 'external_fact workpress update':
-    command     => "${_fact_script_path} > ${_fact_output_yaml} &> /dev/null",
-    environment => 'PATH=/usr/local/sbin:/usr/local/bin:/opt/puppetlabs/bin:/usr/sbin:/usr/bin:/sbin:/bin',
-    user        => 'root',
-    hour        => $hour_fact_update,
-    minute      => $_minute,
+  exec { 'daily update external fact wordpress':
+    command  => "${_fact_script_path} > ${_fact_output_yaml}",
+    user     => 'root',
+    schedule => 'external_fact update',
+  }
+
+  schedule { 'external_fact update':
+    period => daily,
+    range  => "${hour_fact_update}:01 - ${hour_fact_update}:59",
   }
 
 }

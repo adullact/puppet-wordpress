@@ -143,7 +143,7 @@ Default value: $wordpress::params::default_wpcli_bin
 
 Data type: `Integer[1,23]`
 
-Gives the time (hour between 1 and 23) at which the update of external fact is done (use cron). Defaults to 7.
+Gives the time (hour between 1 and 23) at which the update of external fact is done. Defaults to 7.
 
 Default value: $wordpress::params::default_hour_fact_update
 

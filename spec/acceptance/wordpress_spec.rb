@@ -6,13 +6,7 @@ wp_root = "/var/www/#{myfqdn}"
 wp2_root = '/var/www/wp2.foo.org'
 wp3_root = '/var/www/wp3.foo.org'
 wparchives = '/var/mywp_archives'
-crontabs_path = if fact('osfamily') == 'Debian'
-                  '/var/spool/cron/crontabs'
-                elsif fact('osfamily') == 'RedHat'
-                  '/var/spool/cron/'
-                else
-                  '/unsupported_OS'
-                end
+external_fact = '/opt/puppetlabs/facter/facts.d/wordpress.yaml'
 
 describe 'wordpress class' do
   context 'with defaults parameters' do
@@ -54,8 +48,12 @@ describe 'wordpress class' do
       apply_manifest(pp, catch_changes: true)
     end
 
-    describe file("#{crontabs_path}/root") do
-      it { is_expected.to contain('7 * * * /usr/local/sbin/external_fact_wordpress.rb > /opt/puppetlabs/facter/facts.d/wordpress.yaml') }
+    describe file(external_fact.to_s) do
+      it { is_expected.to be_file }
+      it { is_expected.to be_owned_by 'root' }
+      it { is_expected.to be_grouped_into 'root' }
+      it { is_expected.to be_mode 644 }
+      its(:content) { is_expected.to match %r{---.+wordpress.+localhost.+}m }
     end
 
     describe file(wpcli_bin.to_s) do
@@ -119,10 +117,6 @@ describe 'wordpress class' do
       EOS
       apply_manifest(pp, catch_failures: true)
       apply_manifest(pp, catch_changes: true)
-    end
-
-    describe file("#{crontabs_path}/root") do
-      it { is_expected.to contain('3 * * * /usr/local/sbin/external_fact_wordpress.rb > /opt/puppetlabs/facter/facts.d/wordpress.yaml') }
     end
   end
 
@@ -198,6 +192,14 @@ describe 'wordpress class' do
       apply_manifest(pp, catch_changes: true)
     end
 
+    describe file(external_fact.to_s) do
+      it { is_expected.to be_file }
+      it { is_expected.to be_owned_by 'root' }
+      it { is_expected.to be_grouped_into 'root' }
+      it { is_expected.to be_mode 644 }
+      its(:content) { is_expected.to match %r{---.+localhost.+akismet.+twentyseventeen.+}m }
+    end
+
     describe file(wpcli_bin.to_s) do
       it { is_expected.to be_file }
       it { is_expected.to be_owned_by 'root' }
@@ -241,10 +243,6 @@ describe 'wordpress class' do
 
     describe command("/usr/local/bin/wp --allow-root --format=csv --path=#{wp_root} --fields=name,status theme list") do
       its(:stdout) { is_expected.not_to match %r{.*twentysixteen,active.*} }
-    end
-
-    describe file("#{crontabs_path}/root") do
-      it { is_expected.to contain('7 * * * /usr/local/sbin/external_fact_wordpress.rb > /opt/puppetlabs/facter/facts.d/wordpress.yaml') }
     end
   end
 
@@ -292,6 +290,14 @@ describe 'wordpress class' do
       EOS
       apply_manifest(pp, catch_failures: true)
       apply_manifest(pp, catch_changes: true)
+    end
+
+    describe file(external_fact.to_s) do
+      it { is_expected.to be_file }
+      it { is_expected.to be_owned_by 'root' }
+      it { is_expected.to be_grouped_into 'root' }
+      it { is_expected.to be_mode 644 }
+      its(:content) { is_expected.to match %r{---.+wp2.+wp3.*}m }
     end
 
     describe file(wpcli_bin.to_s) do

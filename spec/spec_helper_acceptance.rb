@@ -37,8 +37,7 @@ RSpec.configure do |c|
       elsif host[:platform] =~ %r{ubuntu-16.04-amd64}
         on(host, 'apt-get update', acceptable_exit_codes: [0]).stdout
         # curl is used in tests to access at a wordpress newly installed
-        # cron package is not install on docker image
-        on(host, 'apt install cron curl php7.0-cli php7.0-mysql --yes', acceptable_exit_codes: [0]).stdout
+        on(host, 'apt install curl php7.0-cli php7.0-mysql --yes', acceptable_exit_codes: [0]).stdout
       end
     end
 

@@ -256,7 +256,7 @@ Details in `REFERENCE.md`.
 
 This module is tested with following OSes :
   * Ubuntu 16.04
-  * Debian 8
+  * Debian 8, 9
   * CentOS 7
 
 Known bugs are listed in `CHANGELOG.md` file.

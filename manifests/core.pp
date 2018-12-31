@@ -9,12 +9,14 @@
 #@param settings
 #  Describes all availables settings in this module for all wordpress instances on this node. Defaults to empty hash.
 #
-#@note This class should be considered as private.
+#@api private
+#
 class wordpress::core (
   Pattern['^/'] $wpcli_bin,
   Pattern['^/'] $wparchives_path,
   Wordpress::Settings $settings = {},
 ) {
+  assert_private()
 
   $settings.each | String $_wp_servername , Hash $_wp_configs | {
 

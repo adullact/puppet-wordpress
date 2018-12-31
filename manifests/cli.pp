@@ -8,12 +8,14 @@
 #@param ensure
 #  The desirated state about wpcli tools. Valid values are 'present', 'absent'. Defaults to 'present'.
 #
-#@note This class should be considered as private.
+#@api private
+#
 class wordpress::cli (
   Pattern['^http'] $wpcli_url,
   Pattern['^/'] $wpcli_bin,
   Enum['present','absent'] $ensure = $wordpress::params::default_wpcli_ensure,
 ) {
+  assert_private()
 
   case $ensure {
     'present': {

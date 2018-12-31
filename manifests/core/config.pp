@@ -30,7 +30,9 @@
 #  Possible values : disabled , enabled (defaults disabled).
 #@param wpcli_bin
 #  The path of the WP-CLI tool.
-#@note This defined type should be considered as private.
+#
+#@api private
+#
 define wordpress::core::config (
   String $wp_servername,
   String $wp_root,
@@ -48,7 +50,7 @@ define wordpress::core::config (
   String $wpselfupdate,
   String $wpcli_bin,
 ) {
-
+  assert_private()
   # ensure the content stay well configured for the instance ${wp_servername}
 
   exec {"${wp_servername} > set DB_NAME to ${db_name}":

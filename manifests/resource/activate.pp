@@ -13,7 +13,8 @@
 #@param owner
 #  The OS account, owner of files of the WordPress instance.
 #
-#@note This defined type should be considered as private.
+#@api private
+#
 define wordpress::resource::activate (
   String $wp_servername,
   String $wp_resource_type,
@@ -22,6 +23,8 @@ define wordpress::resource::activate (
   String $wpcli_bin,
   String $owner,
 ) {
+  assert_private()
+
   exec { "${wp_servername} > activate ${wp_resource_type} ${wp_resource_name}":
     command => "${wpcli_bin} --path=${wp_root} ${wp_resource_type} activate ${wp_resource_name}",
     onlyif  => [

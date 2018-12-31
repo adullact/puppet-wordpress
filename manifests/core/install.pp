@@ -30,7 +30,9 @@
 #  Possible values : disabled , enabled (defaults disabled).
 #@param wpcli_bin
 #  The path of the WP-CLI tool.
-#@note This defined type should be considered as private.
+#
+#@api private
+#
 define wordpress::core::install (
   String $wp_servername,
   String $wp_root,
@@ -48,6 +50,7 @@ define wordpress::core::install (
   String $wpselfupdate,
   String $wpcli_bin,
 ) {
+  assert_private()
   # download wordpress in path defined as wordpress root for the instance $wp_servername
 
   case $locale {

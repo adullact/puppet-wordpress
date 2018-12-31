@@ -5,11 +5,13 @@
 #@param wpcli_bin
 #  The PATH where the wpcli tools is deployed. Defaults to '/usr/local/bin/wp'.
 #
-#@note This class should be considered as private.
+#@api private
+#
 class wordpress::resource (
   Pattern['^/'] $wpcli_bin,
   Wordpress::Settings $settings = {},
 ) {
+  assert_private()
 
   $settings.each | String $_wp_servername , Hash $_wp_configs | {
 

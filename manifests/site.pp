@@ -5,13 +5,14 @@
 #@param settings
 #  Describes all availables settings in this module for all wordpress instances on this node. Defaults to empty hash.
 #
-#@note This class should be considered as private.
+#@api private
+#
 class wordpress::site (
   Pattern['^/'] $wpcli_bin,
   Wordpress::Settings $settings = {},
   Pattern['^/'] $install_secret_directory = $wordpress::params::default_install_secret_directory,
 ) {
-
+  assert_private()
   file { $install_secret_directory :
     ensure => directory,
     owner  => 0,

@@ -21,7 +21,8 @@
 #@param wparchives_path
 #  Gives the path where are stored archives done before update managed by puppet (not by WordPress itself with `wpselfupdate`). Defaults to /var/wordpress_archives.
 #
-#@note This defined type should be considered as private.
+#@api private
+#
 define wordpress::core::update (
   String $wp_servername,
   String $wp_root,
@@ -31,6 +32,8 @@ define wordpress::core::update (
   String $wpcli_bin,
   String $wparchives_path,
 ) {
+  assert_private()
+
   # four steps :
   # 1. make a backup
   # 2. update core wp

@@ -13,7 +13,8 @@
 # The desired value of the option to be configured.
 #@param wpcli_bin
 #  The path of the WP-CLI tool.
-#@note This defined type should be considered as private.
+#
+# @api private
 #
 define wordpress::config::option(
   String $wp_servername,
@@ -23,6 +24,7 @@ define wordpress::config::option(
   String $wp_option_value,
   String $wpcli_bin,
 ) {
+  assert_private()
 
   exec { "${wp_servername} > update ${wp_option_name}" :
     command => "${wpcli_bin} option update ${wp_option_name} '${wp_option_value}'",

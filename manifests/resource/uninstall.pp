@@ -13,7 +13,8 @@
 #@param owner
 #  The OS account, owner of files of the WordPress instance.
 #
-#@note This defined type should be considered as private.
+#@api private
+#
 define wordpress::resource::uninstall (
   String $wp_servername,
   String $wp_resource_type,
@@ -22,6 +23,8 @@ define wordpress::resource::uninstall (
   String $wpcli_bin,
   String $owner,
 ) {
+  assert_private()
+
   exec { "${wp_servername} > Uninstall ${wp_resource_type} ${wp_resource_name}":
     command => "${wpcli_bin} --path=${wp_root} ${wp_resource_type} uninstall ${wp_resource_name}",
     onlyif  => "${wpcli_bin} --path=${wp_root} ${wp_resource_type} is-installed ${wp_resource_name}",

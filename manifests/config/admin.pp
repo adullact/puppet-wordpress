@@ -14,7 +14,8 @@
 #  The desired value of the user's email to be configured.
 #@param wpcli_bin
 #  The path of the WP-CLI tool.
-#@note This defined type should be considered as private.
+#
+# @api private
 #
 define wordpress::config::admin(
   String $wp_servername,
@@ -26,6 +27,7 @@ define wordpress::config::admin(
   String $wpcli_bin,
   String $wp_admin_passwd_hash = wordpress::password_hash($wp_admin_passwd),
 ) {
+  assert_private()
 
   $_secret_directory = $wordpress::site::install_secret_directory
 

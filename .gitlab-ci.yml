@@ -36,14 +36,14 @@ parallel_spec-Ruby 2.4.4-Puppet ~> 5.5:
 acceptance with puppet5 ubuntu1604:
   stage: acceptance
   variables:
-    BEAKER_PUPPET_COLLECTION: 'puppet5'
+    RBENV_VERSION: '2.5.1'
     PUPPET_INSTALL_TYPE: 'agent'
     BEAKER_IS_PE: 'no'
-    BEAKER_debug: 'true '
-    BEAKER_setfile: 'host.yml'
-    RBENV_VERSION: '2.5.1'
+    BEAKER_PUPPET_COLLECTION: 'puppet5'
+    BEAKER_debug: 'true'
+    BEAKER_setfile: 'ubuntu1604-64'
+    BEAKER_HYPERVISOR: 'docker'
   script:
-    - beaker-hostgenerator ubuntu1604-64{hypervisor=docker} > host.yml
     - bundle exec rake beaker
   tags:
     - puppet-tests
@@ -51,14 +51,14 @@ acceptance with puppet5 ubuntu1604:
 acceptance with puppet5 debian8:
   stage: acceptance
   variables:
-    BEAKER_PUPPET_COLLECTION: 'puppet5'
+    RBENV_VERSION: '2.5.1'
     PUPPET_INSTALL_TYPE: 'agent'
     BEAKER_IS_PE: 'no'
-    BEAKER_debug: 'true '
-    BEAKER_setfile: 'host.yml'
-    RBENV_VERSION: '2.5.1'
+    BEAKER_PUPPET_COLLECTION: 'puppet5'
+    BEAKER_debug: 'true'
+    BEAKER_setfile: 'debian8-64'
+    BEAKER_HYPERVISOR: 'docker'
   script:
-    - beaker-hostgenerator debian8-64{hypervisor=docker} > host.yml
     - bundle exec rake beaker
   tags:
     - puppet-tests
@@ -66,14 +66,14 @@ acceptance with puppet5 debian8:
 acceptance with puppet5 debian9:
   stage: acceptance
   variables:
-    BEAKER_PUPPET_COLLECTION: 'puppet5'
+    RBENV_VERSION: '2.5.1'
     PUPPET_INSTALL_TYPE: 'agent'
     BEAKER_IS_PE: 'no'
-    BEAKER_debug: 'true '
-    BEAKER_setfile: 'host.yml'
-    RBENV_VERSION: '2.5.1'
+    BEAKER_PUPPET_COLLECTION: 'puppet5'
+    BEAKER_debug: 'true'
+    BEAKER_setfile: 'debian9-64'
+    BEAKER_HYPERVISOR: 'docker'
   script:
-    - beaker-hostgenerator debian9-64{hypervisor=docker} > host.yml
     - bundle exec rake beaker
   tags:
     - puppet-tests
@@ -81,14 +81,14 @@ acceptance with puppet5 debian9:
 acceptance with puppet5 centos7:
   stage: acceptance
   variables:
-    BEAKER_PUPPET_COLLECTION: 'puppet5'
+    RBENV_VERSION: '2.5.1'
     PUPPET_INSTALL_TYPE: 'agent'
     BEAKER_IS_PE: 'no'
-    BEAKER_debug: 'true '
-    BEAKER_setfile: 'host.yml'
-    RBENV_VERSION: '2.5.1'
+    BEAKER_PUPPET_COLLECTION: 'puppet5'
+    BEAKER_debug: 'true'
+    BEAKER_setfile: 'centos7-64'
+    BEAKER_HYPERVISOR: 'docker'
   script:
-    - beaker-hostgenerator centos7-64{hypervisor=docker} > host.yml
     - bundle exec rake beaker
   tags:
     - puppet-tests
@@ -96,14 +96,14 @@ acceptance with puppet5 centos7:
 acceptance with puppet6 ubuntu1604:
   stage: acceptance
   variables:
-    BEAKER_PUPPET_COLLECTION: 'puppet6'
+    RBENV_VERSION: '2.5.1'
     PUPPET_INSTALL_TYPE: 'agent'
     BEAKER_IS_PE: 'no'
-    BEAKER_debug: 'true '
-    BEAKER_setfile: 'host.yml'
-    RBENV_VERSION: '2.5.1'
+    BEAKER_PUPPET_COLLECTION: 'puppet6'
+    BEAKER_debug: 'true'
+    BEAKER_setfile: 'ubuntu1604-64'
+    BEAKER_HYPERVISOR: 'docker'
   script:
-    - beaker-hostgenerator ubuntu1604-64{hypervisor=docker} > host.yml
     - bundle exec rake beaker
   tags:
     - puppet-tests
@@ -111,14 +111,14 @@ acceptance with puppet6 ubuntu1604:
 acceptance with puppet6 debian8:
   stage: acceptance
   variables:
-    BEAKER_PUPPET_COLLECTION: 'puppet6'
+    RBENV_VERSION: '2.5.1'
     PUPPET_INSTALL_TYPE: 'agent'
     BEAKER_IS_PE: 'no'
-    BEAKER_debug: 'true '
-    BEAKER_setfile: 'host.yml'
-    RBENV_VERSION: '2.5.1'
+    BEAKER_PUPPET_COLLECTION: 'puppet6'
+    BEAKER_debug: 'true'
+    BEAKER_setfile: 'debian8-64'
+    BEAKER_HYPERVISOR: 'docker'
   script:
-    - beaker-hostgenerator debian8-64{hypervisor=docker} > host.yml
     - bundle exec rake beaker
   tags:
     - puppet-tests
@@ -126,14 +126,14 @@ acceptance with puppet6 debian8:
 acceptance with puppet6 debian9:
   stage: acceptance
   variables:
-    BEAKER_PUPPET_COLLECTION: 'puppet6'
+    RBENV_VERSION: '2.5.1'
     PUPPET_INSTALL_TYPE: 'agent'
     BEAKER_IS_PE: 'no'
-    BEAKER_debug: 'true '
-    BEAKER_setfile: 'host.yml'
-    RBENV_VERSION: '2.5.1'
+    BEAKER_PUPPET_COLLECTION: 'puppet6'
+    BEAKER_debug: 'true'
+    BEAKER_setfile: 'debian9-64'
+    BEAKER_HYPERVISOR: 'docker'
   script:
-    - beaker-hostgenerator debian9-64{hypervisor=docker} > host.yml
     - bundle exec rake beaker
   tags:
     - puppet-tests
@@ -141,14 +141,14 @@ acceptance with puppet6 debian9:
 acceptance with puppet6 centos7:
   stage: acceptance
   variables:
-    BEAKER_PUPPET_COLLECTION: 'puppet6'
+    RBENV_VERSION: '2.5.1'
     PUPPET_INSTALL_TYPE: 'agent'
     BEAKER_IS_PE: 'no'
-    BEAKER_debug: 'true '
-    BEAKER_setfile: 'host.yml'
-    RBENV_VERSION: '2.5.1'
+    BEAKER_PUPPET_COLLECTION: 'puppet6'
+    BEAKER_debug: 'true'
+    BEAKER_setfile: 'centos7-64'
+    BEAKER_HYPERVISOR: 'docker'
   script:
-    - beaker-hostgenerator centos7-64{hypervisor=docker} > host.yml
     - bundle exec rake beaker
   tags:
     - puppet-tests

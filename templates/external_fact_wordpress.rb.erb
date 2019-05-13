@@ -68,7 +68,7 @@ for site in wproot.keys
   Open3.popen3('wp','--allow-root','--format=csv',"--path=#{path}",'--fields=language,status,update','--status=active','language','core','list') do |stdin, stdout, stderr, wait_thr|
     if wait_thr.value.success?
       while line = stdout.gets
-        langcode, langstatus, langupdate = line.match(/^([\w_]+),([\w]+),([\w]+)/).captures
+        langcode, langstatus, langupdate = line.match(/^([\w_]+),(["\w ]+),(["\w ]+)/).captures
 
         lang_hash = {}
         if langcode != 'language'
@@ -90,7 +90,7 @@ for site in wproot.keys
   Open3.popen3('wp','--allow-root','--format=csv',"--path=#{path}",'plugin','list') do |stdin, stdout, stderr, wait_thr|
     if wait_thr.value.success?
       while line = stdout.gets
-        pluginname, pluginstatus, pluginupdate, pluginversion = line.match(/^([\w\d-]+),([\w\d]+),([\w\d]+),([\w\d\.]+)/).captures
+        pluginname, pluginstatus, pluginupdate, pluginversion = line.match(/^([\w\d-]+),(["\w\d ]+),(["\w\d ]+),(["\w\d\. ]+)/).captures
 
         plugin_hash = {}
         if pluginname != 'name'
@@ -112,7 +112,7 @@ for site in wproot.keys
   Open3.popen3('wp','--allow-root','--format=csv',"--path=#{path}",'theme','list') do |stdin, stdout, stderr, wait_thr|
     if wait_thr.value.success?
       while line = stdout.gets
-        themename, themestatus, themeupdate, themeversion = line.match(/^([\w\d-]+),([\w\d]+),([\w\d]+),([\w\d\.]+)/).captures
+        themename, themestatus, themeupdate, themeversion = line.match(/^([\w\d-]+),(["\w\d ]+),(["\w\d ]+),(["\w\d\. ]+)/).captures
 
         theme_hash = {}
         if themename != 'name'

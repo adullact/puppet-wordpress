@@ -166,8 +166,7 @@ class wordpress::core (
             wpselfupdate  => $_wpselfupdate,
             wpcli_bin     => $wpcli_bin,
           }
-          ->
-          wordpress::core::update { $_wp_servername :
+          -> wordpress::core::update { $_wp_servername :
             wp_servername   => $_wp_servername,
             wp_root         => $_wp_root,
             owner           => $_owner,

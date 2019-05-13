@@ -4,7 +4,160 @@ appveyor.yml:
   delete: true
 
 .gitlab-ci.yml:
-  unmanaged: true
+  override: true
+  custom:
+    cache:
+      paths:
+        - vendor/bundle
+    bundler_args: '--without system_tests --path vendor/bundle --jobs $(nproc)'
+    custom_stages:
+      - syntax
+      - unit
+      - acceptance
+      - release
+    custom_jobs:
+      syntax lint metadata_lint check:symlinks check:git_ignore check:dot_underscore check:test_file rubocop-Ruby 2.5.1-Puppet ~> 5.0:
+        stage: syntax
+        image: ruby:2.5.1
+        script:
+          - bundle exec rake syntax lint metadata_lint check:symlinks check:git_ignore check:dot_underscore check:test_file rubocop
+        variables:
+          PUPPET_GEM_VERSION: '~> 5.0'
+      parallel_spec-Ruby 2.5.1-Puppet ~> 5.0:
+        stage: unit
+        image: ruby:2.5.1
+        script:
+          - bundle exec rake parallel_spec
+        variables:
+          PUPPET_GEM_VERSION: '~> 5.0'
+      acceptance with Puppet5 Ubuntu1604:
+        stage: acceptance
+        variables:
+          RBENV_VERSION: '2.5.1'
+          PUPPET_INSTALL_TYPE: 'agent'
+          BEAKER_IS_PE: 'no'
+          BEAKER_PUPPET_COLLECTION: 'puppet5'
+          BEAKER_debug: 'true'
+          BEAKER_setfile: 'ubuntu1604-64'
+          BEAKER_HYPERVISOR: 'docker'
+        script:
+          - bundle exec rake beaker
+        tags:
+          - puppet-tests
+      acceptance with Puppet5 Debian8:
+        stage: acceptance
+        variables:
+          RBENV_VERSION: '2.5.1'
+          PUPPET_INSTALL_TYPE: 'agent'
+          BEAKER_IS_PE: 'no'
+          BEAKER_PUPPET_COLLECTION: 'puppet5'
+          BEAKER_debug: 'true'
+          BEAKER_setfile: 'debian8-64'
+          BEAKER_HYPERVISOR: 'docker'
+        script:
+          - bundle exec rake beaker
+        tags:
+          - puppet-tests
+      acceptance with Puppet5 Debian9:
+        stage: acceptance
+        variables:
+          RBENV_VERSION: '2.5.1'
+          PUPPET_INSTALL_TYPE: 'agent'
+          BEAKER_IS_PE: 'no'
+          BEAKER_PUPPET_COLLECTION: 'puppet5'
+          BEAKER_debug: 'true'
+          BEAKER_setfile: 'debian9-64'
+          BEAKER_HYPERVISOR: 'docker'
+        script:
+          - bundle exec rake beaker
+        tags:
+          - puppet-tests
+      acceptance with Puppet5 CentOS7:
+        stage: acceptance
+        variables:
+          RBENV_VERSION: '2.5.1'
+          PUPPET_INSTALL_TYPE: 'agent'
+          BEAKER_IS_PE: 'no'
+          BEAKER_PUPPET_COLLECTION: 'puppet5'
+          BEAKER_debug: 'true'
+          BEAKER_setfile: 'centos7-64'
+          BEAKER_HYPERVISOR: 'docker'
+        script:
+          - bundle exec rake beaker
+        tags:
+          - puppet-tests
+      acceptance with Puppet6 Ubuntu1604:
+        stage: acceptance
+        variables:
+          RBENV_VERSION: '2.5.1'
+          PUPPET_INSTALL_TYPE: 'agent'
+          BEAKER_IS_PE: 'no'
+          BEAKER_PUPPET_COLLECTION: 'puppet6'
+          BEAKER_debug: 'true'
+          BEAKER_setfile: 'ubuntu1604-64'
+          BEAKER_HYPERVISOR: 'docker'
+        script:
+          - bundle exec rake beaker
+        tags:
+          - puppet-tests
+      acceptance with Puppet6 Debian8:
+        stage: acceptance
+        variables:
+          RBENV_VERSION: '2.5.1'
+          PUPPET_INSTALL_TYPE: 'agent'
+          BEAKER_IS_PE: 'no'
+          BEAKER_PUPPET_COLLECTION: 'puppet6'
+          BEAKER_debug: 'true'
+          BEAKER_setfile: 'debian8-64'
+          BEAKER_HYPERVISOR: 'docker'
+        script:
+          - bundle exec rake beaker
+        tags:
+          - puppet-tests
+      acceptance with Puppet6 Debian9:
+        stage: acceptance
+        variables:
+          RBENV_VERSION: '2.5.1'
+          PUPPET_INSTALL_TYPE: 'agent'
+          BEAKER_IS_PE: 'no'
+          BEAKER_PUPPET_COLLECTION: 'puppet6'
+          BEAKER_debug: 'true'
+          BEAKER_setfile: 'debian9-64'
+          BEAKER_HYPERVISOR: 'docker'
+        script:
+          - bundle exec rake beaker
+        tags:
+          - puppet-tests
+      acceptance with Puppet6 CentOS7:
+        stage: acceptance
+        variables:
+          RBENV_VERSION: '2.5.1'
+          PUPPET_INSTALL_TYPE: 'agent'
+          BEAKER_IS_PE: 'no'
+          BEAKER_PUPPET_COLLECTION: 'puppet6'
+          BEAKER_debug: 'true'
+          BEAKER_setfile: 'centos7-64'
+          BEAKER_HYPERVISOR: 'docker'
+        script:
+          - bundle exec rake beaker
+        tags:
+          - puppet-tests
+      module release:
+        stage: release
+        variables:
+          RBENV_VERSION: '2.5.1'
+        script:
+          - pdk build
+        tags:
+          - puppet-tests
+        only:
+          - tags
+        except:
+          - branches
+        artifacts:
+          paths:
+            - pkg/
+          expire_in: 6 weeks
 
 Gemfile:
   required:

@@ -27,8 +27,7 @@ class wordpress::cli (
         user   => 0,
         group  => 0,
       }
-      ->
-      file { $wpcli_bin :
+      -> file { $wpcli_bin :
         ensure => file,
         owner  => 0,
         group  => 0,

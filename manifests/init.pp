@@ -97,12 +97,11 @@ class wordpress (
     wpcli_url => $wpcli_url,
     wpcli_bin => $wpcli_bin,
   }
-  ->
   # install the core of wordpress
   # * download wp
   # * set condifguration settings
   # * connect to db server and create tables
-  class { 'wordpress::core' :
+  -> class { 'wordpress::core' :
     settings        => $settings,
     wpcli_bin       => $wpcli_bin,
     wparchives_path => $wparchives_path,

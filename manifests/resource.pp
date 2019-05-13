@@ -47,8 +47,7 @@ class wordpress::resource (
               wpcli_bin        => $wpcli_bin,
               owner            => $_owner,
             }
-            ->
-            wordpress::resource::activate { "${_wp_servername} > ${_wp_resource_type} ${_wp_resource_name}":
+            -> wordpress::resource::activate { "${_wp_servername} > ${_wp_resource_type} ${_wp_resource_name}":
               wp_servername    => $_wp_servername,
               wp_resource_type => $_wp_resource_type,
               wp_resource_name => $_wp_resource_name,
@@ -82,8 +81,7 @@ class wordpress::resource (
                   wpcli_bin        => $wpcli_bin,
                   owner            => $_owner,
                 }
-                ->
-                wordpress::resource::update { "${_wp_servername} > ${_wp_resource_type} ${_wp_resource_name}":
+                -> wordpress::resource::update { "${_wp_servername} > ${_wp_resource_type} ${_wp_resource_name}":
                   wp_servername    => $_wp_servername,
                   wp_resource_type => $_wp_resource_type,
                   wp_resource_name => $_wp_resource_name,
@@ -110,8 +108,7 @@ class wordpress::resource (
                 wpcli_bin        => $wpcli_bin,
                 owner            => $_owner,
               }
-              ->
-              wordpress::resource::activate { "${_wp_servername} > ${_wp_resource_type} ${_wp_resource_name}":
+              -> wordpress::resource::activate { "${_wp_servername} > ${_wp_resource_type} ${_wp_resource_name}":
                 wp_servername    => $_wp_servername,
                 wp_resource_type => $_wp_resource_type,
                 wp_resource_name => $_wp_resource_name,
@@ -119,8 +116,7 @@ class wordpress::resource (
                 wpcli_bin        => $wpcli_bin,
                 owner            => $_owner,
               }
-              ->
-              wordpress::resource::update { "${_wp_servername} > ${_wp_resource_type} ${_wp_resource_name}":
+              -> wordpress::resource::update { "${_wp_servername} > ${_wp_resource_type} ${_wp_resource_name}":
                 wp_servername    => $_wp_servername,
                 wp_resource_type => $_wp_resource_type,
                 wp_resource_name => $_wp_resource_name,

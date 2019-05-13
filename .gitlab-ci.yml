@@ -17,24 +17,24 @@ before_script:
   - bundle -v
   - bundle install --without system_tests --path vendor/bundle --jobs $(nproc)
 
-syntax lint metadata_lint check:symlinks check:git_ignore check:dot_underscore check:test_file rubocop-Ruby 2.4.4-Puppet ~> 5.5:
-  stage: syntax
-  image: ruby:2.4.4
+syntax lint metadata_lint check:symlinks check:git_ignore check:dot_underscore check:test_file rubocop-Ruby 2.5.1-Puppet ~> 5.0:
+  stage: 'syntax'
+  image: 'ruby:2.5.1'
   script:
     - bundle exec rake syntax lint metadata_lint check:symlinks check:git_ignore check:dot_underscore check:test_file rubocop
   variables:
-    PUPPET_GEM_VERSION: '~> 5.5'
+    PUPPET_GEM_VERSION: '~> 5.0'
 
-parallel_spec-Ruby 2.4.4-Puppet ~> 5.5:
-  stage: unit
-  image: ruby:2.4.4
+parallel_spec-Ruby 2.5.1-Puppet ~> 5.0:
+  stage: 'unit'
+  image: 'ruby:2.5.1'
   script:
     - bundle exec rake parallel_spec
   variables:
-    PUPPET_GEM_VERSION: '~> 5.5'
+    PUPPET_GEM_VERSION: '~> 5.0'
 
-acceptance with puppet5 ubuntu1604:
-  stage: acceptance
+acceptance with Puppet5 Ubuntu1604:
+  stage: 'acceptance'
   variables:
     RBENV_VERSION: '2.5.1'
     PUPPET_INSTALL_TYPE: 'agent'
@@ -48,8 +48,8 @@ acceptance with puppet5 ubuntu1604:
   tags:
     - puppet-tests
 
-acceptance with puppet5 debian8:
-  stage: acceptance
+acceptance with Puppet5 Debian8:
+  stage: 'acceptance'
   variables:
     RBENV_VERSION: '2.5.1'
     PUPPET_INSTALL_TYPE: 'agent'
@@ -63,8 +63,8 @@ acceptance with puppet5 debian8:
   tags:
     - puppet-tests
 
-acceptance with puppet5 debian9:
-  stage: acceptance
+acceptance with Puppet5 Debian9:
+  stage: 'acceptance'
   variables:
     RBENV_VERSION: '2.5.1'
     PUPPET_INSTALL_TYPE: 'agent'
@@ -78,8 +78,8 @@ acceptance with puppet5 debian9:
   tags:
     - puppet-tests
 
-acceptance with puppet5 centos7:
-  stage: acceptance
+acceptance with Puppet5 CentOS7:
+  stage: 'acceptance'
   variables:
     RBENV_VERSION: '2.5.1'
     PUPPET_INSTALL_TYPE: 'agent'
@@ -93,8 +93,8 @@ acceptance with puppet5 centos7:
   tags:
     - puppet-tests
 
-acceptance with puppet6 ubuntu1604:
-  stage: acceptance
+acceptance with Puppet6 Ubuntu1604:
+  stage: 'acceptance'
   variables:
     RBENV_VERSION: '2.5.1'
     PUPPET_INSTALL_TYPE: 'agent'
@@ -108,8 +108,8 @@ acceptance with puppet6 ubuntu1604:
   tags:
     - puppet-tests
 
-acceptance with puppet6 debian8:
-  stage: acceptance
+acceptance with Puppet6 Debian8:
+  stage: 'acceptance'
   variables:
     RBENV_VERSION: '2.5.1'
     PUPPET_INSTALL_TYPE: 'agent'
@@ -123,8 +123,8 @@ acceptance with puppet6 debian8:
   tags:
     - puppet-tests
 
-acceptance with puppet6 debian9:
-  stage: acceptance
+acceptance with Puppet6 Debian9:
+  stage: 'acceptance'
   variables:
     RBENV_VERSION: '2.5.1'
     PUPPET_INSTALL_TYPE: 'agent'
@@ -138,8 +138,8 @@ acceptance with puppet6 debian9:
   tags:
     - puppet-tests
 
-acceptance with puppet6 centos7:
-  stage: acceptance
+acceptance with Puppet6 CentOS7:
+  stage: 'acceptance'
   variables:
     RBENV_VERSION: '2.5.1'
     PUPPET_INSTALL_TYPE: 'agent'
@@ -154,10 +154,10 @@ acceptance with puppet6 centos7:
     - puppet-tests
 
 module release:
-  stage: release
+  stage: 'release'
   variables:
     RBENV_VERSION: '2.5.1'
-  script: 
+  script:
     - pdk build
   tags:
     - puppet-tests
@@ -168,5 +168,5 @@ module release:
   artifacts:
     paths:
       - pkg/
-    expire_in: 6 weeks
+    expire_in: '6 weeks'
 

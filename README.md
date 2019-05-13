@@ -262,10 +262,12 @@ Known bugs are listed in `CHANGELOG.md` file.
 
 Even if module should work with Puppet4, Puppet 4 is end of life since 2019-01-01.
 So tests with Puppet 4 are removed.
-Acceptance tests are done with last available release 5 and 6.
+Acceptance tests are done with last available release of Puppet 5 and Puppet 6 (AIO).
 
 PHP shiped with CentOS 7 is version 5.4. WordPress 5.2 requires at least 5.6.20.
-So, CentOS7 is removed from acceptance tests and from the list of compatible OSes.
+Default values for CentOS7 are not removed from the code.
+By this way we expect the module should works if php version requirement is respected.
+But, CentOS7 is removed from acceptance tests and from the list of compatible OSes.
 
 ## Development
 

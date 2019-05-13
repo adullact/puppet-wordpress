@@ -28,12 +28,6 @@ RSpec.configure do |c|
         on(host, 'apt-get update', acceptable_exit_codes: [0]).stdout
         on(host, 'apt install php5-cli php5-mysql --yes', acceptable_exit_codes: [0]).stdout
         on(host, 'apt install curl libapache2-mod-php5 apache2-mpm-itk --yes', acceptable_exit_codes: [0]).stdout
-      elsif host[:platform] =~ %r{el-7-x86_64}
-        # apache mpm itk is provided by EPEL
-        # curl is used in tests to access at a wordpress newly installed
-        on(host, 'yum install epel-release -y', acceptable_exit_codes: [0]).stdout
-        on(host, 'yum makecache', acceptable_exit_codes: [0]).stdout
-        on(host, 'yum install curl.x86_64 php-cli.x86_64 php-mysql.x86_64 -y', acceptable_exit_codes: [0]).stdout
       elsif host[:platform] =~ %r{ubuntu-16.04-amd64}
         on(host, 'apt-get update', acceptable_exit_codes: [0]).stdout
         # curl is used in tests to access at a wordpress newly installed
@@ -45,9 +39,9 @@ RSpec.configure do |c|
     include '::mysql::server'
 
     $myfqdn = 'localhost'
-    accounts::user { 'wp' : }
-    accounts::user { 'wp2' : }
-    accounts::user { 'wp3' : }
+    accounts::user { 'wp' :}
+    accounts::user { 'wp2' :}
+    accounts::user { 'wp3' :}
 
     class { 'apache':
       default_vhost => false,

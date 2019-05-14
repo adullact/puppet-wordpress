@@ -40,9 +40,9 @@ define wordpress::core::update (
   # 3. update database
   # 4. update language
 
-  $_date = strftime('%Y-%m-%d')
+  $_date = Timestamp.new.strftime('%F', 'current')
 
-  # Export and Archive is done as root because directory $wparchives_path 
+  # Export and Archive is done as root because directory $wparchives_path
   # is with mode 0700 and owned by root.
   exec { "${wp_servername} > Export database before upgrade" :
     command => "${wpcli_bin} --allow-root --path=${wp_root} db export",

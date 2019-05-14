@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file.
 
+## Release 3.0.0
+
+**Features**
+
+  * #80 remove CentOS7 from compatible OSes
+  * #72  add Ubuntu1804 to compatible OSes
+  * #45 set a fixed version of installed WP-CLI
+
+**Bugfixes**
+
+  * #78 space and double quote can be present in WP-CLI output
+  * #68 warning about String format is deprecated for #strftime
+
+**Known Issues**
+
 ## Release 2.0.0
 
 **Features**

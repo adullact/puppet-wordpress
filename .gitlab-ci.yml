@@ -48,6 +48,21 @@ acceptance with Puppet5 Ubuntu1604:
   tags:
     - puppet-tests
 
+acceptance with Puppet5 Ubuntu1804:
+  stage: 'acceptance'
+  variables:
+    RBENV_VERSION: '2.5.1'
+    PUPPET_INSTALL_TYPE: 'agent'
+    BEAKER_IS_PE: 'no'
+    BEAKER_PUPPET_COLLECTION: 'puppet5'
+    BEAKER_debug: 'true'
+    BEAKER_setfile: 'ubuntu1804-64'
+    BEAKER_HYPERVISOR: 'docker'
+  script:
+    - bundle exec rake beaker
+  tags:
+    - puppet-tests
+
 acceptance with Puppet5 Debian8:
   stage: 'acceptance'
   variables:
@@ -87,6 +102,21 @@ acceptance with Puppet6 Ubuntu1604:
     BEAKER_PUPPET_COLLECTION: 'puppet6'
     BEAKER_debug: 'true'
     BEAKER_setfile: 'ubuntu1604-64'
+    BEAKER_HYPERVISOR: 'docker'
+  script:
+    - bundle exec rake beaker
+  tags:
+    - puppet-tests
+
+acceptance with Puppet6 Ubuntu1804:
+  stage: 'acceptance'
+  variables:
+    RBENV_VERSION: '2.5.1'
+    PUPPET_INSTALL_TYPE: 'agent'
+    BEAKER_IS_PE: 'no'
+    BEAKER_PUPPET_COLLECTION: 'puppet6'
+    BEAKER_debug: 'true'
+    BEAKER_setfile: 'ubuntu1804-64'
     BEAKER_HYPERVISOR: 'docker'
   script:
     - bundle exec rake beaker

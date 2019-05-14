@@ -22,21 +22,45 @@ RSpec.configure do |c|
       on host, puppet('module', 'install', 'puppetlabs-apache')
       on host, puppet('module', 'install', 'puppet-archive')
 
+      # curl is used in tests to access at a wordpress newly installed
       if host[:platform] =~ %r{debian-8-amd64}
         # workaround the apache module try to install the following apache debs and fail.
-        # curl is used in tests to access at a wordpress newly installed
-        on(host, 'apt-get update', acceptable_exit_codes: [0]).stdout
-        on(host, 'apt install php5-cli php5-mysql --yes', acceptable_exit_codes: [0]).stdout
-        on(host, 'apt install curl libapache2-mod-php5 apache2-mpm-itk --yes', acceptable_exit_codes: [0]).stdout
+        pp_specific = <<-EOF
+        package { ['curl','php5-cli','php5-mysql','libapache2-mod-php5','apache2-mpm-itk'] :
+          ensure => present,
+        }
+        EOF
+        apply_manifest_on(agents, pp_specific, catch_failures: true)
       elsif host[:platform] =~ %r{ubuntu-16.04-amd64}
-        on(host, 'apt-get update', acceptable_exit_codes: [0]).stdout
-        # curl is used in tests to access at a wordpress newly installed
-        on(host, 'apt install curl php7.0-cli php7.0-mysql --yes', acceptable_exit_codes: [0]).stdout
+        pp_specific = <<-EOF
+        package { ['curl','php7.0-cli','php7.0-mysql'] :
+          ensure => present,
+        }
+        EOF
+        apply_manifest_on(agents, pp_specific, catch_failures: true)
+      elsif host[:platform] =~ %r{ubuntu-18.04-amd64}
+        # perl-modules-5.26 required by debconf: Can't locate Term/ReadLine.pm in @INC
+        pp_specific = <<-EOF
+        package { ['curl','tzdata','perl-modules-5.26','php7.2-cli','php7.2-mysql'] :
+          ensure => present,
+        }
+        EOF
+        apply_manifest_on(agents, pp_specific, catch_failures: true)
       end
     end
 
     pp = <<-EOS
-    include '::mysql::server'
+    case $facts['os']['distro']['codename'] {
+      'jessie': {
+        $_dbpackage = 'mysql-server'
+      }
+      default: {
+        $_dbpackage = 'mariadb-server'
+      }
+    }
+    class { 'mysql::server':
+      package_name => $_dbpackage,
+    }
 
     $myfqdn = 'localhost'
     accounts::user { 'wp' :}

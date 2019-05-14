@@ -3,7 +3,9 @@
 class wordpress::params {
 
   $default_wpcli_ensure = 'present'
-  $default_wpcli_url = 'https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar'
+  $_default_wpcli_version = '2.2.0'
+  $_default_wpcli_baseurl = 'https://github.com/wp-cli/wp-cli/releases/download'
+  $default_wpcli_url = "${_default_wpcli_baseurl}/v${_default_wpcli_version}/wp-cli-${_default_wpcli_version}.phar"
   $default_wpcli_bin = '/usr/local/bin/wp'
 
   $_os_family = $facts['os']['family']

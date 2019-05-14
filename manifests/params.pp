@@ -12,6 +12,8 @@ class wordpress::params {
       $default_owner = 'www-data'
     }
     'RedHat': {
+      # even with CentOS unsupported, this is not removed.
+      # If a CentOS7 user installs expected php version this module should work.
       $default_owner = 'apache'
     }
     default: {

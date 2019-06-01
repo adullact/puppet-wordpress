@@ -6,6 +6,12 @@ All notable changes to this project will be documented in this file.
 
 **Features**
 
+  * #82 allow puppetlabs/stdlib 6.x and puppet/archive 4.x
+
+## Release 3.0.0
+
+**Features**
+
   * #80 remove CentOS7 from compatible OSes
   * #72  add Ubuntu1804 to compatible OSes
   * #45 set a fixed version of installed WP-CLI

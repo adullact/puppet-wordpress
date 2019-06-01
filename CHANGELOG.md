@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file.
 
-## Release 3.0.0
+## Release 3.1.0
 
 **Features**
 
